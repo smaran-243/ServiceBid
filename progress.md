@@ -17,8 +17,8 @@
 - Run Configuration "BackendApplication" must have the 4 DB_ environment variables set (fixed on Day 2)
 
 ## Current status
-- Day 2 in progress. Tasks 6 and 7 complete.
-- Next: Task 9 (to be decided from the instructions file)
+- Day 2 in progress. Done: Role enum (with ADMIN), User, UserRepository, Spring Security + BCrypt (SecurityConfig, all endpoints open for now), POST /api/auth/register (tested in terminal with Invoke-RestMethod, no Postman)
+- Next: Task 12, login endpoint
 
 ## About me
 - Complete beginner in React and Spring Boot, some Java
