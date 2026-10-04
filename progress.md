@@ -12,10 +12,13 @@
 ## Done
 - Day 1 complete: health check API (/api/health), Neon connected, React shows backend message, one Git repo pushed to GitHub
 - HealthController has @CrossOrigin for http://localhost:5173
+- Day 2: Role enum (CUSTOMER, PROVIDER), User entity (table "users"), UserRepository (findByEmail, existsByEmail) created
+- application.properties has ddl-auto=update and show-sql=true; users table confirmed created in Neon
+- Run Configuration "BackendApplication" must have the 4 DB_ environment variables set (fixed on Day 2)
 
 ## Current status
-- Day 1 complete. Day 2 not started.
-- Next: Task 6, create the User entity (Role.java and User.java), then UserRepository
+- Day 2 in progress. Tasks 6 and 7 complete.
+- Next: Task 9 (to be decided from the instructions file)
 
 ## About me
 - Complete beginner in React and Spring Boot, some Java
