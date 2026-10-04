@@ -8,6 +8,7 @@
 - Frontend: React + Vite (JavaScript), port 5173, started with: npm run dev
 - Database: Neon PostgreSQL. DB_HOST, DB_NAME, DB_USER, DB_PASSWORD are set as environment variables in IntelliJ Run Configuration (not in files)
 - Dependencies so far: Spring Web, Spring Data JPA, PostgreSQL driver
+- JWT_SECRET is also an environment variable in the Run Configuration
 
 ## Done
 - Day 1 complete: health check API (/api/health), Neon connected, React shows backend message, one Git repo pushed to GitHub
@@ -17,8 +18,9 @@
 - Run Configuration "BackendApplication" must have the 4 DB_ environment variables set (fixed on Day 2)
 
 ## Current status
-- Day 2 in progress. Done: Role enum (with ADMIN), User, UserRepository, Spring Security + BCrypt (SecurityConfig, all endpoints open for now), POST /api/auth/register (tested in terminal with Invoke-RestMethod, no Postman)
-- Next: Task 12, login endpoint
+- Day 2 in progress. Done: Role enum (CUSTOMER, PROVIDER, ADMIN), User, UserRepository, Spring Security + BCrypt (all endpoints still open), POST /api/auth/register, JwtService (JWT_SECRET env variable added in Run Configuration), POST /api/auth/login returns a token
+- Testing is done with Invoke-RestMethod in the IntelliJ terminal (no Postman)
+- Next: Task 14, JWT filter + protected endpoints + role rules
 
 ## About me
 - Complete beginner in React and Spring Boot, some Java

@@ -1,5 +1,6 @@
 package com.servicebid.backend.controller;
 
+import com.servicebid.backend.dto.LoginRequest;
 import com.servicebid.backend.dto.RegisterRequest;
 import com.servicebid.backend.model.User;
 import com.servicebid.backend.service.AuthService;
@@ -27,5 +28,11 @@ public class AuthController {
                 "name", user.getName(),
                 "email", user.getEmail(),
                 "role", user.getRole()));
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<Map<String, String>> login(@RequestBody LoginRequest request) {
+        String token = authService.login(request);
+        return ResponseEntity.ok(Map.of("token", token));
     }
 }
