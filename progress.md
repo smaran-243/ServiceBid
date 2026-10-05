@@ -81,12 +81,20 @@
   * Request status follows the booking: COMPLETED or CANCELLED
   * Tested: customer and provider lists (each sees only their own), invalid jump 409, BID_ACCEPTED -> CONFIRMED -> IN_PROGRESS -> COMPLETED, completed booking locked (409), wrong provider 404, request status COMPLETED
   * Note: CORS in SecurityConfig must allow PATCH before the React app calls the status endpoint
-- Booking lists and status updates complete (push pending)
+  - Booking lists and status updates complete and pushed- 
+- Day 5 (reviews + provider rating):
+  * Review entity (table reviews: booking OneToOne unique, customer, provider, rating, comment, createdAt)
+  * ReviewRepository (existsByBookingId, findByProviderIdOrderByCreatedAtDesc, findAverageRatingByProviderId)
+  * DTOs: ReviewCreate, ReviewResponse, ProviderRatingResponse
+  * ReviewService: createReview (only the booking's customer, rating 1-5 else 400, booking must be COMPLETED else 409, one review per booking else 409), getReviewsForProvider, getProviderRating
+  * ReviewController: POST /api/customer/bookings/{bookingId}/review (201), GET /api/providers/{providerId}/reviews, GET /api/providers/{providerId}/rating (any logged-in user)
+  * Tested: bad rating 400, review created, duplicate 409, provider review list, average rating 5 with count 1
+- Day 5 backend complete (push pending)
 
 ## Current status
-* Day 4 and booking lists + status updates complete.
-* Next: Review entity (rating 1-5, comment, one review per COMPLETED booking, customer only), review endpoints, then provider average rating (Day 5).
-* Later: allow PATCH in SecurityConfig CORS when building the frontend.
+* Backend core workflow complete: auth, catalog, requests, bids, accept bid, bookings, status updates, reviews, provider rating.
+* Next: Day 6 frontend. First, allow PATCH in SecurityConfig CORS. Then customer pages (browse services, create request, my requests, view bids, accept bid, bookings, review) and provider pages (open requests, submit bid, my bids, bookings, update status).
+* Later: admin dashboard, deployment (Vercel, Render, Neon), README.
 
 ## About me
 - Complete beginner in React and Spring Boot, some Java
