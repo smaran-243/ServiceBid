@@ -63,10 +63,19 @@
   * Task 25: ServiceRequestRepository (findByCustomerIdOrderByCreatedAtDesc, findByStatusOrderByCreatedAtDesc), DTOs ServiceRequestCreate, ServiceRequestResponse
   * Task 26: ServiceRequestService (create with validation, customer's own requests, view one, provider OPEN requests), CustomerRequestController (POST/GET /api/customer/requests, GET /api/customer/requests/{id}), ProviderRequestController (GET /api/provider/requests, GET /api/provider/requests/{id}, OPEN only). Tested with PowerShell: create, list, view, 400 on empty description, customer token gets 403 on provider endpoint
 - Day 3 complete and pushed
+- Day 4 (bidding + accept bid):
+  * Task 27: BidStatus enum (PENDING, ACCEPTED, REJECTED, WITHDRAWN), Bid entity (table bids), BidRepository
+  * Task 28: DTOs BidCreate, BidResponse
+  * Task 29: BidService (submitBid: amount > 0, request must be OPEN else 409, duplicate bid 409; getMyBids), ProviderBidController (POST /api/provider/requests/{requestId}/bids returns 201, GET /api/provider/bids)
+  * Task 30: BidService.getBidsForMyRequest (owner only, others get 404, cheapest first), CustomerBidController (GET /api/customer/requests/{requestId}/bids)
+  * Task 31: BookingStatus enum (REQUESTED, BID_ACCEPTED, CONFIRMED, IN_PROGRESS, COMPLETED, CANCELLED), Booking entity (table bookings), BookingRepository, BookingResponse DTO, BookingService.acceptBid (@Transactional), CustomerBookingController (POST /api/customer/bids/{bidId}/accept returns 201)
+  * Tested: 2 providers bid on one request, customer sees both (cheapest first), accept bid creates booking (BID_ACCEPTED, agreed amount 900), chosen bid ACCEPTED, other bid REJECTED, request ACCEPTED, accepting again gives 409, request no longer in provider OPEN list
+- Test user added: prov2@test.com / secret123 / PROVIDER
+- Day 4 complete (push pending)
 
 ## Current status
-* Day 3 complete and pushed.
-* Next: Day 4, Task 27: Bid entity (BidStatus enum with PENDING, ACCEPTED, REJECTED, WITHDRAWN defined fully before first run), BidRepository. Then provider submits bid, duplicate-bid prevention, customer views bids, accept bid (rejects others, creates Booking).
+* Day 4 complete.
+* Next: booking list endpoints for customer and provider (BookingRepository methods already exist), then provider updates booking status (BID_ACCEPTED -> CONFIRMED -> IN_PROGRESS -> COMPLETED, cancel from BID_ACCEPTED/CONFIRMED), then reviews (Day 5).
 
 ## About me
 - Complete beginner in React and Spring Boot, some Java
