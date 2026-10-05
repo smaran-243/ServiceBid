@@ -53,6 +53,7 @@
     * Task 18: Login page (saves token, calls /api/me, redirects by role). Fixed CORS with a global CorsConfigurationSource bean in SecurityConfig (allows http://localhost:5173)
     * Task 19: LogoutButton, dashboards show logged-in email, ProtectedRoute (checks token and role through /api/me, redirects to /login)
 - Test user in Neon: cust@test.com / secret123 / CUSTOMER , prov@test.com / secret123 / PROVIDER , * admin@test.com / secret123 / ADMIN
+
 - Day 3 (in progress, not pushed yet):
   * Task 20: Category entity (table categories), ServiceItem entity (table services, ManyToOne Category). Named ServiceItem to avoid a clash with Spring's @Service
   * Task 21: CategoryRepository, ServiceItemRepository
@@ -63,6 +64,7 @@
   * Task 25: ServiceRequestRepository (findByCustomerIdOrderByCreatedAtDesc, findByStatusOrderByCreatedAtDesc), DTOs ServiceRequestCreate, ServiceRequestResponse
   * Task 26: ServiceRequestService (create with validation, customer's own requests, view one, provider OPEN requests), CustomerRequestController (POST/GET /api/customer/requests, GET /api/customer/requests/{id}), ProviderRequestController (GET /api/provider/requests, GET /api/provider/requests/{id}, OPEN only). Tested with PowerShell: create, list, view, 400 on empty description, customer token gets 403 on provider endpoint
 - Day 3 complete and pushed
+
 - Day 4 (bidding + accept bid):
   * Task 27: BidStatus enum (PENDING, ACCEPTED, REJECTED, WITHDRAWN), Bid entity (table bids), BidRepository
   * Task 28: DTOs BidCreate, BidResponse
@@ -71,11 +73,20 @@
   * Task 31: BookingStatus enum (REQUESTED, BID_ACCEPTED, CONFIRMED, IN_PROGRESS, COMPLETED, CANCELLED), Booking entity (table bookings), BookingRepository, BookingResponse DTO, BookingService.acceptBid (@Transactional), CustomerBookingController (POST /api/customer/bids/{bidId}/accept returns 201)
   * Tested: 2 providers bid on one request, customer sees both (cheapest first), accept bid creates booking (BID_ACCEPTED, agreed amount 900), chosen bid ACCEPTED, other bid REJECTED, request ACCEPTED, accepting again gives 409, request no longer in provider OPEN list
 - Test user added: prov2@test.com / secret123 / PROVIDER
-- Day 4 complete (push pending)
+- Day 4 complete and pushed
+  - Day 4/5 (booking lists + status updates):
+  * BookingService: getMyBookingsAsCustomer, getMyBookingsAsProvider, updateStatus (only the booking's provider, allowed moves only, else 409; wrong provider gets 404)
+  * DTO: BookingStatusUpdate (record with status)
+  * CustomerBookingListController (GET /api/customer/bookings), ProviderBookingController (GET /api/provider/bookings, PATCH /api/provider/bookings/{bookingId}/status)
+  * Request status follows the booking: COMPLETED or CANCELLED
+  * Tested: customer and provider lists (each sees only their own), invalid jump 409, BID_ACCEPTED -> CONFIRMED -> IN_PROGRESS -> COMPLETED, completed booking locked (409), wrong provider 404, request status COMPLETED
+  * Note: CORS in SecurityConfig must allow PATCH before the React app calls the status endpoint
+- Booking lists and status updates complete (push pending)
 
 ## Current status
-* Day 4 complete.
-* Next: booking list endpoints for customer and provider (BookingRepository methods already exist), then provider updates booking status (BID_ACCEPTED -> CONFIRMED -> IN_PROGRESS -> COMPLETED, cancel from BID_ACCEPTED/CONFIRMED), then reviews (Day 5).
+* Day 4 and booking lists + status updates complete.
+* Next: Review entity (rating 1-5, comment, one review per COMPLETED booking, customer only), review endpoints, then provider average rating (Day 5).
+* Later: allow PATCH in SecurityConfig CORS when building the frontend.
 
 ## About me
 - Complete beginner in React and Spring Boot, some Java

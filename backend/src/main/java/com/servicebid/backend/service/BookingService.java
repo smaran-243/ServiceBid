@@ -1,5 +1,7 @@
 package com.servicebid.backend.service;
 
+import com.servicebid.backend.model.BookingStatus;
+import java.util.List;
 import com.servicebid.backend.dto.BookingResponse;
 import com.servicebid.backend.model.Bid;
 import com.servicebid.backend.model.BidStatus;
@@ -80,7 +82,64 @@ public class BookingService {
 
         return toResponse(bookingRepository.save(booking));
     }
+    // Customer's own bookings, newest first
+    public List<BookingResponse> getMyBookingsAsCustomer(String customerEmail) {
+        User customer = userRepository.findByEmail(customerEmail)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found"));
+        return bookingRepository.findByCustomerIdOrderByCreatedAtDesc(customer.getId())
+                .stream().map(this::toResponse).toList();
+    }
 
+    // Provider's own bookings, newest first
+    public List<BookingResponse> getMyBookingsAsProvider(String providerEmail) {
+        User provider = userRepository.findByEmail(providerEmail)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found"));
+        return bookingRepository.findByProviderIdOrderByCreatedAtDesc(provider.getId())
+                .stream().map(this::toResponse).toList();
+    }
+    // Provider moves their booking to the next status
+    @Transactional
+    public BookingResponse updateStatus(String providerEmail, Long bookingId, BookingStatus newStatus) {
+        User provider = userRepository.findByEmail(providerEmail)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found"));
+
+        Booking booking = bookingRepository.findById(bookingId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Booking not found"));
+
+        // Only the provider of this booking can change it (others get "not found")
+        if (!booking.getProvider().getId().equals(provider.getId())) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Booking not found");
+        }
+        if (newStatus == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Status is required");
+        }
+        if (!isAllowedMove(booking.getStatus(), newStatus)) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT,
+                    "Cannot move from " + booking.getStatus() + " to " + newStatus);
+        }
+
+        booking.setStatus(newStatus);
+
+        // Keep the request status in step with the booking
+        if (newStatus == BookingStatus.COMPLETED) {
+            booking.getRequest().setStatus(RequestStatus.COMPLETED);
+            requestRepository.save(booking.getRequest());
+        } else if (newStatus == BookingStatus.CANCELLED) {
+            booking.getRequest().setStatus(RequestStatus.CANCELLED);
+            requestRepository.save(booking.getRequest());
+        }
+
+        return toResponse(bookingRepository.save(booking));
+    }
+
+    private boolean isAllowedMove(BookingStatus from, BookingStatus to) {
+        return switch (from) {
+            case BID_ACCEPTED -> to == BookingStatus.CONFIRMED || to == BookingStatus.CANCELLED;
+            case CONFIRMED -> to == BookingStatus.IN_PROGRESS || to == BookingStatus.CANCELLED;
+            case IN_PROGRESS -> to == BookingStatus.COMPLETED;
+            default -> false;
+        };
+    }
     private BookingResponse toResponse(Booking b) {
         return new BookingResponse(
                 b.getId(),
