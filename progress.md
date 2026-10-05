@@ -26,8 +26,8 @@
 - dto: RegisterRequest, LoginRequest (records)
 - service: AuthService (register, login)
 - controller: AuthController (POST /api/auth/register, POST /api/auth/login)
-- security: JwtService (generateToken only, no validation yet)
-- config: SecurityConfig (BCrypt PasswordEncoder bean, csrf disabled, CORS default, ALL endpoints still open: temporary)
+- security: JwtService (generateToken, isTokenValid, extractEmail, extractRole)
+- config: SecurityConfig (BCrypt PasswordEncoder bean, csrf disabled, CORS default, JwtAuthFilter registered, endpoints protected, role rules by URL path)
 
 ## Done
 - Day 1 complete: health check API, Neon connected, React shows backend message, GitHub repo
@@ -41,14 +41,18 @@
     - Task 12: JwtService + JWT_SECRET variable
     - Task 13: POST /api/auth/login returns {"token": "..."} (401 on wrong credentials, tested)
     - * Task 14: JwtService (parse/validate/extract email and role), JwtAuthFilter (reads Bearer token, sets user and role in SecurityContext), registered in SecurityConfig (endpoints still open)
-    - Test user in Neon: cust@test.com / secret123 / CUSTOMER
+    - * Task 15: GET /api/me, endpoints protected (public: /api/auth/**, /api/health, /error, OPTIONS), role rules (/api/customer/** CUSTOMER, /api/provider/** PROVIDER, /api/admin/** ADMIN). Tested: no token 403, valid token works, fake token 403, wrong role 403
+  - Test user in Neon: cust@test.com / secret123 / CUSTOMER
+  
 
 ## Current status
 - Day 2 in progress. Tasks 6 to 13 complete and pushed.
 - Next: Task 14, JWT filter (token parsing/validation in JwtService, OncePerRequestFilter reading "Authorization: Bearer <token>", sets user and role in SecurityContext, registered in SecurityConfig)
 - Then: Task 15 protect endpoints + GET /api/me + role rules (keep /api/auth/** and /api/health public, allow OPTIONS preflight)
 - Then: Task 16 React setup (router, API helper with token), Task 17 Register page, Task 18 Login page (redirect by role), Task 19 basic dashboards with logout and route protection. Day 2 ends after Task 19.
-* Next: Task 15, protect endpoints + GET /api/me + role rules
+- * Next: Task 16 React setup (router, API helper with token), then Task 17 Register page, Task 18 Login page, Task 19 basic dashboards with logout and route protection. Day 2 ends after Task 19.
+
+
 ## About me
 - Complete beginner in React and Spring Boot, some Java
 - Small steps, exact file and click paths, text-only replies, keep answers short
