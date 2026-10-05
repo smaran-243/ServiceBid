@@ -27,7 +27,13 @@
 - service: AuthService (register, login)
 - controller: AuthController (POST /api/auth/register, POST /api/auth/login)
 - security: JwtService (generateToken, isTokenValid, extractEmail, extractRole)
-- config: SecurityConfig (BCrypt PasswordEncoder bean, csrf disabled, CORS default, JwtAuthFilter registered, endpoints protected, role rules by URL path)
+- config: SecurityConfig (BCrypt PasswordEncoder bean, csrf disabled, CORS default, JwtAuthFilter registered, endpoints protected, role rules by URL path) , CorsConfigurationSource bean (allows http://localhost:5173)
+
+## Frontend structure (frontend/src)
+* main.jsx (BrowserRouter), App.jsx (routes: /, /register, /login, /customer, /provider)
+* api/api.js: token helpers and apiFetch
+* pages: Register, Login, CustomerDashboard, ProviderDashboard
+* components: LogoutButton, ProtectedRoute
 
 ## Done
 - Day 1 complete: health check API, Neon connected, React shows backend message, GitHub repo
@@ -40,18 +46,18 @@
     - Task 11: POST /api/auth/register (ADMIN cannot self-register, 409 on duplicate email, tested)
     - Task 12: JwtService + JWT_SECRET variable
     - Task 13: POST /api/auth/login returns {"token": "..."} (401 on wrong credentials, tested)
-    - * Task 14: JwtService (parse/validate/extract email and role), JwtAuthFilter (reads Bearer token, sets user and role in SecurityContext), registered in SecurityConfig (endpoints still open)
-    - * Task 15: GET /api/me, endpoints protected (public: /api/auth/**, /api/health, /error, OPTIONS), role rules (/api/customer/** CUSTOMER, /api/provider/** PROVIDER, /api/admin/** ADMIN). Tested: no token 403, valid token works, fake token 403, wrong role 403
-  - Test user in Neon: cust@test.com / secret123 / CUSTOMER
+    * Task 14: JwtService (parse/validate/extract email and role), JwtAuthFilter (reads Bearer token, sets user and role in SecurityContext), registered in SecurityConfig (endpoints still open)
+    * Task 15: GET /api/me, endpoints protected (public: /api/auth/**, /api/health, /error, OPTIONS), role rules (/api/customer/** CUSTOMER, /api/provider/** PROVIDER, /api/admin/** ADMIN). Tested: no token 403, valid token works, fake token 403, wrong role 403
+    * Task 16: React Router installed, BrowserRouter in main.jsx, api/api.js (saveToken, getToken, removeToken, apiFetch adds Bearer token), placeholder pages and routes in App.jsx
+    * Task 17: Register page (name, email, password, role CUSTOMER/PROVIDER, 409 message, redirects to /login)
+    * Task 18: Login page (saves token, calls /api/me, redirects by role). Fixed CORS with a global CorsConfigurationSource bean in SecurityConfig (allows http://localhost:5173)
+    * Task 19: LogoutButton, dashboards show logged-in email, ProtectedRoute (checks token and role through /api/me, redirects to /login)
+- Test user in Neon: cust@test.com / secret123 / CUSTOMER , prov@test.com / secret123 / PROVIDER
   
 
 ## Current status
-- Day 2 in progress. Tasks 6 to 13 complete and pushed.
-- Next: Task 14, JWT filter (token parsing/validation in JwtService, OncePerRequestFilter reading "Authorization: Bearer <token>", sets user and role in SecurityContext, registered in SecurityConfig)
-- Then: Task 15 protect endpoints + GET /api/me + role rules (keep /api/auth/** and /api/health public, allow OPTIONS preflight)
-- Then: Task 16 React setup (router, API helper with token), Task 17 Register page, Task 18 Login page (redirect by role), Task 19 basic dashboards with logout and route protection. Day 2 ends after Task 19.
-- * Next: Task 16 React setup (router, API helper with token), then Task 17 Register page, Task 18 Login page, Task 19 basic dashboards with logout and route protection. Day 2 ends after Task 19.
-
+* Day 2 complete. Tasks 6 to 19 done and pushed. Register, login, JWT, protected endpoints, role rules, React auth pages and route protection all working.
+* Next: Day 3, Service domain (Service entity, repository, DTOs, service layer, controller, role rules: who can create, update, delete)
 
 ## About me
 - Complete beginner in React and Spring Boot, some Java
