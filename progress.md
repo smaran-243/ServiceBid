@@ -40,14 +40,15 @@
     - Task 11: POST /api/auth/register (ADMIN cannot self-register, 409 on duplicate email, tested)
     - Task 12: JwtService + JWT_SECRET variable
     - Task 13: POST /api/auth/login returns {"token": "..."} (401 on wrong credentials, tested)
-- Test user in Neon: cust@test.com / secret123 / CUSTOMER
+    - * Task 14: JwtService (parse/validate/extract email and role), JwtAuthFilter (reads Bearer token, sets user and role in SecurityContext), registered in SecurityConfig (endpoints still open)
+    - Test user in Neon: cust@test.com / secret123 / CUSTOMER
 
 ## Current status
 - Day 2 in progress. Tasks 6 to 13 complete and pushed.
 - Next: Task 14, JWT filter (token parsing/validation in JwtService, OncePerRequestFilter reading "Authorization: Bearer <token>", sets user and role in SecurityContext, registered in SecurityConfig)
 - Then: Task 15 protect endpoints + GET /api/me + role rules (keep /api/auth/** and /api/health public, allow OPTIONS preflight)
 - Then: Task 16 React setup (router, API helper with token), Task 17 Register page, Task 18 Login page (redirect by role), Task 19 basic dashboards with logout and route protection. Day 2 ends after Task 19.
-
+* Next: Task 15, protect endpoints + GET /api/me + role rules
 ## About me
 - Complete beginner in React and Spring Boot, some Java
 - Small steps, exact file and click paths, text-only replies, keep answers short
