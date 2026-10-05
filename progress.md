@@ -21,13 +21,13 @@
 
 ## Backend structure (com.servicebid.backend)
 - Root: BackendApplication, HealthController (GET /api/health, @CrossOrigin for http://localhost:5173)
-- model: Role (CUSTOMER, PROVIDER, ADMIN), User (table "users": id, name, email unique, password BCrypt hash, role, createdAt)
-- repository: UserRepository (findByEmail, existsByEmail)
-- dto: RegisterRequest, LoginRequest (records)
-- service: AuthService (register, login)
-- controller: AuthController (POST /api/auth/register, POST /api/auth/login)
-- security: JwtService (generateToken, isTokenValid, extractEmail, extractRole)
-- config: SecurityConfig (BCrypt PasswordEncoder bean, csrf disabled, CORS default, JwtAuthFilter registered, endpoints protected, role rules by URL path) , CorsConfigurationSource bean (allows http://localhost:5173)
+- model: Role (CUSTOMER, PROVIDER, ADMIN), User (table "users": id, name, email unique, password BCrypt hash, role, createdAt), Category, ServiceItem, RequestStatus, ServiceRequest
+- repository: UserRepository (findByEmail, existsByEmail), CategoryRepository, ServiceItemRepository, ServiceRequestRepository
+- dto: RegisterRequest, LoginRequest, CategoryRequest, ServiceItemRequest, ServiceItemResponse, ServiceRequestCreate, ServiceRequestResponse
+- service: AuthService (register, login), CategoryService, ServiceItemService, ServiceRequestService
+- controller: AuthController, MeController, CatalogController, AdminCatalogController, CustomerRequestController, ProviderRequestController
+- security: JwtService (generateToken, isTokenValid, extractEmail, extractRole), JwtAuthFilter
+- config: SecurityConfig (BCrypt PasswordEncoder bean, csrf disabled, JwtAuthFilter registered, endpoints protected, role rules by URL path, CorsConfigurationSource bean allowing http://localhost:5173)
 
 ## Frontend structure (frontend/src)
 * main.jsx (BrowserRouter), App.jsx (routes: /, /register, /login, /customer, /provider)
@@ -52,12 +52,21 @@
     * Task 17: Register page (name, email, password, role CUSTOMER/PROVIDER, 409 message, redirects to /login)
     * Task 18: Login page (saves token, calls /api/me, redirects by role). Fixed CORS with a global CorsConfigurationSource bean in SecurityConfig (allows http://localhost:5173)
     * Task 19: LogoutButton, dashboards show logged-in email, ProtectedRoute (checks token and role through /api/me, redirects to /login)
-- Test user in Neon: cust@test.com / secret123 / CUSTOMER , prov@test.com / secret123 / PROVIDER
-  
+- Test user in Neon: cust@test.com / secret123 / CUSTOMER , prov@test.com / secret123 / PROVIDER , * admin@test.com / secret123 / ADMIN
+- Day 3 (in progress, not pushed yet):
+  * Task 20: Category entity (table categories), ServiceItem entity (table services, ManyToOne Category). Named ServiceItem to avoid a clash with Spring's @Service
+  * Task 21: CategoryRepository, ServiceItemRepository
+  * Task 22: DTOs (CategoryRequest, ServiceItemRequest, ServiceItemResponse), CategoryService, ServiceItemService (400/404/409 via ResponseStatusException)
+  * Task 23: CatalogController (GET /api/categories, /api/services, /api/services/{id}, any logged-in user), AdminCatalogController (POST/PUT/DELETE under /api/admin/categories and /api/admin/services, ADMIN only). Tested.
+  * Admin user created: admin@test.com / secret123 (registered as CUSTOMER, then role changed in Neon SQL Editor). Fixed Neon users_role_check constraint to allow ADMIN
+  * Task 24: RequestStatus enum (OPEN, ACCEPTED, CANCELLED, COMPLETED), ServiceRequest entity (table service_requests: service, customer, description, budget, scheduledAt, location, status default OPEN, createdAt)
+  * Task 25: ServiceRequestRepository (findByCustomerIdOrderByCreatedAtDesc, findByStatusOrderByCreatedAtDesc), DTOs ServiceRequestCreate, ServiceRequestResponse
+  * Task 26: ServiceRequestService (create with validation, customer's own requests, view one, provider OPEN requests), CustomerRequestController (POST/GET /api/customer/requests, GET /api/customer/requests/{id}), ProviderRequestController (GET /api/provider/requests, GET /api/provider/requests/{id}, OPEN only). Tested with PowerShell: create, list, view, 400 on empty description, customer token gets 403 on provider endpoint
+- Day 3 complete and pushed
 
 ## Current status
-* Day 2 complete. Tasks 6 to 19 done and pushed. Register, login, JWT, protected endpoints, role rules, React auth pages and route protection all working.
-* Next: Day 3, Service domain (Service entity, repository, DTOs, service layer, controller, role rules: who can create, update, delete)
+* Day 3 complete and pushed.
+* Next: Day 4, Task 27: Bid entity (BidStatus enum with PENDING, ACCEPTED, REJECTED, WITHDRAWN defined fully before first run), BidRepository. Then provider submits bid, duplicate-bid prevention, customer views bids, accept bid (rejects others, creates Booking).
 
 ## About me
 - Complete beginner in React and Spring Boot, some Java
