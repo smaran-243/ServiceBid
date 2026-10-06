@@ -9,6 +9,9 @@ import BrowseServices from "./pages/BrowseServices.jsx";
 import CreateRequest from "./pages/CreateRequest.jsx";
 import RequestDetail from "./pages/RequestDetail.jsx";
 import MyBookings from "./pages/MyBookings.jsx";
+import PlaceBid from "./pages/PlaceBid.jsx";
+import MyBids from "./pages/MyBids.jsx";
+import ProviderBookings from "./pages/ProviderBookings.jsx";
 
 function Home() {
     const [message, setMessage] = useState("Loading...");
@@ -81,6 +84,30 @@ function App() {
                     element={
                         <ProtectedRoute role="CUSTOMER">
                             <MyBookings />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/provider/requests/:requestId"
+                    element={
+                        <ProtectedRoute role="PROVIDER">
+                            <PlaceBid />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/provider/bids"
+                    element={
+                        <ProtectedRoute role="PROVIDER">
+                            <MyBids />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/provider/bookings"
+                    element={
+                        <ProtectedRoute role="PROVIDER">
+                            <ProviderBookings />
                         </ProtectedRoute>
                     }
                 />

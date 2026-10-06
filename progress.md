@@ -95,11 +95,15 @@
   * Pages: BrowseServices (/customer/services), CreateRequest (/customer/request/:serviceId), RequestDetail (/customer/requests/:requestId, bids + Accept button), MyBookings (/customer/bookings, review form on COMPLETED bookings)
   * CustomerDashboard: My requests list with "View bids" links, links to Browse services and My bookings
   * Tested in browser: create request, provider bid, accept bid, booking list, review form
+- Day 6 (frontend, provider side) complete and pushed:
+  * Pages: PlaceBid (/provider/requests/:requestId), MyBids (/provider/bids), ProviderBookings (/provider/bookings, status buttons BID_ACCEPTED -> CONFIRMED -> IN_PROGRESS -> COMPLETED, plus cancel)
+  * ProviderDashboard: Open requests list with "Place a bid" links, links to My bids and My bookings
+  * Tested in browser: place bid, my bids, booking status updates to COMPLETED
 
 
 ## Current status
 * Backend core workflow complete: auth, catalog, requests, bids, accept bid, bookings, status updates, reviews, provider rating.
-* Next: provider pages (open requests, submit bid, my bids, my bookings, update status). First, allow PATCH in SecurityConfig CORS. Then customer pages (browse services, create request, my requests, view bids, accept bid, bookings, review) and provider pages (open requests, submit bid, my bids, bookings, update status).
+* Next: UI polish, deployment (Vercel, Render, Neon), README. Optional if time allows (free only): admin dashboard, provider profile, show provider rating on bids. First, allow PATCH in SecurityConfig CORS. Then customer pages (browse services, create request, my requests, view bids, accept bid, bookings, review) and provider pages (open requests, submit bid, my bids, bookings, update status).
 * Later: admin dashboard, deployment (Vercel, Render, Neon), README.
 
 ## About me
