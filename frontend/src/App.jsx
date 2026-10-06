@@ -5,6 +5,10 @@ import Login from "./pages/Login.jsx";
 import CustomerDashboard from "./pages/CustomerDashboard.jsx";
 import ProviderDashboard from "./pages/ProviderDashboard.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
+import BrowseServices from "./pages/BrowseServices.jsx";
+import CreateRequest from "./pages/CreateRequest.jsx";
+import RequestDetail from "./pages/RequestDetail.jsx";
+import MyBookings from "./pages/MyBookings.jsx";
 
 function Home() {
     const [message, setMessage] = useState("Loading...");
@@ -45,6 +49,38 @@ function App() {
                     element={
                         <ProtectedRoute role="PROVIDER">
                             <ProviderDashboard />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/customer/services"
+                    element={
+                        <ProtectedRoute role="CUSTOMER">
+                            <BrowseServices />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/customer/request/:serviceId"
+                    element={
+                        <ProtectedRoute role="CUSTOMER">
+                            <CreateRequest />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/customer/requests/:requestId"
+                    element={
+                        <ProtectedRoute role="CUSTOMER">
+                            <RequestDetail />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/customer/bookings"
+                    element={
+                        <ProtectedRoute role="CUSTOMER">
+                            <MyBookings />
                         </ProtectedRoute>
                     }
                 />

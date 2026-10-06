@@ -89,11 +89,17 @@
   * ReviewService: createReview (only the booking's customer, rating 1-5 else 400, booking must be COMPLETED else 409, one review per booking else 409), getReviewsForProvider, getProviderRating
   * ReviewController: POST /api/customer/bookings/{bookingId}/review (201), GET /api/providers/{providerId}/reviews, GET /api/providers/{providerId}/rating (any logged-in user)
   * Tested: bad rating 400, review created, duplicate 409, provider review list, average rating 5 with count 1
-- Day 5 backend complete (push pending)
+- Day 5 backend complete (pushed)
+- Day 6 (frontend, customer side) complete and pushed:
+  * Backend: PATCH added to CORS in SecurityConfig
+  * Pages: BrowseServices (/customer/services), CreateRequest (/customer/request/:serviceId), RequestDetail (/customer/requests/:requestId, bids + Accept button), MyBookings (/customer/bookings, review form on COMPLETED bookings)
+  * CustomerDashboard: My requests list with "View bids" links, links to Browse services and My bookings
+  * Tested in browser: create request, provider bid, accept bid, booking list, review form
+
 
 ## Current status
 * Backend core workflow complete: auth, catalog, requests, bids, accept bid, bookings, status updates, reviews, provider rating.
-* Next: Day 6 frontend. First, allow PATCH in SecurityConfig CORS. Then customer pages (browse services, create request, my requests, view bids, accept bid, bookings, review) and provider pages (open requests, submit bid, my bids, bookings, update status).
+* Next: provider pages (open requests, submit bid, my bids, my bookings, update status). First, allow PATCH in SecurityConfig CORS. Then customer pages (browse services, create request, my requests, view bids, accept bid, bookings, review) and provider pages (open requests, submit bid, my bids, bookings, update status).
 * Later: admin dashboard, deployment (Vercel, Render, Neon), README.
 
 ## About me
