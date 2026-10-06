@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 function ProviderDashboard() {
     const [email, setEmail] = useState("");
     const [requests, setRequests] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         apiFetch("/api/me")
@@ -15,7 +16,8 @@ function ProviderDashboard() {
     useEffect(() => {
         apiFetch("/api/provider/requests")
             .then((data) => setRequests(data))
-            .catch(() => setRequests([]));
+            .catch(() => setRequests([]))
+            .finally(() => setLoading(false));
     }, []);
 
 
@@ -28,7 +30,8 @@ function ProviderDashboard() {
                 <Link to="/provider/bookings">My bookings</Link>
             </p>
             <h3>Open requests</h3>
-            {requests.length === 0 && <p>No open requests.</p>}
+            {loading && <p>Loading...</p>}
+            {!loading && requests.length === 0 && <p>No open requests.</p>}
             <ul>
                 {requests.map((r) => (
                     <li key={r.id}>

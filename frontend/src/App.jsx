@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import { Routes, Route, Link } from "react-router-dom";
 import Register from "./pages/Register.jsx";
 import Login from "./pages/Login.jsx";
@@ -12,28 +11,41 @@ import MyBookings from "./pages/MyBookings.jsx";
 import PlaceBid from "./pages/PlaceBid.jsx";
 import MyBids from "./pages/MyBids.jsx";
 import ProviderBookings from "./pages/ProviderBookings.jsx";
+import Navbar from "./components/Navbar.jsx";
 
 function Home() {
-    const [message, setMessage] = useState("Loading...");
-
-    useEffect(() => {
-        fetch("http://localhost:8080/api/health")
-            .then((res) => res.text())
-            .then((data) => setMessage(data))
-            .catch(() => setMessage("Cannot reach backend"));
-    }, []);
-
-    return <p>Backend says: {message}</p>;
+    return (
+        <div className="hero">
+            <h1>Get the best price for any home service</h1>
+            <p className="hero-sub">
+                Post what you need. Providers compete with bids. You pick the best offer.
+            </p>
+            <div className="hero-buttons">
+                <Link to="/register" className="btn-link">Get started</Link>
+                <Link to="/login" className="btn-link btn-outline">Login</Link>
+            </div>
+            <div className="steps">
+                <div className="step-card">
+                    <h3>1. Post a request</h3>
+                    <p>Pick a service and describe the job, budget and location.</p>
+                </div>
+                <div className="step-card">
+                    <h3>2. Compare bids</h3>
+                    <p>Providers send their price and time. See ratings side by side.</p>
+                </div>
+                <div className="step-card">
+                    <h3>3. Book and review</h3>
+                    <p>Accept the best bid, track the job, then rate the provider.</p>
+                </div>
+            </div>
+        </div>
+    );
 }
 
 function App() {
     return (
         <div>
-            <h1>ServiceBid</h1>
-            <nav>
-                <Link to="/">Home</Link> | <Link to="/register">Register</Link> |{" "}
-                <Link to="/login">Login</Link>
-            </nav>
+            <Navbar />
 
             <Routes>
                 <Route path="/" element={<Home />} />

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { apiFetch } from "../api/api.js";
 import LogoutButton from "../components/LogoutButton.jsx";
 import { Link } from "react-router-dom";
+import StatusBadge from "../components/StatusBadge.jsx";
 
 function CustomerDashboard() {
     const [email, setEmail] = useState("");
@@ -30,7 +31,7 @@ function CustomerDashboard() {
             <ul>
                 {requests.map((r) => (
                     <li key={r.id}>
-                        <strong>{r.serviceName}</strong> - {r.status}{" "}
+                        <strong>{r.serviceName}</strong> <StatusBadge status={r.status} />{" "}
                         <Link to={"/customer/requests/" + r.id}>View bids</Link><br />
                         {r.description}<br />
                         Budget: {r.budget} | Location: {r.location}<br />

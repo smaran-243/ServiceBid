@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { apiFetch } from "../api/api.js";
+import StatusBadge from "../components/StatusBadge.jsx";
 
 function ReviewForm({ bookingId }) {
     const [rating, setRating] = useState(5);
@@ -59,7 +60,7 @@ function MyBookings() {
             <ul>
                 {bookings.map((b) => (
                     <li key={b.id}>
-                        <strong>{b.serviceName}</strong> - {b.status}<br />
+                        <strong>{b.serviceName}</strong> <StatusBadge status={b.status} /><br />
                         Provider: {b.providerName}<br />
                         Agreed amount: {b.agreedAmount}
                         {b.status === "COMPLETED" && <ReviewForm bookingId={b.id} />}

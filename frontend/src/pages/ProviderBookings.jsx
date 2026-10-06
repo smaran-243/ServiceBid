@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { apiFetch } from "../api/api.js";
+import StatusBadge from "../components/StatusBadge.jsx";
 
 const NEXT_STEP = {
     BID_ACCEPTED: "CONFIRMED",
@@ -11,11 +12,13 @@ const NEXT_STEP = {
 function ProviderBookings() {
     const [bookings, setBookings] = useState([]);
     const [error, setError] = useState("");
+    const [loading, setLoading] = useState(true);
 
     function loadBookings() {
         apiFetch("/api/provider/bookings")
             .then((data) => setBookings(data))
-            .catch(() => setError("Could not load bookings"));
+            .catch(() => setError("Could not load bookings"))
+            .finally(() => setLoading(false));
     }
 
     useEffect(() => {
@@ -40,11 +43,12 @@ function ProviderBookings() {
             <p><Link to="/provider">Back to dashboard</Link></p>
             <h2>My bookings</h2>
             {error && <p>{error}</p>}
-            {bookings.length === 0 && <p>No bookings yet.</p>}
+            {loading && <p>Loading...</p>}
+            {!loading && bookings.length === 0 && <p>No bookings yet.</p>}
             <ul>
                 {bookings.map((b) => (
                     <li key={b.id}>
-                        <strong>{b.serviceName}</strong> - {b.status}<br />
+                        <strong>{b.serviceName}</strong> <StatusBadge status={b.status} /><br />
                         Customer: {b.customerName}<br />
                         Agreed amount: {b.agreedAmount}<br />
                         {NEXT_STEP[b.status] && (
