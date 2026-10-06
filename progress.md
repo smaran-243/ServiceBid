@@ -99,11 +99,15 @@
   * Pages: PlaceBid (/provider/requests/:requestId), MyBids (/provider/bids), ProviderBookings (/provider/bookings, status buttons BID_ACCEPTED -> CONFIRMED -> IN_PROGRESS -> COMPLETED, plus cancel)
   * ProviderDashboard: Open requests list with "Place a bid" links, links to My bids and My bookings
   * Tested in browser: place bid, my bids, booking status updates to COMPLETED
+- Day 6 (data + ratings) complete:
+  * Added data through the admin API: 9 categories (Cleaning 1, Plumbing 2, Electrical 3, AC Repair 4, Painting 5, Computer Repair 6, Appliance Repair 7, Pest Control 8, Salon at Home 9) and 18 new services (19 total including Home Cleaning). Checked: GET /api/services count = 19 and Browse services page shows them all
+  * RequestDetail now shows each provider's average rating and review count next to their bid (calls GET /api/providers/{providerId}/rating, shows "No reviews yet" if none)
+  * Test users: prov2@test.com (PROVIDER, id 5). Tests in Neon: request 1 COMPLETED, request 2 went through bid, accept, booking, completed via provider UI
 
 
 ## Current status
 * Backend core workflow complete: auth, catalog, requests, bids, accept bid, bookings, status updates, reviews, provider rating.
-* Next: UI polish, deployment (Vercel, Render, Neon), README. Optional if time allows (free only): admin dashboard, provider profile, show provider rating on bids. First, allow PATCH in SecurityConfig CORS. Then customer pages (browse services, create request, my requests, view bids, accept bid, bookings, review) and provider pages (open requests, submit bid, my bids, bookings, update status).
+* Next: UI polish, deployment (Vercel, Render, Neon), README. Optional if time allows (free only): admin dashboard, provider profile. First, allow PATCH in SecurityConfig CORS. Then customer pages (browse services, create request, my requests, view bids, accept bid, bookings, review) and provider pages (open requests, submit bid, my bids, bookings, update status).
 * Later: admin dashboard, deployment (Vercel, Render, Neon), README.
 
 ## About me

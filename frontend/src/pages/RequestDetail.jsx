@@ -7,13 +7,23 @@ function RequestDetail() {
     const [request, setRequest] = useState(null);
     const [bids, setBids] = useState([]);
     const [error, setError] = useState("");
+    const [ratings, setRatings] = useState({});
 
     useEffect(() => {
         apiFetch("/api/customer/requests/" + requestId)
             .then((data) => setRequest(data))
             .catch(() => setError("Could not load request"));
         apiFetch("/api/customer/requests/" + requestId + "/bids")
-            .then((data) => setBids(data))
+            .then((data) => {
+                setBids(data);
+                data.forEach((b) => {
+                    apiFetch("/api/providers/" + b.providerId + "/rating")
+                        .then((r) =>
+                            setRatings((prev) => ({ ...prev, [b.providerId]: r }))
+                        )
+                        .catch(() => {});
+                });
+            })
             .catch(() => setError("Could not load bids"));
     }, [requestId]);
     async function acceptBid(bidId) {
@@ -45,6 +55,11 @@ function RequestDetail() {
                 {bids.map((b) => (
                     <li key={b.id}>
                         <strong>{b.providerName}</strong> - Amount: {b.amount}<br />
+                        Rating:{" "}
+                        {ratings[b.providerId] && ratings[b.providerId].reviewCount > 0
+                            ? ratings[b.providerId].averageRating + " (" + ratings[b.providerId].reviewCount + " reviews)"
+                            : "No reviews yet"}
+                        <br />
                         Time: {b.estimatedTime}<br />
                         {b.message}<br />
                         Status: {b.status}<br />
