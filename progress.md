@@ -117,12 +117,19 @@
   * Service ids start at 2 (id 1 does not exist)
   * Tested: cancel works, second cancel 409, profile and services saved and shown in browser
 - Day 8: Admin dashboard
-- Backend: `AdminOverviewController` with GET /api/admin/users, /api/admin/bookings, /api/admin/requests (ADMIN only)
-- Added `AdminUserResponse` DTO (no password), `getAllBookings()` and `getAllRequests()` (newest first)
-- Frontend: `AdminDashboard.jsx` page at /admin with tables for users, requests and bookings
-- `ProtectedRoute` with role ADMIN, "Admin" link in Navbar, Login redirects ADMIN to /admin
-- Tested: admin sees all tables, customer is redirected to /login
-
+  * Backend: `AdminOverviewController` with GET /api/admin/users, /api/admin/bookings, /api/admin/requests (ADMIN only)
+  * Added `AdminUserResponse` DTO (no password), `getAllBookings()` and `getAllRequests()` (newest first)
+  * Frontend: `AdminDashboard.jsx` page at /admin with tables for users, requests and bookings 
+  * ProtectedRoute` with role ADMIN, "Admin" link in Navbar, Login redirects ADMIN to /admin 
+  * Tested: admin sees all tables, customer is redirected to /login 
+- Day 9: Deployment (all free)
+  * Backend on Render (Free, Docker): `backend/Dockerfile`, `.dockerignore`, `server.port=${PORT:8080}`
+  * Frontend on Vercel (Hobby): `vercel.json` so React Router refresh works 
+  * api.js` reads `VITE_API_URL`; `SecurityConfig` reads `CORS_ORIGINS` (both fall back to localhost)
+  * Render env variables: DB_HOST, DB_NAME, DB_USER, DB_PASSWORD, JWT_SECRET, CORS_ORIGINS 
+  * Live frontend: https://service-bid.vercel.app
+  * Live backend: https://servicebid-ynj4.onrender.com (free instance sleeps when idle, first request takes about a minute)
+  * Tested: login and Browse services work on the live site
 
 ## Current status
 * Backend core workflow complete: auth, catalog, requests, bids, accept bid, bookings, status updates, reviews, provider rating.
