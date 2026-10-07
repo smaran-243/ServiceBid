@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.data.domain.Sort;
 
 @Service
 public class BookingService {
@@ -95,6 +96,11 @@ public class BookingService {
         User provider = userRepository.findByEmail(providerEmail)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found"));
         return bookingRepository.findByProviderIdOrderByCreatedAtDesc(provider.getId())
+                .stream().map(this::toResponse).toList();
+    }
+    // Admin: all bookings, newest first
+    public List<BookingResponse> getAllBookings() {
+        return bookingRepository.findAll(Sort.by(Sort.Direction.DESC, "createdAt"))
                 .stream().map(this::toResponse).toList();
     }
     // Provider moves their booking to the next status

@@ -12,6 +12,7 @@ import PlaceBid from "./pages/PlaceBid.jsx";
 import MyBids from "./pages/MyBids.jsx";
 import ProviderBookings from "./pages/ProviderBookings.jsx";
 import ProviderProfile from "./pages/ProviderProfile.jsx";
+import AdminDashboard from "./pages/AdminDashboard.jsx";
 import Navbar from "./components/Navbar.jsx";
 
 
@@ -130,6 +131,14 @@ function App() {
                     element={
                         <ProtectedRoute role="PROVIDER">
                             <ProviderProfile />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/admin"
+                    element={
+                        <ProtectedRoute role="ADMIN">
+                            <AdminDashboard />
                         </ProtectedRoute>
                     }
                 />

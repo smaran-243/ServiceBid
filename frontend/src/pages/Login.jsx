@@ -24,7 +24,9 @@ function Login() {
             const me = await apiFetch("/api/me");
 
             // 3. Go to the right dashboard
-            if (me.roles.includes("PROVIDER")) {
+            if (me.roles.includes("ADMIN")) {
+                navigate("/admin");
+            } else if (me.roles.includes("PROVIDER")) {
                 navigate("/provider");
             } else {
                 navigate("/customer");

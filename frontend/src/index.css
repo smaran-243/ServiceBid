@@ -209,3 +209,18 @@ li a {
 h2 {
   font-size: 26px;
 }
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 24px;
+  font-size: 14px;
+}
+.admin-table th,
+.admin-table td {
+  border: 1px solid #ddd;
+  padding: 6px 10px;
+  text-align: left;
+}
+.admin-table th {
+  background: #f3f4f6;
+}

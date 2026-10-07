@@ -19,7 +19,8 @@ function Navbar() {
 
     const isCustomer = roles.includes("CUSTOMER");
     const isProvider = roles.includes("PROVIDER");
-    const loggedIn = isCustomer || isProvider;
+    const isAdmin = roles.includes("ADMIN");
+    const loggedIn = isCustomer || isProvider || isAdmin;
 
     return (
         <nav className="navbar">
@@ -37,6 +38,11 @@ function Navbar() {
                         <Link to="/provider">Open requests</Link>
                         <Link to="/provider/bids">My bids</Link>
                         <Link to="/provider/bookings">My bookings</Link>
+                    </>
+                )}
+                {isAdmin && (
+                    <>
+                        <Link to="/admin">Admin</Link>
                     </>
                 )}
                 {!loggedIn && (

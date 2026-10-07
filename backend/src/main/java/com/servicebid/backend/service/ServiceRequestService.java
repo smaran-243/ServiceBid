@@ -12,6 +12,7 @@ import com.servicebid.backend.repository.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.data.domain.Sort;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -92,6 +93,11 @@ public class ServiceRequestService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Request not found");
         }
         return toResponse(request);
+    }
+    // Admin: all requests, newest first
+    public List<ServiceRequestResponse> getAllRequests() {
+        return requestRepository.findAll(Sort.by(Sort.Direction.DESC, "createdAt"))
+                .stream().map(this::toResponse).toList();
     }
     private User findUser(String email) {
         return userRepository.findByEmail(email)

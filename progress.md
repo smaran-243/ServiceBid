@@ -116,6 +116,12 @@
   * Frontend: ProviderProfile page (/provider/profile, bio, phone, tick services, save), link on ProviderDashboard, provider bio shown next to each bid in RequestDetail
   * Service ids start at 2 (id 1 does not exist)
   * Tested: cancel works, second cancel 409, profile and services saved and shown in browser
+- Day 8: Admin dashboard
+- Backend: `AdminOverviewController` with GET /api/admin/users, /api/admin/bookings, /api/admin/requests (ADMIN only)
+- Added `AdminUserResponse` DTO (no password), `getAllBookings()` and `getAllRequests()` (newest first)
+- Frontend: `AdminDashboard.jsx` page at /admin with tables for users, requests and bookings
+- `ProtectedRoute` with role ADMIN, "Admin" link in Navbar, Login redirects ADMIN to /admin
+- Tested: admin sees all tables, customer is redirected to /login
 
 
 ## Current status
