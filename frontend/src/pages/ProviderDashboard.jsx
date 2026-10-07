@@ -27,7 +27,8 @@ function ProviderDashboard() {
             <p>Logged in as: {email}</p>
             <p>
                 <Link to="/provider/bids">My bids</Link> |{" "}
-                <Link to="/provider/bookings">My bookings</Link>
+                <Link to="/provider/bookings">My bookings</Link> |{" "}
+                <Link to="/provider/profile">My profile</Link>
             </p>
             <h3>Open requests</h3>
             {loading && <p>Loading...</p>}

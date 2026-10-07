@@ -22,4 +22,8 @@ public class CustomerBookingListController {
     public List<BookingResponse> myBookings(Authentication authentication) {
         return bookingService.getMyBookingsAsCustomer(authentication.getName());
     }
+    @PostMapping("/{bookingId}/cancel")
+    public BookingResponse cancel(@PathVariable Long bookingId, Authentication authentication) {
+        return bookingService.cancelAsCustomer(authentication.getName(), bookingId);
+    }
 }

@@ -8,6 +8,7 @@ function RequestDetail() {
     const [bids, setBids] = useState([]);
     const [error, setError] = useState("");
     const [ratings, setRatings] = useState({});
+    const [profiles, setProfiles] = useState({});
 
     useEffect(() => {
         apiFetch("/api/customer/requests/" + requestId)
@@ -20,6 +21,11 @@ function RequestDetail() {
                     apiFetch("/api/providers/" + b.providerId + "/rating")
                         .then((r) =>
                             setRatings((prev) => ({ ...prev, [b.providerId]: r }))
+                        )
+                        .catch(() => {});
+                    apiFetch("/api/providers/" + b.providerId + "/profile")
+                        .then((p) =>
+                            setProfiles((prev) => ({ ...prev, [b.providerId]: p }))
                         )
                         .catch(() => {});
                 });
@@ -60,6 +66,9 @@ function RequestDetail() {
                             ? ratings[b.providerId].averageRating + " (" + ratings[b.providerId].reviewCount + " reviews)"
                             : "No reviews yet"}
                         <br />
+                        {profiles[b.providerId] && profiles[b.providerId].bio && (
+                            <span>About: {profiles[b.providerId].bio}<br /></span>
+                        )}
                         Time: {b.estimatedTime}<br />
                         {b.message}<br />
                         Status: {b.status}<br />

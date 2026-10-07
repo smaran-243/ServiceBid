@@ -11,7 +11,9 @@ import MyBookings from "./pages/MyBookings.jsx";
 import PlaceBid from "./pages/PlaceBid.jsx";
 import MyBids from "./pages/MyBids.jsx";
 import ProviderBookings from "./pages/ProviderBookings.jsx";
+import ProviderProfile from "./pages/ProviderProfile.jsx";
 import Navbar from "./components/Navbar.jsx";
+
 
 function Home() {
     return (
@@ -120,6 +122,14 @@ function App() {
                     element={
                         <ProtectedRoute role="PROVIDER">
                             <ProviderBookings />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/provider/profile"
+                    element={
+                        <ProtectedRoute role="PROVIDER">
+                            <ProviderProfile />
                         </ProtectedRoute>
                     }
                 />

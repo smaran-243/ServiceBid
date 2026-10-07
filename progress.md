@@ -109,6 +109,13 @@
   * New home page with hero text and 3 step cards
   * StatusBadge component (colored status pills) used in CustomerDashboard, MyBookings, MyBids, ProviderBookings
   * Loading states on MyBids, ProviderBookings, ProviderDashboard, BrowseServices
+- Day 7 (customer cancel + provider profile) complete:
+  * Customer cancel: BookingService.cancelAsCustomer (only the booking's customer, only from BID_ACCEPTED or CONFIRMED, else 409; request becomes CANCELLED), POST /api/customer/bookings/{bookingId}/cancel in CustomerBookingListController, "Cancel booking" button in MyBookings.jsx
+  * Provider profile: ProviderProfile entity (table provider_profiles: user, bio, phone), ProviderProfileRepository, DTOs ProviderProfileRequest/Response, ProviderProfileService, ProviderProfileController (GET/PUT /api/provider/profile, GET /api/providers/{providerId}/profile)
+  * Provider services: ProviderOffering entity (table provider_offerings, unique provider+service), ProviderOfferingRepository, ProviderServicesRequest, ProviderOfferingService, ProviderOfferingController (GET/PUT /api/provider/services, GET /api/providers/{providerId}/services)
+  * Frontend: ProviderProfile page (/provider/profile, bio, phone, tick services, save), link on ProviderDashboard, provider bio shown next to each bid in RequestDetail
+  * Service ids start at 2 (id 1 does not exist)
+  * Tested: cancel works, second cancel 409, profile and services saved and shown in browser
 
 
 ## Current status

@@ -131,7 +131,31 @@ public class BookingService {
 
         return toResponse(bookingRepository.save(booking));
     }
+    // Customer cancels their own booking (only while BID_ACCEPTED or CONFIRMED)
+    @Transactional
+    public BookingResponse cancelAsCustomer(String customerEmail, Long bookingId) {
+        User customer = userRepository.findByEmail(customerEmail)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found"));
 
+        Booking booking = bookingRepository.findById(bookingId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Booking not found"));
+
+        // Only the booking's customer can cancel (others get "not found")
+        if (!booking.getCustomer().getId().equals(customer.getId())) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Booking not found");
+        }
+        if (booking.getStatus() != BookingStatus.BID_ACCEPTED
+                && booking.getStatus() != BookingStatus.CONFIRMED) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT,
+                    "Cannot cancel a booking that is " + booking.getStatus());
+        }
+
+        booking.setStatus(BookingStatus.CANCELLED);
+        booking.getRequest().setStatus(RequestStatus.CANCELLED);
+        requestRepository.save(booking.getRequest());
+
+        return toResponse(bookingRepository.save(booking));
+    }
     private boolean isAllowedMove(BookingStatus from, BookingStatus to) {
         return switch (from) {
             case BID_ACCEPTED -> to == BookingStatus.CONFIRMED || to == BookingStatus.CANCELLED;

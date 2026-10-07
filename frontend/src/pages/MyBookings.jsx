@@ -50,6 +50,18 @@ function MyBookings() {
             .then((data) => setBookings(data))
             .catch(() => setError("Could not load bookings"));
     }, []);
+    async function handleCancel(bookingId) {
+        if (!window.confirm("Cancel this booking?")) return;
+        try {
+            const updated = await apiFetch(
+                "/api/customer/bookings/" + bookingId + "/cancel",
+                { method: "POST" }
+            );
+            setBookings(bookings.map((b) => (b.id === bookingId ? updated : b)));
+        } catch (err) {
+            setError("Could not cancel this booking");
+        }
+    }
 
     return (
         <div>
@@ -64,6 +76,11 @@ function MyBookings() {
                         Provider: {b.providerName}<br />
                         Agreed amount: {b.agreedAmount}
                         {b.status === "COMPLETED" && <ReviewForm bookingId={b.id} />}
+                        {(b.status === "BID_ACCEPTED" || b.status === "CONFIRMED") && (
+                            <div>
+                                <button onClick={() => handleCancel(b.id)}>Cancel booking</button>
+                            </div>
+                        )}
                     </li>
                 ))}
             </ul>
