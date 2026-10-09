@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { apiFetch } from "../api/api.js";
-import LogoutButton from "../components/LogoutButton.jsx";
 import { Link } from "react-router-dom";
 
 function ProviderDashboard() {
@@ -20,31 +19,43 @@ function ProviderDashboard() {
             .finally(() => setLoading(false));
     }, []);
 
-
     return (
         <div>
             <h2>Provider dashboard</h2>
-            <p>Logged in as: {email}</p>
-            <p>
-                <Link to="/provider/bids">My bids</Link> |{" "}
-                <Link to="/provider/bookings">My bookings</Link> |{" "}
-                <Link to="/provider/profile">My profile</Link>
-            </p>
-            <h3>Open requests</h3>
-            {loading && <p>Loading...</p>}
-            {!loading && requests.length === 0 && <p>No open requests.</p>}
-            <ul>
+            <p className="muted-text">Logged in as {email}</p>
+            <div className="action-row">
+                <Link to="/provider/bids" className="btn-link">My bids</Link>
+                <Link to="/provider/bookings" className="btn-link btn-light">My bookings</Link>
+                <Link to="/provider/profile" className="btn-link btn-light">My profile</Link>
+            </div>
+            <h3 className="category-title">Open requests</h3>
+            {loading && (
+                <div className="card-list">
+                    {[1, 2, 3].map((n) => (
+                        <div key={n} className="skeleton skeleton-row"></div>
+                    ))}
+                </div>
+            )}
+            {!loading && requests.length === 0 && (
+                <p className="muted-text">
+                    No open requests for your services. <Link to="/provider/profile">Tick the services you offer</Link> in your profile.
+                </p>
+            )}
+            <div className="card-list">
                 {requests.map((r) => (
-                    <li key={r.id}>
-                        <strong>{r.serviceName}</strong> (by {r.customerName})<br />
-                        {r.description}<br />
-                        Budget: {r.budget} | Location: {r.location}<br />
-                        When: {r.scheduledAt}<br />
-                        <Link to={"/provider/requests/" + r.id}>Place a bid</Link>
-                    </li>
+                    <div key={r.id} className="item-card">
+                        <div className="item-head">
+                            <strong>{r.serviceName}</strong>
+                            <span className="muted-text">by {r.customerName}</span>
+                        </div>
+                        <p>{r.description}</p>
+                        <p className="muted-text">
+                            Budget: {r.budget} | Location: {r.location} | When: {r.scheduledAt}
+                        </p>
+                        <Link to={"/provider/requests/" + r.id} className="card-link">Place a bid</Link>
+                    </div>
                 ))}
-            </ul>
-            <LogoutButton />
+            </div>
         </div>
     );
 }

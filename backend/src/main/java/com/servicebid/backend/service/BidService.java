@@ -12,7 +12,7 @@ import com.servicebid.backend.repository.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-
+import com.servicebid.backend.repository.ProviderOfferingRepository;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -22,13 +22,16 @@ public class BidService {
     private final BidRepository bidRepository;
     private final ServiceRequestRepository requestRepository;
     private final UserRepository userRepository;
+    private final ProviderOfferingRepository offeringRepository;
 
     public BidService(BidRepository bidRepository,
                       ServiceRequestRepository requestRepository,
-                      UserRepository userRepository) {
+                      UserRepository userRepository,
+                      ProviderOfferingRepository offeringRepository) {
         this.bidRepository = bidRepository;
         this.requestRepository = requestRepository;
         this.userRepository = userRepository;
+        this.offeringRepository = offeringRepository;
     }
 
     // Provider submits a bid on a request
@@ -44,6 +47,10 @@ public class BidService {
 
         if (request.getStatus() != RequestStatus.OPEN) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Request is not open for bids");
+        }
+
+        if (!offeringRepository.existsByProviderIdAndServiceId(provider.getId(), request.getService().getId())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You do not offer this service");
         }
 
         if (bidRepository.existsByRequestIdAndProviderId(requestId, provider.getId())) {

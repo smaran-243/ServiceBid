@@ -18,26 +18,34 @@ import Navbar from "./components/Navbar.jsx";
 
 function Home() {
     return (
-        <div className="hero">
-            <h1>Get the best price for any home service</h1>
-            <p className="hero-sub">
-                Post what you need. Providers compete with bids. You pick the best offer.
-            </p>
-            <div className="hero-buttons">
-                <Link to="/register" className="btn-link">Get started</Link>
-                <Link to="/login" className="btn-link btn-outline">Login</Link>
+        <div>
+            <div className="hero">
+                <span className="hero-pill">Competitive bidding for home services</span>
+                <h1>
+                    Get the <span className="gradient-text">best price</span> for any home service
+                </h1>
+                <p className="hero-sub">
+                    Post what you need. Providers compete with bids. You pick the best offer.
+                </p>
+                <div className="hero-buttons">
+                    <Link to="/register" className="btn-link">Get started</Link>
+                    <Link to="/login" className="btn-link btn-outline">Login</Link>
+                </div>
             </div>
             <div className="steps">
                 <div className="step-card">
-                    <h3>1. Post a request</h3>
+                    <div className="step-icon">01</div>
+                    <h3>Post a request</h3>
                     <p>Pick a service and describe the job, budget and location.</p>
                 </div>
                 <div className="step-card">
-                    <h3>2. Compare bids</h3>
+                    <div className="step-icon">02</div>
+                    <h3>Compare bids</h3>
                     <p>Providers send their price and time. See ratings side by side.</p>
                 </div>
                 <div className="step-card">
-                    <h3>3. Book and review</h3>
+                    <div className="step-icon">03</div>
+                    <h3>Book and review</h3>
                     <p>Accept the best bid, track the job, then rate the provider.</p>
                 </div>
             </div>

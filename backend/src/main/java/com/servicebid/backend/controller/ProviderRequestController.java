@@ -2,6 +2,7 @@ package com.servicebid.backend.controller;
 
 import com.servicebid.backend.dto.ServiceRequestResponse;
 import com.servicebid.backend.service.ServiceRequestService;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,12 +19,12 @@ public class ProviderRequestController {
     }
 
     @GetMapping
-    public List<ServiceRequestResponse> openRequests() {
-        return requestService.getOpenRequests();
+    public List<ServiceRequestResponse> openRequests(Authentication auth) {
+        return requestService.getOpenRequests(auth.getName());
     }
 
     @GetMapping("/{id}")
-    public ServiceRequestResponse openRequest(@PathVariable Long id) {
-        return requestService.getOpenRequestById(id);
+    public ServiceRequestResponse openRequest(@PathVariable Long id, Authentication auth) {
+        return requestService.getOpenRequestById(auth.getName(), id);
     }
 }

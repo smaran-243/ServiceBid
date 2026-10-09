@@ -130,6 +130,16 @@
   * Live frontend: https://service-bid.vercel.app
   * Live backend: https://servicebid-ynj4.onrender.com (free instance sleeps when idle, first request takes about a minute)
   * Tested: login and Browse services work on the live site
+- Day 10: UI upgrade (navy #1d3557 + gold #b8893a, Playfair Display headings, Inter body, plain CSS, no emojis)
+  * New CSS is always added at the BOTTOM of index.css, with CSS variables in :root (dark mode later)
+  * index.html title and Google Fonts, glass sticky Navbar, new Home page (hero, 01/02/03 step cards)
+  * Restyled: BrowseServices (search, category headings, card grid, skeleton loaders), CustomerDashboard, ProviderDashboard, MyBids, ProviderBookings, MyBookings (cards, status badges, skeleton rows, bottom Logout buttons removed)
+  * RequestDetail: request card, bid cards with initials avatar, provider rating, bio, amount, time, Accept button, skeleton loader
+  * Reusable classes: .muted-text, .action-row, .btn-link, .btn-light, .btn-danger, .btn-row, .card-list, .item-card, .item-head, .avatar, .bid-provider, .bid-amount, .skeleton
+  * Backend: providers only see OPEN requests for services they ticked in My profile; bidding on a non-offered service returns 403 (ProviderOfferingRepository.existsByProviderIdAndServiceId, ServiceRequestRepository.findByStatusAndServiceIdInOrderByCreatedAtDesc, ServiceRequestService.getOpenRequests(email)/getOpenRequestById(email, id), ProviderRequestController passes Authentication, BidService 403 check)
+  * Before demo: prov and prov2 must tick overlapping services in My profile
+  * Known small issue (future improvement): MyBookings shows the review form on an already-reviewed booking, backend returns 409
+  * Remaining UI: PlaceBid, ProviderProfile, CreateRequest, Login, Register, AdminDashboard, toasts, dark mode, mobile check
 
 ## Current status
 * Backend core workflow complete: auth, catalog, requests, bids, accept bid, bookings, status updates, reviews, provider rating.

@@ -13,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.data.domain.Sort;
+import com.servicebid.backend.repository.ProviderOfferingRepository;
+import com.servicebid.backend.model.ProviderOffering;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -23,13 +25,16 @@ public class ServiceRequestService {
     private final ServiceRequestRepository requestRepository;
     private final ServiceItemRepository serviceItemRepository;
     private final UserRepository userRepository;
+    private final ProviderOfferingRepository offeringRepository;
 
     public ServiceRequestService(ServiceRequestRepository requestRepository,
                                  ServiceItemRepository serviceItemRepository,
-                                 UserRepository userRepository) {
+                                 UserRepository userRepository,
+                                 ProviderOfferingRepository offeringRepository) {
         this.requestRepository = requestRepository;
         this.serviceItemRepository = serviceItemRepository;
         this.userRepository = userRepository;
+        this.offeringRepository = offeringRepository;
     }
 
     // Customer creates a request
@@ -80,16 +85,26 @@ public class ServiceRequestService {
         return toResponse(request);
     }
     // Provider lists all OPEN requests
-    public List<ServiceRequestResponse> getOpenRequests() {
-        return requestRepository.findByStatusOrderByCreatedAtDesc(RequestStatus.OPEN)
+    // Provider lists OPEN requests, only for services the provider offers
+    public List<ServiceRequestResponse> getOpenRequests(String providerEmail) {
+        User provider = findUser(providerEmail);
+        List<Long> serviceIds = offeringRepository.findByProviderId(provider.getId())
+                .stream().map(o -> o.getService().getId()).toList();
+        if (serviceIds.isEmpty()) {
+            return List.of();
+        }
+        return requestRepository
+                .findByStatusAndServiceIdInOrderByCreatedAtDesc(RequestStatus.OPEN, serviceIds)
                 .stream().map(this::toResponse).toList();
     }
 
-    // Provider views one OPEN request
-    public ServiceRequestResponse getOpenRequestById(Long id) {
+    // Provider views one OPEN request (only if the provider offers that service)
+    public ServiceRequestResponse getOpenRequestById(String providerEmail, Long id) {
+        User provider = findUser(providerEmail);
         ServiceRequest request = requestRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Request not found"));
-        if (request.getStatus() != RequestStatus.OPEN) {
+        if (request.getStatus() != RequestStatus.OPEN
+                || !offeringRepository.existsByProviderIdAndServiceId(provider.getId(), request.getService().getId())) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Request not found");
         }
         return toResponse(request);

@@ -43,27 +43,41 @@ function ProviderBookings() {
             <p><Link to="/provider">Back to dashboard</Link></p>
             <h2>My bookings</h2>
             {error && <p>{error}</p>}
-            {loading && <p>Loading...</p>}
-            {!loading && bookings.length === 0 && <p>No bookings yet.</p>}
-            <ul>
+            {loading && (
+                <div className="card-list">
+                    {[1, 2, 3].map((n) => (
+                        <div key={n} className="skeleton skeleton-row"></div>
+                    ))}
+                </div>
+            )}
+            {!loading && bookings.length === 0 && (
+                <p className="muted-text">No bookings yet. They appear here when a customer accepts your bid.</p>
+            )}
+            <div className="card-list">
                 {bookings.map((b) => (
-                    <li key={b.id}>
-                        <strong>{b.serviceName}</strong> <StatusBadge status={b.status} /><br />
-                        Customer: {b.customerName}<br />
-                        Agreed amount: {b.agreedAmount}<br />
-                        {NEXT_STEP[b.status] && (
-                            <button onClick={() => updateStatus(b.id, NEXT_STEP[b.status])}>
-                                Mark as {NEXT_STEP[b.status]}
-                            </button>
-                        )}{" "}
-                        {(b.status === "BID_ACCEPTED" || b.status === "CONFIRMED") && (
-                            <button onClick={() => updateStatus(b.id, "CANCELLED")}>
-                                Cancel booking
-                            </button>
-                        )}
-                    </li>
+                    <div key={b.id} className="item-card">
+                        <div className="item-head">
+                            <strong>{b.serviceName}</strong>
+                            <StatusBadge status={b.status} />
+                        </div>
+                        <p className="muted-text">
+                            Customer: {b.customerName} | Agreed amount: {b.agreedAmount}
+                        </p>
+                        <div className="btn-row">
+                            {NEXT_STEP[b.status] && (
+                                <button onClick={() => updateStatus(b.id, NEXT_STEP[b.status])}>
+                                    Mark as {NEXT_STEP[b.status].replace("_", " ")}
+                                </button>
+                            )}
+                            {(b.status === "BID_ACCEPTED" || b.status === "CONFIRMED") && (
+                                <button className="btn-danger" onClick={() => updateStatus(b.id, "CANCELLED")}>
+                                    Cancel booking
+                                </button>
+                            )}
+                        </div>
+                    </div>
                 ))}
-            </ul>
+            </div>
         </div>
     );
 }

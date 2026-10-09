@@ -1,5 +1,6 @@
 package com.servicebid.backend.repository;
 
+import java.util.Collection;
 import com.servicebid.backend.model.RequestStatus;
 import com.servicebid.backend.model.ServiceRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,4 +14,5 @@ public interface ServiceRequestRepository extends JpaRepository<ServiceRequest, 
 
     // All requests with a given status (providers will see the OPEN ones), newest first
     List<ServiceRequest> findByStatusOrderByCreatedAtDesc(RequestStatus status);
+    List<ServiceRequest> findByStatusAndServiceIdInOrderByCreatedAtDesc(RequestStatus status, Collection<Long> serviceIds);
 }

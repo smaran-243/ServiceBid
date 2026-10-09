@@ -23,33 +23,37 @@ function ReviewForm({ bookingId }) {
     }
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="review-form">
             <select value={rating} onChange={(e) => setRating(e.target.value)}>
-                <option value="5">5</option>
-                <option value="4">4</option>
-                <option value="3">3</option>
-                <option value="2">2</option>
-                <option value="1">1</option>
-            </select>{" "}
+                <option value="5">5 - Excellent</option>
+                <option value="4">4 - Good</option>
+                <option value="3">3 - Okay</option>
+                <option value="2">2 - Poor</option>
+                <option value="1">1 - Bad</option>
+            </select>
             <input
-                placeholder="Comment"
+                placeholder="Write a comment"
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
-            />{" "}
+            />
             <button type="submit">Leave review</button>
-            {message && <p>{message}</p>}
+            {message && <p className="muted-text">{message}</p>}
         </form>
     );
 }
+
 function MyBookings() {
     const [bookings, setBookings] = useState([]);
     const [error, setError] = useState("");
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         apiFetch("/api/customer/bookings")
             .then((data) => setBookings(data))
-            .catch(() => setError("Could not load bookings"));
+            .catch(() => setError("Could not load bookings"))
+            .finally(() => setLoading(false));
     }, []);
+
     async function handleCancel(bookingId) {
         if (!window.confirm("Cancel this booking?")) return;
         try {
@@ -68,22 +72,37 @@ function MyBookings() {
             <p><Link to="/customer">Back to dashboard</Link></p>
             <h2>My bookings</h2>
             {error && <p>{error}</p>}
-            {bookings.length === 0 && <p>No bookings yet.</p>}
-            <ul>
+            {loading && (
+                <div className="card-list">
+                    {[1, 2, 3].map((n) => (
+                        <div key={n} className="skeleton skeleton-row"></div>
+                    ))}
+                </div>
+            )}
+            {!loading && bookings.length === 0 && (
+                <p className="muted-text">No bookings yet. Accept a bid on one of your requests to create one.</p>
+            )}
+            <div className="card-list">
                 {bookings.map((b) => (
-                    <li key={b.id}>
-                        <strong>{b.serviceName}</strong> <StatusBadge status={b.status} /><br />
-                        Provider: {b.providerName}<br />
-                        Agreed amount: {b.agreedAmount}
+                    <div key={b.id} className="item-card">
+                        <div className="item-head">
+                            <strong>{b.serviceName}</strong>
+                            <StatusBadge status={b.status} />
+                        </div>
+                        <p className="muted-text">
+                            Provider: {b.providerName} | Agreed amount: {b.agreedAmount}
+                        </p>
                         {b.status === "COMPLETED" && <ReviewForm bookingId={b.id} />}
                         {(b.status === "BID_ACCEPTED" || b.status === "CONFIRMED") && (
-                            <div>
-                                <button onClick={() => handleCancel(b.id)}>Cancel booking</button>
+                            <div className="btn-row">
+                                <button className="btn-danger" onClick={() => handleCancel(b.id)}>
+                                    Cancel booking
+                                </button>
                             </div>
                         )}
-                    </li>
+                    </div>
                 ))}
-            </ul>
+            </div>
         </div>
     );
 }

@@ -1,12 +1,22 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { apiFetch } from "../api/api.js";
+import StatusBadge from "../components/StatusBadge.jsx";
+
+function initials(name) {
+    if (!name) return "?";
+    const parts = name.trim().split(" ");
+    const first = parts[0][0] || "";
+    const second = parts.length > 1 ? parts[1][0] : "";
+    return (first + second).toUpperCase();
+}
 
 function RequestDetail() {
     const { requestId } = useParams();
     const [request, setRequest] = useState(null);
     const [bids, setBids] = useState([]);
     const [error, setError] = useState("");
+    const [loading, setLoading] = useState(true);
     const [ratings, setRatings] = useState({});
     const [profiles, setProfiles] = useState({});
 
@@ -17,6 +27,7 @@ function RequestDetail() {
         apiFetch("/api/customer/requests/" + requestId + "/bids")
             .then((data) => {
                 setBids(data);
+                setLoading(false);
                 data.forEach((b) => {
                     apiFetch("/api/providers/" + b.providerId + "/rating")
                         .then((r) =>
@@ -30,8 +41,12 @@ function RequestDetail() {
                         .catch(() => {});
                 });
             })
-            .catch(() => setError("Could not load bids"));
+            .catch(() => {
+                setError("Could not load bids");
+                setLoading(false);
+            });
     }, [requestId]);
+
     async function acceptBid(bidId) {
         setError("");
         try {
@@ -47,37 +62,69 @@ function RequestDetail() {
     return (
         <div>
             <p><Link to="/customer">Back to dashboard</Link></p>
-            {error && <p>{error}</p>}
+            {error && <p style={{ color: "var(--danger)" }}>{error}</p>}
+
+            {!request && !error && <div className="skeleton skeleton-row"></div>}
             {request && (
-                <div>
-                    <h2>{request.serviceName} - {request.status}</h2>
+                <div className="item-card" style={{ marginBottom: 24 }}>
+                    <div className="item-head">
+                        <h2 style={{ margin: 0 }}>{request.serviceName}</h2>
+                        <StatusBadge status={request.status} />
+                    </div>
                     <p>{request.description}</p>
-                    <p>Budget: {request.budget} | Location: {request.location}</p>
+                    <p className="muted-text">
+                        Budget: {request.budget} | Location: {request.location}
+                    </p>
                 </div>
             )}
-            <h3>Bids (cheapest first)</h3>
-            {bids.length === 0 && <p>No bids yet.</p>}
-            <ul>
-                {bids.map((b) => (
-                    <li key={b.id}>
-                        <strong>{b.providerName}</strong> - Amount: {b.amount}<br />
-                        Rating:{" "}
-                        {ratings[b.providerId] && ratings[b.providerId].reviewCount > 0
-                            ? ratings[b.providerId].averageRating + " (" + ratings[b.providerId].reviewCount + " reviews)"
-                            : "No reviews yet"}
-                        <br />
-                        {profiles[b.providerId] && profiles[b.providerId].bio && (
-                            <span>About: {profiles[b.providerId].bio}<br /></span>
-                        )}
-                        Time: {b.estimatedTime}<br />
-                        {b.message}<br />
-                        Status: {b.status}<br />
-                        {request && request.status === "OPEN" && b.status === "PENDING" && (
-                            <button onClick={() => acceptBid(b.id)}>Accept this bid</button>
-                        )}
-                    </li>
-                ))}
-            </ul>
+
+            <div className="category-title">Bids (cheapest first)</div>
+
+            {loading && (
+                <div className="card-list">
+                    <div className="skeleton skeleton-row"></div>
+                    <div className="skeleton skeleton-row"></div>
+                </div>
+            )}
+            {!loading && bids.length === 0 && (
+                <p className="muted-text">No bids yet.</p>
+            )}
+
+            <div className="card-list">
+                {bids.map((b) => {
+                    const r = ratings[b.providerId];
+                    const p = profiles[b.providerId];
+                    return (
+                        <div key={b.id} className="item-card">
+                            <div className="item-head">
+                                <div className="bid-provider">
+                                    <div className="avatar">{initials(b.providerName)}</div>
+                                    <div>
+                                        <strong>{b.providerName}</strong>
+                                        <div className="muted-text">
+                                            {r && r.reviewCount > 0
+                                                ? "Rating " + r.averageRating + " (" + r.reviewCount + " reviews)"
+                                                : "No reviews yet"}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="bid-amount">{b.amount}</div>
+                            </div>
+                            {p && p.bio && <p className="muted-text">{p.bio}</p>}
+                            <p>Estimated time: {b.estimatedTime}</p>
+                            {b.message && <p>{b.message}</p>}
+                            <div className="btn-row">
+                                <StatusBadge status={b.status} />
+                                {request && request.status === "OPEN" && b.status === "PENDING" && (
+                                    <button className="btn-link" onClick={() => acceptBid(b.id)}>
+                                        Accept this bid
+                                    </button>
+                                )}
+                            </div>
+                        </div>
+                    );
+                })}
+            </div>
         </div>
     );
 }
