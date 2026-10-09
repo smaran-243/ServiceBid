@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { apiFetch, saveToken } from "../api/api.js";
 
 function Login() {
@@ -13,17 +13,14 @@ function Login() {
         setError("");
 
         try {
-            // 1. Log in and save the token
             const data = await apiFetch("/api/auth/login", {
                 method: "POST",
                 body: JSON.stringify({ email, password }),
             });
             saveToken(data.token);
 
-            // 2. Ask the backend who we are, to find the role
             const me = await apiFetch("/api/me");
 
-            // 3. Go to the right dashboard
             if (me.roles.includes("ADMIN")) {
                 navigate("/admin");
             } else if (me.roles.includes("PROVIDER")) {
@@ -41,30 +38,36 @@ function Login() {
     }
 
     return (
-        <div>
-            <h2>Login</h2>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <input
-                        type="email"
-                        placeholder="Email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                    />
-                </div>
-                <div>
-                    <input
-                        type="password"
-                        placeholder="Password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                    />
-                </div>
-                <button type="submit">Login</button>
+        <div className="auth-wrap">
+            <form className="form-card" onSubmit={handleSubmit}>
+                <h2>Welcome back</h2>
+                <p className="muted-text">Log in to continue to ServiceBid.</p>
+
+                <label className="form-label">Email</label>
+                <input
+                    type="email"
+                    placeholder="you@example.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                />
+
+                <label className="form-label">Password</label>
+                <input
+                    type="password"
+                    placeholder="Your password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                />
+
+                {error && <p style={{ color: "var(--danger)" }}>{error}</p>}
+                <button className="btn-link" type="submit">Login</button>
+
+                <p className="muted-text" style={{ marginTop: 16 }}>
+                    New here? <Link to="/register">Create an account</Link>
+                </p>
             </form>
-            {error && <p style={{ color: "red" }}>{error}</p>}
         </div>
     );
 }

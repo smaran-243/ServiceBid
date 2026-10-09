@@ -52,44 +52,68 @@ function ProviderProfile() {
         }
     }
 
-    if (loading) return <p>Loading...</p>;
+    const categories = [...new Set(allServices.map((s) => s.categoryName))];
 
     return (
         <div>
             <p><Link to="/provider">Back to dashboard</Link></p>
             <h2>My profile</h2>
-            <form onSubmit={handleSave}>
-                <p>
+
+            {loading && <div className="skeleton skeleton-row"></div>}
+            {!loading && (
+                <form className="form-card form-wide" onSubmit={handleSave}>
+                    <label className="form-label">About you</label>
                     <textarea
+                        rows={4}
                         placeholder="Short bio (max 500 characters)"
                         value={bio}
                         maxLength={500}
                         onChange={(e) => setBio(e.target.value)}
                     />
-                </p>
-                <p>
+
+                    <label className="form-label">Phone</label>
                     <input
-                        placeholder="Phone"
+                        placeholder="Your phone number"
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
                     />
-                </p>
-                <h3>Services I offer</h3>
-                {allServices.map((s) => (
-                    <div key={s.id}>
-                        <label>
-                            <input
-                                type="checkbox"
-                                checked={selectedIds.includes(s.id)}
-                                onChange={() => toggleService(s.id)}
-                            />{" "}
-                            {s.name} ({s.categoryName})
-                        </label>
-                    </div>
-                ))}
-                <p><button type="submit">Save profile</button></p>
-                {message && <p>{message}</p>}
-            </form>
+
+                    <div className="category-title">Services I offer</div>
+                    {categories.map((cat) => (
+                        <div key={cat}>
+                            <p className="form-label">{cat}</p>
+                            <div className="check-grid">
+                                {allServices
+                                    .filter((s) => s.categoryName === cat)
+                                    .map((s) => (
+                                        <label key={s.id} className="check-item">
+                                            <input
+                                                type="checkbox"
+                                                checked={selectedIds.includes(s.id)}
+                                                onChange={() => toggleService(s.id)}
+                                            />
+                                            {s.name}
+                                        </label>
+                                    ))}
+                            </div>
+                        </div>
+                    ))}
+
+                    {message && (
+                        <p
+                            style={{
+                                color: message === "Profile saved." ? "#15803d" : "var(--danger)",
+                                marginTop: 16,
+                            }}
+                        >
+                            {message}
+                        </p>
+                    )}
+                    <button className="btn-link" type="submit" style={{ marginTop: 12 }}>
+                        Save profile
+                    </button>
+                </form>
+            )}
         </div>
     );
 }

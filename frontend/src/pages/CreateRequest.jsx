@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { apiFetch } from "../api/api.js";
 
 function CreateRequest() {
@@ -33,40 +33,46 @@ function CreateRequest() {
 
     return (
         <div>
-            <h2>Create Request</h2>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <input
-                        placeholder="Description"
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                    />
-                </div>
-                <div>
-                    <input
-                        type="number"
-                        placeholder="Budget"
-                        value={budget}
-                        onChange={(e) => setBudget(e.target.value)}
-                    />
-                </div>
-                <div>
-                    <input
-                        type="datetime-local"
-                        value={scheduledAt}
-                        onChange={(e) => setScheduledAt(e.target.value)}
-                    />
-                </div>
-                <div>
-                    <input
-                        placeholder="Location"
-                        value={location}
-                        onChange={(e) => setLocation(e.target.value)}
-                    />
-                </div>
-                <button type="submit">Submit request</button>
+            <p><Link to="/customer/services">Back to services</Link></p>
+            <h2>Create request</h2>
+            <p className="muted-text" style={{ marginBottom: 16 }}>
+                Describe what you need. Providers will send you their bids.
+            </p>
+
+            <form className="form-card" onSubmit={handleSubmit}>
+                <label className="form-label">What do you need?</label>
+                <textarea
+                    rows={4}
+                    placeholder="Describe the work in a few lines"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                />
+
+                <label className="form-label">Your budget</label>
+                <input
+                    type="number"
+                    placeholder="e.g. 1000"
+                    value={budget}
+                    onChange={(e) => setBudget(e.target.value)}
+                />
+
+                <label className="form-label">Preferred date and time</label>
+                <input
+                    type="datetime-local"
+                    value={scheduledAt}
+                    onChange={(e) => setScheduledAt(e.target.value)}
+                />
+
+                <label className="form-label">Location</label>
+                <input
+                    placeholder="Your address or area"
+                    value={location}
+                    onChange={(e) => setLocation(e.target.value)}
+                />
+
+                {error && <p style={{ color: "var(--danger)" }}>{error}</p>}
+                <button className="btn-link" type="submit">Submit request</button>
             </form>
-            {error && <p>{error}</p>}
         </div>
     );
 }

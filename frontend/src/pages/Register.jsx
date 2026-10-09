@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { apiFetch } from "../api/api.js";
 
 function Register() {
@@ -30,44 +30,50 @@ function Register() {
     }
 
     return (
-        <div>
-            <h2>Register</h2>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <input
-                        placeholder="Name"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        required
-                    />
-                </div>
-                <div>
-                    <input
-                        type="email"
-                        placeholder="Email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                    />
-                </div>
-                <div>
-                    <input
-                        type="password"
-                        placeholder="Password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                    />
-                </div>
-                <div>
-                    <select value={role} onChange={(e) => setRole(e.target.value)}>
-                        <option value="CUSTOMER">Customer</option>
-                        <option value="PROVIDER">Provider</option>
-                    </select>
-                </div>
-                <button type="submit">Register</button>
+        <div className="auth-wrap">
+            <form className="form-card" onSubmit={handleSubmit}>
+                <h2>Create your account</h2>
+                <p className="muted-text">Join ServiceBid as a customer or a provider.</p>
+
+                <label className="form-label">Name</label>
+                <input
+                    placeholder="Your full name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                />
+
+                <label className="form-label">Email</label>
+                <input
+                    type="email"
+                    placeholder="you@example.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                />
+
+                <label className="form-label">Password</label>
+                <input
+                    type="password"
+                    placeholder="Choose a password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                />
+
+                <label className="form-label">I am a</label>
+                <select value={role} onChange={(e) => setRole(e.target.value)}>
+                    <option value="CUSTOMER">Customer</option>
+                    <option value="PROVIDER">Provider</option>
+                </select>
+
+                {error && <p style={{ color: "var(--danger)" }}>{error}</p>}
+                <button className="btn-link" type="submit">Register</button>
+
+                <p className="muted-text" style={{ marginTop: 16 }}>
+                    Already have an account? <Link to="/login">Login</Link>
+                </p>
             </form>
-            {error && <p style={{ color: "red" }}>{error}</p>}
         </div>
     );
 }

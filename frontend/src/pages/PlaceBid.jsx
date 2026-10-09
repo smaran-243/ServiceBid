@@ -39,39 +39,47 @@ function PlaceBid() {
         <div>
             <p><Link to="/provider">Back to dashboard</Link></p>
             <h2>Place a bid</h2>
+
+            {!request && !error && <div className="skeleton skeleton-row"></div>}
             {request && (
-                <div>
-                    <p><strong>{request.serviceName}</strong> (by {request.customerName})</p>
+                <div className="item-card" style={{ marginBottom: 24 }}>
+                    <div className="item-head">
+                        <strong>{request.serviceName}</strong>
+                        <span className="muted-text">by {request.customerName}</span>
+                    </div>
                     <p>{request.description}</p>
-                    <p>Budget: {request.budget} | Location: {request.location}</p>
+                    <p className="muted-text">
+                        Budget: {request.budget} | Location: {request.location}
+                    </p>
                 </div>
             )}
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <input
-                        type="number"
-                        placeholder="Your amount"
-                        value={amount}
-                        onChange={(e) => setAmount(e.target.value)}
-                    />
-                </div>
-                <div>
-                    <input
-                        placeholder="Message"
-                        value={message}
-                        onChange={(e) => setMessage(e.target.value)}
-                    />
-                </div>
-                <div>
-                    <input
-                        placeholder="Estimated time (e.g. 2 hours)"
-                        value={estimatedTime}
-                        onChange={(e) => setEstimatedTime(e.target.value)}
-                    />
-                </div>
-                <button type="submit">Submit bid</button>
+
+            <form className="form-card" onSubmit={handleSubmit}>
+                <label className="form-label">Your amount</label>
+                <input
+                    type="number"
+                    placeholder="e.g. 900"
+                    value={amount}
+                    onChange={(e) => setAmount(e.target.value)}
+                />
+
+                <label className="form-label">Message to customer</label>
+                <input
+                    placeholder="Why you are the right choice"
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                />
+
+                <label className="form-label">Estimated time</label>
+                <input
+                    placeholder="e.g. 2 hours"
+                    value={estimatedTime}
+                    onChange={(e) => setEstimatedTime(e.target.value)}
+                />
+
+                {error && <p style={{ color: "var(--danger)" }}>{error}</p>}
+                <button className="btn-link" type="submit">Submit bid</button>
             </form>
-            {error && <p>{error}</p>}
         </div>
     );
 }

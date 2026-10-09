@@ -139,8 +139,12 @@
   * Backend: providers only see OPEN requests for services they ticked in My profile; bidding on a non-offered service returns 403 (ProviderOfferingRepository.existsByProviderIdAndServiceId, ServiceRequestRepository.findByStatusAndServiceIdInOrderByCreatedAtDesc, ServiceRequestService.getOpenRequests(email)/getOpenRequestById(email, id), ProviderRequestController passes Authentication, BidService 403 check)
   * Before demo: prov and prov2 must tick overlapping services in My profile
   * Known small issue (future improvement): MyBookings shows the review form on an already-reviewed booking, backend returns 409
-  * Remaining UI: PlaceBid, ProviderProfile, CreateRequest, Login, Register, AdminDashboard, toasts, dark mode, mobile check
-
+  * Restyled the last pages: PlaceBid, ProviderProfile (services grouped by category, tick boxes), CreateRequest, Login and Register (centered auth cards), AdminDashboard (count cards, tables in cards, status badges)
+  * New classes: .form-card, .form-label, .form-wide, .check-grid, .check-item, .auth-wrap, .stat-grid, .stat-card, .table-wrap
+  * Favicon: public/favicon.svg (navy square, gold S), linked in index.html
+  * All pages now use the navy and gold style
+  * Remaining UI: final look from my chosen design (replace index.css), toasts, dark mode, mobile check
+  
 ## Current status
 * Backend core workflow complete: auth, catalog, requests, bids, accept bid, bookings, status updates, reviews, provider rating.
 * Next: deployment (Vercel, Render, Neon), README. Optional if time allows (free only): admin dashboard, provider profile. First, allow PATCH in SecurityConfig CORS. Then customer pages (browse services, create request, my requests, view bids, accept bid, bookings, review) and provider pages (open requests, submit bid, my bids, bookings, update status).
