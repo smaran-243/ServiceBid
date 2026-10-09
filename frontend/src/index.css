@@ -718,3 +718,15 @@ h2 {
 .table-wrap .admin-table tr:last-child td {
   border-bottom: none;
 }
+.nav-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #e8edf5;
+  border: 2px solid var(--accent);
+}
+img.avatar {
+  background: #e8edf5;
+  border: 2px solid var(--accent);
+  object-fit: cover;
+}

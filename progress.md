@@ -143,7 +143,10 @@
   * New classes: .form-card, .form-label, .form-wide, .check-grid, .check-item, .auth-wrap, .stat-grid, .stat-card, .table-wrap
   * Favicon: public/favicon.svg (navy square, gold S), linked in index.html
   * All pages now use the navy and gold style
-  * Remaining UI: final look from my chosen design (replace index.css), toasts, dark mode, mobile check
+  * Avatars: free DiceBear cartoon faces (https://api.dicebear.com/9.x/avataaars/svg?seed=...), no backend. Navbar shows a face (seed = email) next to Logout, RequestDetail bid cards show a face (seed = providerName). New classes: .nav-avatar, img.avatar
+  * Navbar: added "My profile" link for providers
+  * Design reference: user likes two prototype screenshots (light-blue job cards with category pill and name/location box; home page with category cards). Sidebar layout is a bigger JSX job, only if time allows
+  * NEXT: add name to GET /api/me (MeController returns only email and roles now) so the navbar face uses the name and matches the bids face; restyle request cards like the prototype (CSS only); toasts, dark mode, mobile check; README; final live demo test
   
 ## Current status
 * Backend core workflow complete: auth, catalog, requests, bids, accept bid, bookings, status updates, reviews, provider rating.

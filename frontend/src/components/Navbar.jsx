@@ -6,15 +6,23 @@ import LogoutButton from "./LogoutButton.jsx";
 function Navbar() {
     const location = useLocation();
     const [roles, setRoles] = useState([]);
+    const [email, setEmail] = useState("");
 
     useEffect(() => {
         if (!getToken()) {
             setRoles([]);
+            setEmail("");
             return;
         }
         apiFetch("/api/me")
-            .then((me) => setRoles(me.roles))
-            .catch(() => setRoles([]));
+            .then((me) => {
+                setRoles(me.roles);
+                setEmail(me.email || "user");
+            })
+            .catch(() => {
+                setRoles([]);
+                setEmail("");
+            });
     }, [location.pathname]);
 
     const isCustomer = roles.includes("CUSTOMER");
@@ -38,6 +46,7 @@ function Navbar() {
                         <Link to="/provider">Open requests</Link>
                         <Link to="/provider/bids">My bids</Link>
                         <Link to="/provider/bookings">My bookings</Link>
+                        <Link to="/provider/profile">My profile</Link>
                     </>
                 )}
                 {isAdmin && (
@@ -50,6 +59,13 @@ function Navbar() {
                         <Link to="/login">Login</Link>
                         <Link to="/register">Register</Link>
                     </>
+                )}
+                {loggedIn && (
+                    <img
+                        className="nav-avatar"
+                        alt="Profile"
+                        src={"https://api.dicebear.com/9.x/avataaars/svg?seed=" + encodeURIComponent(email)}
+                    />
                 )}
                 {loggedIn && <LogoutButton />}
             </div>

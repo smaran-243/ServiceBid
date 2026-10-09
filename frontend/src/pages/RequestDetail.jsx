@@ -98,7 +98,11 @@ function RequestDetail() {
                         <div key={b.id} className="item-card">
                             <div className="item-head">
                                 <div className="bid-provider">
-                                    <div className="avatar">{initials(b.providerName)}</div>
+                                    <img
+                                        className="avatar"
+                                        alt=""
+                                        src={"https://api.dicebear.com/9.x/avataaars/svg?seed=" + encodeURIComponent(b.providerName)}
+                                    />
                                     <div>
                                         <strong>{b.providerName}</strong>
                                         <div className="muted-text">
