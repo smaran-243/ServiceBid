@@ -1084,3 +1084,55 @@ img.avatar {
 .btn-row .badge {
   align-self: center;
 }
+.chart-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px 20px;
+  margin-top: 16px;
+}
+
+.chart-title {
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.bar-row {
+  display: grid;
+  grid-template-columns: 130px 1fr 90px;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.bar-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.bar-track {
+  background: var(--bg);
+  border-radius: 999px;
+  height: 14px;
+  overflow: hidden;
+}
+
+.bar-fill {
+  background: var(--accent);
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.6s;
+}
+
+.bar-value {
+  text-align: right;
+  font-weight: 600;
+}
+
+@media (max-width: 600px) {
+  .bar-row {
+    grid-template-columns: 90px 1fr 70px;
+  }
+}
