@@ -1153,3 +1153,116 @@ img.avatar {
   font-size: 18px;
   letter-spacing: 2px;
 }
+.invoice-sheet {
+  background: #fff;
+  color: #1f2937;
+  border: 1px solid #e4e2dc;
+  border-radius: 12px;
+  padding: 32px;
+  max-width: 760px;
+}
+
+.invoice-sheet .muted-text {
+  color: #6b7280;
+}
+
+.invoice-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #b8893a;
+}
+
+.invoice-brand {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: #1d3557;
+}
+
+.invoice-right {
+  text-align: right;
+}
+
+.invoice-title {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #b8893a;
+}
+
+.invoice-parties {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin: 24px 0;
+}
+
+.invoice-label {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #6b7280;
+  margin-bottom: 4px;
+}
+
+.invoice-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.invoice-table th,
+.invoice-table td {
+  text-align: left;
+  padding: 12px 8px;
+  border-bottom: 1px solid #e4e2dc;
+}
+
+.invoice-table th {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #6b7280;
+}
+
+.invoice-table .invoice-num {
+  text-align: right;
+}
+
+.invoice-total {
+  display: flex;
+  justify-content: flex-end;
+  gap: 24px;
+  margin-top: 16px;
+  font-size: 20px;
+}
+
+.invoice-note {
+  margin-top: 28px;
+  font-size: 13px;
+}
+
+@media print {
+  .navbar,
+  .no-print {
+    display: none !important;
+  }
+
+  body {
+    background: #fff;
+  }
+
+  #root {
+    max-width: none;
+    padding: 0;
+  }
+
+  .invoice-sheet {
+    border: none;
+    padding: 0;
+    max-width: none;
+  }
+}

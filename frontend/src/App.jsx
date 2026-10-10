@@ -16,6 +16,7 @@ import ProviderProfile from "./pages/ProviderProfile.jsx";
 import AdminDashboard from "./pages/AdminDashboard.jsx";
 import Navbar from "./components/Navbar.jsx";
 import ProviderPublic from "./pages/ProviderPublic.jsx";
+import Invoice from "./pages/Invoice.jsx";
 import { Toaster } from "react-hot-toast";
 
 
@@ -114,6 +115,14 @@ function App() {
                     element={
                         <ProtectedRoute role="CUSTOMER">
                             <ProviderPublic />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/customer/invoice/:bookingId"
+                    element={
+                        <ProtectedRoute role="CUSTOMER">
+                            <Invoice />
                         </ProtectedRoute>
                     }
                 />

@@ -116,6 +116,13 @@ function MyBookings() {
                         {b.status === "COMPLETED" && b.reviewed && (
                             <p className="muted-text">Review submitted. Thank you!</p>
                         )}
+                        {b.status === "COMPLETED" && (
+                            <div className="btn-row">
+                                <Link to={"/customer/invoice/" + b.id} className="btn-link btn-light">
+                                    View invoice
+                                </Link>
+                            </div>
+                        )}
                         {b.status === "IN_PROGRESS" && (
                             <div className="btn-row">
                                 <button className="btn-link" onClick={() => handleComplete(b.id)}>
