@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { apiFetch } from "../api/api.js";
 import StatusBadge from "../components/StatusBadge.jsx";
 import toast from "react-hot-toast";
+import EmptyState from "../components/EmptyState.jsx";
 
 function initials(name) {
     if (!name) return "?";
@@ -89,7 +90,7 @@ function RequestDetail() {
                 </div>
             )}
             {!loading && bids.length === 0 && (
-                <p className="muted-text">No bids yet.</p>
+                <EmptyState title="No bids yet" text="Providers who offer this service will send their prices here. Check back soon." />
             )}
 
             <div className="card-list">

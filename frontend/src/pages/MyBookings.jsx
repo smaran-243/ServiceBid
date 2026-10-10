@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { apiFetch } from "../api/api.js";
 import StatusBadge from "../components/StatusBadge.jsx";
 import toast from "react-hot-toast";
+import StarRating from "../components/StarRating.jsx";
+import EmptyState from "../components/EmptyState.jsx";
 
 function ReviewForm({ bookingId, onDone }) {
     const [rating, setRating] = useState(5);
@@ -26,13 +28,7 @@ function ReviewForm({ bookingId, onDone }) {
 
     return (
         <form onSubmit={handleSubmit} className="review-form">
-            <select value={rating} onChange={(e) => setRating(e.target.value)}>
-                <option value="5">5 - Excellent</option>
-                <option value="4">4 - Good</option>
-                <option value="3">3 - Okay</option>
-                <option value="2">2 - Poor</option>
-                <option value="1">1 - Bad</option>
-            </select>
+            <StarRating value={Number(rating)} onChange={setRating} />
             <input
                 placeholder="Write a comment"
                 value={comment}
@@ -87,7 +83,9 @@ function MyBookings() {
                 </div>
             )}
             {!loading && bookings.length === 0 && (
-                <p className="muted-text">No bookings yet. Accept a bid on one of your requests to create one.</p>
+                <EmptyState title="No bookings yet" text="Accept a bid on one of your requests to create one.">
+                    <Link to="/customer" className="btn-link">Go to dashboard</Link>
+                </EmptyState>
             )}
             <div className="card-list">
                 {bookings.map((b) => (

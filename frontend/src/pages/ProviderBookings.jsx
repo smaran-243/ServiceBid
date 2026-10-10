@@ -1,9 +1,9 @@
-
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { apiFetch } from "../api/api.js";
 import StatusBadge from "../components/StatusBadge.jsx";
 import toast from "react-hot-toast";
+import EmptyState from "../components/EmptyState.jsx";
 
 const NEXT_STEP = {
     BID_ACCEPTED: "CONFIRMED",
@@ -54,7 +54,7 @@ function ProviderBookings() {
                 </div>
             )}
             {!loading && bookings.length === 0 && (
-                <p className="muted-text">No bookings yet. They appear here when a customer accepts your bid.</p>
+                <EmptyState title="No bookings yet" text="They appear here when a customer accepts your bid." />
             )}
             <div className="card-list">
                 {bookings.map((b) => (

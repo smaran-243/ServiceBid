@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { apiFetch } from "../api/api.js";
 import { Link } from "react-router-dom";
 import RequestCard from "../components/RequestCard.jsx";
+import EmptyState from "../components/EmptyState.jsx";
 
 function CustomerDashboard() {
     const [email, setEmail] = useState("");
@@ -37,7 +38,9 @@ function CustomerDashboard() {
                 </div>
             )}
             {!loading && requests.length === 0 && (
-                <p className="muted-text">No requests yet. Browse services to post your first one.</p>
+                <EmptyState title="No requests yet" text="Browse services to post your first one.">
+                    <Link to="/customer/services" className="btn-link">Browse services</Link>
+                </EmptyState>
             )}
             <div className="request-grid">
                 {requests.map((r) => (

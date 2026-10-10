@@ -948,3 +948,45 @@ img.avatar {
 :root[data-theme="dark"] .request-face {
   background: #2b3547;
 }
+.star-rating {
+  display: flex;
+  gap: 2px;
+}
+
+.star-rating .star {
+  background: transparent;
+  border: none;
+  padding: 0 2px;
+  margin: 0;
+  font-size: 28px;
+  line-height: 1;
+  color: var(--border);
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+
+.star-rating .star:hover {
+  background: transparent;
+  transform: scale(1.15);
+}
+
+.star-rating .star-on {
+  color: var(--accent);
+}
+
+.empty-state {
+  text-align: center;
+  padding: 36px 20px;
+  background: var(--card);
+  border: 1px dashed var(--border);
+  border-radius: 14px;
+}
+
+.empty-state h3 {
+  margin-bottom: 6px;
+  font-family: "Playfair Display", Georgia, serif;
+}
+
+.empty-state .btn-link {
+  margin-top: 8px;
+}

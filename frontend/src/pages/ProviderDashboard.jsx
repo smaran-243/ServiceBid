@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { apiFetch } from "../api/api.js";
 import { Link } from "react-router-dom";
 import RequestCard from "../components/RequestCard.jsx";
+import EmptyState from "../components/EmptyState.jsx";
 
 function ProviderDashboard() {
     const [email, setEmail] = useState("");
@@ -38,9 +39,9 @@ function ProviderDashboard() {
                 </div>
             )}
             {!loading && requests.length === 0 && (
-                <p className="muted-text">
-                    No open requests for your services. <Link to="/provider/profile">Tick the services you offer</Link> in your profile.
-                </p>
+                <EmptyState title="No open requests" text="Tick the services you offer in your profile to see matching requests.">
+                    <Link to="/provider/profile" className="btn-link">Open my profile</Link>
+                </EmptyState>
             )}
             <div className="request-grid">
                 {requests.map((r) => (

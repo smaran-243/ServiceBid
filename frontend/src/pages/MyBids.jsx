@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { apiFetch } from "../api/api.js";
 import StatusBadge from "../components/StatusBadge.jsx";
+import EmptyState from "../components/EmptyState.jsx";
 
 function MyBids() {
     const [bids, setBids] = useState([]);
@@ -28,7 +29,9 @@ function MyBids() {
                 </div>
             )}
             {!loading && bids.length === 0 && (
-                <p className="muted-text">No bids yet. Place a bid from your dashboard.</p>
+                <EmptyState title="No bids yet" text="Find an open request and send your price.">
+                    <Link to="/provider" className="btn-link">See open requests</Link>
+                </EmptyState>
             )}
             <div className="card-list">
                 {bids.map((b) => (
