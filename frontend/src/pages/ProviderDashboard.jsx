@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { apiFetch } from "../api/api.js";
 import { Link } from "react-router-dom";
+import RequestCard from "../components/RequestCard.jsx";
 
 function ProviderDashboard() {
     const [email, setEmail] = useState("");
@@ -41,19 +42,15 @@ function ProviderDashboard() {
                     No open requests for your services. <Link to="/provider/profile">Tick the services you offer</Link> in your profile.
                 </p>
             )}
-            <div className="card-list">
+            <div className="request-grid">
                 {requests.map((r) => (
-                    <div key={r.id} className="item-card">
-                        <div className="item-head">
-                            <strong>{r.serviceName}</strong>
-                            <span className="muted-text">by {r.customerName}</span>
-                        </div>
-                        <p>{r.description}</p>
-                        <p className="muted-text">
-                            Budget: {r.budget} | Location: {r.location} | When: {r.scheduledAt}
-                        </p>
-                        <Link to={"/provider/requests/" + r.id} className="card-link">Place a bid</Link>
-                    </div>
+                    <RequestCard
+                        key={r.id}
+                        request={r}
+                        showStatus={false}
+                        linkTo={"/provider/requests/" + r.id}
+                        linkText="Place a bid"
+                    />
                 ))}
             </div>
         </div>

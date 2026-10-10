@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { apiFetch } from "../api/api.js";
 import { Link } from "react-router-dom";
-import StatusBadge from "../components/StatusBadge.jsx";
+import RequestCard from "../components/RequestCard.jsx";
 
 function CustomerDashboard() {
     const [email, setEmail] = useState("");
@@ -39,19 +39,15 @@ function CustomerDashboard() {
             {!loading && requests.length === 0 && (
                 <p className="muted-text">No requests yet. Browse services to post your first one.</p>
             )}
-            <div className="card-list">
+            <div className="request-grid">
                 {requests.map((r) => (
-                    <div key={r.id} className="item-card">
-                        <div className="item-head">
-                            <strong>{r.serviceName}</strong>
-                            <StatusBadge status={r.status} />
-                        </div>
-                        <p>{r.description}</p>
-                        <p className="muted-text">
-                            Budget: {r.budget} | Location: {r.location} | When: {r.scheduledAt}
-                        </p>
-                        <Link to={"/customer/requests/" + r.id} className="card-link">View bids</Link>
-                    </div>
+                    <RequestCard
+                        key={r.id}
+                        request={r}
+                        showStatus={true}
+                        linkTo={"/customer/requests/" + r.id}
+                        linkText="View bids"
+                    />
                 ))}
             </div>
         </div>
