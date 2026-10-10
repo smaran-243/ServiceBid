@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { apiFetch } from "../api/api.js";
 import StatusBadge from "../components/StatusBadge.jsx";
+import toast from "react-hot-toast";
 
 function ReviewForm({ bookingId, onDone }) {
     const [rating, setRating] = useState(5);
@@ -16,9 +17,10 @@ function ReviewForm({ bookingId, onDone }) {
                 method: "POST",
                 body: JSON.stringify({ rating: Number(rating), comment }),
             });
+            toast.success("Review submitted. Thank you!");
             onDone();
         } catch (err) {
-            setMessage("Could not submit review (maybe already reviewed).");
+            toast.error("Could not submit review (maybe already reviewed).");
         }
     }
 
@@ -62,8 +64,9 @@ function MyBookings() {
                 { method: "POST" }
             );
             setBookings(bookings.map((b) => (b.id === bookingId ? updated : b)));
+            toast.success("Booking cancelled.");
         } catch (err) {
-            setError("Could not cancel this booking");
+            toast.error("Could not cancel this booking");
         }
     }
 

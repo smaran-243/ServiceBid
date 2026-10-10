@@ -15,14 +15,15 @@ import ProviderBookings from "./pages/ProviderBookings.jsx";
 import ProviderProfile from "./pages/ProviderProfile.jsx";
 import AdminDashboard from "./pages/AdminDashboard.jsx";
 import Navbar from "./components/Navbar.jsx";
-
-
+import toast from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 
 
 function App() {
     return (
         <div>
             <Navbar />
+            <Toaster position="top-right" />
 
             <Routes>
                 <Route path="/" element={<Home />} />

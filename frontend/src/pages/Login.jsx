@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { apiFetch, saveToken } from "../api/api.js";
+import toast from "react-hot-toast";
 
 function Login() {
     const [email, setEmail] = useState("");
@@ -30,9 +31,9 @@ function Login() {
             }
         } catch (err) {
             if (err.message.includes("401")) {
-                setError("Wrong email or password.");
+                toast.error("Wrong email or password.");
             } else {
-                setError("Login failed. Please try again.");
+                toast.error("Login failed. Please try again.");
             }
         }
     }

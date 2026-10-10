@@ -1,7 +1,9 @@
+
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { apiFetch } from "../api/api.js";
 import StatusBadge from "../components/StatusBadge.jsx";
+import toast from "react-hot-toast";
 
 const NEXT_STEP = {
     BID_ACCEPTED: "CONFIRMED",
@@ -33,8 +35,9 @@ function ProviderBookings() {
                 body: JSON.stringify({ status }),
             });
             loadBookings();
+            toast.success("Status updated.");
         } catch (err) {
-            setError("Could not update status");
+            toast.error("Could not update status");
         }
     }
 

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { apiFetch } from "../api/api.js";
+import toast from "react-hot-toast";
 
 function CreateRequest() {
     const { serviceId } = useParams();
@@ -25,9 +26,10 @@ function CreateRequest() {
                     location,
                 }),
             });
+            toast.success("Request posted. Providers can now bid.");
             navigate("/customer");
         } catch (err) {
-            setError("Could not create request. Check all fields.");
+            toast.error("Could not create request. Check all fields.");
         }
     }
 

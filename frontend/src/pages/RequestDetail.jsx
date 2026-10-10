@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { apiFetch } from "../api/api.js";
 import StatusBadge from "../components/StatusBadge.jsx";
+import toast from "react-hot-toast";
 
 function initials(name) {
     if (!name) return "?";
@@ -53,9 +54,10 @@ function RequestDetail() {
             await apiFetch("/api/customer/bids/" + bidId + "/accept", {
                 method: "POST",
             });
-            window.location.reload();
+            toast.success("Bid accepted. Booking created.");
+            setTimeout(() => window.location.reload(), 1200);
         } catch (err) {
-            setError("Could not accept bid");
+            toast.error("Could not accept bid");
         }
     }
 

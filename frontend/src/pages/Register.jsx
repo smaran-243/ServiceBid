@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { apiFetch } from "../api/api.js";
+import toast from "react-hot-toast";
 
 function Register() {
     const [name, setName] = useState("");
@@ -19,12 +20,13 @@ function Register() {
                 method: "POST",
                 body: JSON.stringify({ name, email, password, role }),
             });
+            toast.success("Account created. Please log in.");
             navigate("/login");
         } catch (err) {
             if (err.message.includes("409")) {
-                setError("This email is already registered.");
+                toast.error("This email is already registered.");
             } else {
-                setError("Registration failed. Check your details and try again.");
+                toast.error("Registration failed. Check your details and try again.");
             }
         }
     }

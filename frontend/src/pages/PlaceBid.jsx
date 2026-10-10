@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { apiFetch } from "../api/api.js";
+import toast from "react-hot-toast";
 
 function PlaceBid() {
     const { requestId } = useParams();
@@ -29,9 +30,10 @@ function PlaceBid() {
                     estimatedTime,
                 }),
             });
+            toast.success("Bid submitted.");
             navigate("/provider");
         } catch (err) {
-            setError("Could not submit bid (maybe you already bid, or amount is invalid).");
+            toast.error("Could not submit bid (maybe you already bid, or amount is invalid).");
         }
     }
 
