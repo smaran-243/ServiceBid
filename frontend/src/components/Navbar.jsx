@@ -8,6 +8,23 @@ function Navbar() {
     const [roles, setRoles] = useState([]);
     const [name, setName] = useState("");
 
+    const [theme, setTheme] = useState(() => {
+        try {
+            return localStorage.getItem("theme") || "light";
+        } catch (e) {
+            return "light";
+        }
+    });
+
+    useEffect(() => {
+        document.documentElement.setAttribute("data-theme", theme);
+        try {
+            localStorage.setItem("theme", theme);
+        } catch (e) {
+            // ignore
+        }
+    }, [theme]);
+
     useEffect(() => {
         if (!getToken()) {
             setRoles([]);
@@ -29,6 +46,10 @@ function Navbar() {
     const isProvider = roles.includes("PROVIDER");
     const isAdmin = roles.includes("ADMIN");
     const loggedIn = isCustomer || isProvider || isAdmin;
+
+    function toggleTheme() {
+        setTheme(theme === "dark" ? "light" : "dark");
+    }
 
     return (
         <nav className="navbar">
@@ -68,6 +89,9 @@ function Navbar() {
                     />
                 )}
                 {loggedIn && <LogoutButton />}
+                <button className="btn-light" onClick={toggleTheme}>
+                    {theme === "dark" ? "Light mode" : "Dark mode"}
+                </button>
             </div>
         </nav>
     );

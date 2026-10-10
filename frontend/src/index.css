@@ -894,3 +894,57 @@ img.avatar {
     height: 220px;
   }
 }
+
+:root[data-theme="dark"] {
+  --text: #e6e9ef;
+  --muted: #9aa3b2;
+  --bg: #11161f;
+  --card: #1a2230;
+  --border: #2b3547;
+  --primary: #4a7fc1;
+  --primary-dark: #3b6aa3;
+  --nav-bg: rgba(26, 34, 48, 0.85);
+  --shadow: 0 6px 24px rgba(0, 0, 0, 0.4);
+  color-scheme: dark;
+}
+
+:root[data-theme="dark"] input,
+:root[data-theme="dark"] select,
+:root[data-theme="dark"] textarea {
+  background: var(--card);
+  color: var(--text);
+}
+
+:root[data-theme="dark"] .request-card {
+  background: linear-gradient(180deg, #1c2a3d 0%, #1a2230 100%);
+  border-color: #2b3547;
+}
+
+:root[data-theme="dark"] .request-title {
+  color: #e6e9ef;
+}
+
+:root[data-theme="dark"] .request-box {
+  background: var(--card);
+}
+
+:root[data-theme="dark"] .request-pill {
+  background: #2b3547;
+  color: #e6e9ef;
+}
+
+:root[data-theme="dark"] .request-person,
+:root[data-theme="dark"] .request-value {
+  color: #e6e9ef;
+}
+
+:root[data-theme="dark"] .skeleton {
+  background: linear-gradient(90deg, #1f293a 25%, #2a3548 50%, #1f293a 75%);
+  background-size: 200% 100%;
+}
+
+:root[data-theme="dark"] .nav-avatar,
+:root[data-theme="dark"] img.avatar,
+:root[data-theme="dark"] .request-face {
+  background: #2b3547;
+}
