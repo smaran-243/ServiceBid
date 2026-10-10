@@ -5,14 +5,6 @@ import StatusBadge from "../components/StatusBadge.jsx";
 import toast from "react-hot-toast";
 import EmptyState from "../components/EmptyState.jsx";
 
-function initials(name) {
-    if (!name) return "?";
-    const parts = name.trim().split(" ");
-    const first = parts[0][0] || "";
-    const second = parts.length > 1 ? parts[1][0] : "";
-    return (first + second).toUpperCase();
-}
-
 function RequestDetail() {
     const { requestId } = useParams();
     const [request, setRequest] = useState(null);
@@ -21,6 +13,44 @@ function RequestDetail() {
     const [loading, setLoading] = useState(true);
     const [ratings, setRatings] = useState({});
     const [profiles, setProfiles] = useState({});
+
+    const pendingBids = bids.filter((b) => b.status === "PENDING");
+    const lowestAmount = pendingBids.length > 0
+        ? Math.min(...pendingBids.map((b) => Number(b.amount)))
+        : null;
+
+    function ratingOf(providerId) {
+        const r = ratings[providerId];
+        return r && r.reviewCount > 0 ? Number(r.averageRating) : 0;
+    }
+
+    const bestRating = pendingBids.length > 0
+        ? Math.max(...pendingBids.map((b) => ratingOf(b.providerId)))
+        : 0;
+
+    // Best value = highest rating divided by price, among rated bids
+    let bestValueId = null;
+    let bestScore = 0;
+    pendingBids.forEach((b) => {
+        const rt = ratingOf(b.providerId);
+        const amount = Number(b.amount);
+        if (rt > 0 && amount > 0) {
+            const score = rt / amount;
+            if (score > bestScore) {
+                bestScore = score;
+                bestValueId = b.id;
+            }
+        }
+    });
+
+    function tagsFor(b) {
+        const tags = [];
+        if (b.status !== "PENDING" || pendingBids.length < 2) return tags;
+        if (Number(b.amount) === lowestAmount) tags.push("Lowest price");
+        if (bestRating > 0 && ratingOf(b.providerId) === bestRating) tags.push("Top rated");
+        if (b.id === bestValueId) tags.push("Best value");
+        return tags;
+    }
 
     useEffect(() => {
         apiFetch("/api/customer/requests/" + requestId)
@@ -57,7 +87,7 @@ function RequestDetail() {
             });
             toast.success("Bid accepted. Booking created.");
             setTimeout(() => window.location.reload(), 1200);
-        } catch (err) {
+        } catch{
             toast.error("Could not accept bid");
         }
     }
@@ -97,6 +127,7 @@ function RequestDetail() {
                 {bids.map((b) => {
                     const r = ratings[b.providerId];
                     const p = profiles[b.providerId];
+                    const tags = tagsFor(b);
                     return (
                         <div key={b.id} className="item-card">
                             <div className="item-head">
@@ -117,6 +148,13 @@ function RequestDetail() {
                                 </div>
                                 <div className="bid-amount">{b.amount}</div>
                             </div>
+                            {tags.length > 0 && (
+                                <div className="tag-row">
+                                    {tags.map((t) => (
+                                        <span key={t} className="bid-tag">{t}</span>
+                                    ))}
+                                </div>
+                            )}
                             {p && p.bio && <p className="muted-text">{p.bio}</p>}
                             <p>Estimated time: {b.estimatedTime}</p>
                             {b.message && <p>{b.message}</p>}

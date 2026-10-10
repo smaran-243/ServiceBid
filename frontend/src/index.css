@@ -990,3 +990,25 @@ img.avatar {
 .empty-state .btn-link {
   margin-top: 8px;
 }
+.tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.bid-tag {
+  background: #f6ecd8;
+  color: #8a6420;
+  border: 1px solid #e3cfa3;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 3px 12px;
+  border-radius: 999px;
+}
+
+:root[data-theme="dark"] .bid-tag {
+  background: #3a2f18;
+  color: #e0b866;
+  border-color: #5a4724;
+}
