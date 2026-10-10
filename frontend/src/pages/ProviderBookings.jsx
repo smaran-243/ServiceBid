@@ -8,7 +8,6 @@ import EmptyState from "../components/EmptyState.jsx";
 const NEXT_STEP = {
     BID_ACCEPTED: "CONFIRMED",
     CONFIRMED: "IN_PROGRESS",
-    IN_PROGRESS: "COMPLETED",
 };
 
 function ProviderBookings() {
@@ -36,7 +35,7 @@ function ProviderBookings() {
             });
             loadBookings();
             toast.success("Status updated.");
-        } catch (err) {
+        } catch{
             toast.error("Could not update status");
         }
     }
@@ -67,6 +66,9 @@ function ProviderBookings() {
                             Customer: {b.customerName} | Agreed amount: {b.agreedAmount}
                         </p>
                         <div className="btn-row">
+                            {b.status === "IN_PROGRESS" && (
+                                <span className="muted-text">Waiting for the customer to confirm the job is done.</span>
+                            )}
                             {NEXT_STEP[b.status] && (
                                 <button onClick={() => updateStatus(b.id, NEXT_STEP[b.status])}>
                                     Mark as {NEXT_STEP[b.status].replace("_", " ")}

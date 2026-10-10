@@ -9,11 +9,9 @@ import EmptyState from "../components/EmptyState.jsx";
 function ReviewForm({ bookingId, onDone }) {
     const [rating, setRating] = useState(5);
     const [comment, setComment] = useState("");
-    const [message, setMessage] = useState("");
 
     async function handleSubmit(e) {
         e.preventDefault();
-        setMessage("");
         try {
             await apiFetch("/api/customer/bookings/" + bookingId + "/review", {
                 method: "POST",
@@ -21,7 +19,7 @@ function ReviewForm({ bookingId, onDone }) {
             });
             toast.success("Review submitted. Thank you!");
             onDone();
-        } catch (err) {
+        } catch {
             toast.error("Could not submit review (maybe already reviewed).");
         }
     }
@@ -35,7 +33,6 @@ function ReviewForm({ bookingId, onDone }) {
                 onChange={(e) => setComment(e.target.value)}
             />
             <button type="submit">Leave review</button>
-            {message && <p className="muted-text">{message}</p>}
         </form>
     );
 }
@@ -61,8 +58,22 @@ function MyBookings() {
             );
             setBookings(bookings.map((b) => (b.id === bookingId ? updated : b)));
             toast.success("Booking cancelled.");
-        } catch (err) {
+        } catch {
             toast.error("Could not cancel this booking");
+        }
+    }
+
+    async function handleComplete(bookingId) {
+        if (!window.confirm("Confirm that the job is fully done?")) return;
+        try {
+            const updated = await apiFetch(
+                "/api/customer/bookings/" + bookingId + "/complete",
+                { method: "POST" }
+            );
+            setBookings(bookings.map((b) => (b.id === bookingId ? updated : b)));
+            toast.success("Job confirmed as done. You can now leave a review.");
+        } catch {
+            toast.error("Could not confirm this job");
         }
     }
 
@@ -102,6 +113,13 @@ function MyBookings() {
                         )}
                         {b.status === "COMPLETED" && b.reviewed && (
                             <p className="muted-text">Review submitted. Thank you!</p>
+                        )}
+                        {b.status === "IN_PROGRESS" && (
+                            <div className="btn-row">
+                                <button className="btn-link" onClick={() => handleComplete(b.id)}>
+                                    Confirm job done
+                                </button>
+                            </div>
                         )}
                         {(b.status === "BID_ACCEPTED" || b.status === "CONFIRMED") && (
                             <div className="btn-row">

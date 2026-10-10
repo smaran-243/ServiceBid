@@ -123,6 +123,10 @@ public class BookingService {
         if (newStatus == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Status is required");
         }
+        if (newStatus == BookingStatus.COMPLETED) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                    "Only the customer can confirm the job is done");
+        }
         if (!isAllowedMove(booking.getStatus(), newStatus)) {
             throw new ResponseStatusException(HttpStatus.CONFLICT,
                     "Cannot move from " + booking.getStatus() + " to " + newStatus);
@@ -166,11 +170,33 @@ public class BookingService {
 
         return toResponse(bookingRepository.save(booking));
     }
+    // Customer confirms the job is done (only from IN_PROGRESS)
+    @Transactional
+    public BookingResponse completeAsCustomer(String customerEmail, Long bookingId) {
+        User customer = userRepository.findByEmail(customerEmail)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found"));
+
+        Booking booking = bookingRepository.findById(bookingId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Booking not found"));
+
+        if (!booking.getCustomer().getId().equals(customer.getId())) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Booking not found");
+        }
+        if (booking.getStatus() != BookingStatus.IN_PROGRESS) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT,
+                    "Cannot complete a booking that is " + booking.getStatus());
+        }
+
+        booking.setStatus(BookingStatus.COMPLETED);
+        booking.getRequest().setStatus(RequestStatus.COMPLETED);
+        requestRepository.save(booking.getRequest());
+
+        return toResponse(bookingRepository.save(booking));
+    }
     private boolean isAllowedMove(BookingStatus from, BookingStatus to) {
         return switch (from) {
             case BID_ACCEPTED -> to == BookingStatus.CONFIRMED || to == BookingStatus.CANCELLED;
             case CONFIRMED -> to == BookingStatus.IN_PROGRESS || to == BookingStatus.CANCELLED;
-            case IN_PROGRESS -> to == BookingStatus.COMPLETED;
             default -> false;
         };
     }
