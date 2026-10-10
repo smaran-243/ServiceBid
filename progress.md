@@ -147,11 +147,17 @@
   * Navbar: added "My profile" link for providers
   * Design reference: user likes two prototype screenshots (light-blue job cards with category pill and name/location box; home page with category cards). Sidebar layout is a bigger JSX job, only if time allows
   * NEXT: add name to GET /api/me (MeController returns only email and roles now) so the navbar face uses the name and matches the bids face; restyle request cards like the prototype (CSS only); toasts, dark mode, mobile check; README; final live demo test
+- Day 11 (safe workflow + plan), nothing changed in code yet:
+  * Git safety: working version is tagged `p1`. All new work happens on branch `work`. `main` is NOT touched until checkpoints, because Vercel and Render auto-deploy `main`.
+  * After each finished step: test on localhost, then git add . and git commit -m "note". If a step breaks: git restore .
+  * Every 2-3 steps: git push origin work (backup only, does not change the live backend).
+  * Checkpoint commands: git checkout main, git merge work, git tag p2, git push, git push origin p2, git checkout work.
+  * Go back to a tag: git checkout main, git reset --hard p2, git push --force.
+  * MeController.java and Navbar.jsx are NOT changed yet.
+  * Plan v2 (UI first): (1) /api/me name + navbar face, (2) fix review form on reviewed booking, (3) request cards like prototype 1, (4) home page category row + photos like prototype 2, (5) toasts, (6) dark mode, (7) star rating + empty states, CHECKPOINT A (merge, tag p2), (8) smart bid tags, (9) booking timeline, (10) provider stats cards + CSS bar chart, (11) provider public profile page, (12) invoice via print to PDF, (13) mobile check, README, live demo test, CHECKPOINT B (merge, tag p3). Optional: notification bell, bid deadline countdown, sidebar layout. Skipped: payments, chat, maps, image uploads.
   
 ## Current status
-* Backend core workflow complete: auth, catalog, requests, bids, accept bid, bookings, status updates, reviews, provider rating.
-* Next: deployment (Vercel, Render, Neon), README. Optional if time allows (free only): admin dashboard, provider profile. First, allow PATCH in SecurityConfig CORS. Then customer pages (browse services, create request, my requests, view bids, accept bid, bookings, review) and provider pages (open requests, submit bid, my bids, bookings, update status).
-* Later: admin dashboard, deployment (Vercel, Render, Neon), README.
+  * Everything works and is live (p1). Now doing UI upgrade and extra features on branch work.
 
 ## About me
 - Complete beginner in React and Spring Boot, some Java
