@@ -160,6 +160,7 @@
   * Known gap, fixing next: provider can mark COMPLETED alone. Plan: only the customer confirms completion.
   * Steps 8-13 done (branch work): completion fix (provider can only go to IN_PROGRESS, customer confirms "job done" via POST /api/customer/bookings/{id}/complete, BookingService.completeAsCustomer, provider COMPLETED via PATCH returns 403), smart bid tags (RequestDetail, computed in the browser), BookingTimeline component, provider stats cards and CSS bar chart on ProviderDashboard, provider public profile page (ProviderPublic.jsx, route /providers/:providerId), invoice page (Invoice.jsx, route /customer/invoice/:bookingId, browser print to PDF), round dark mode toggle in Navbar, root README.md.
   * CHECKPOINT B: merged into main, tagged p3.
+  * After p3 (branch work, not merged yet): motion layer CSS at the bottom of index.css (fadeUp, hero glow, pulsing timeline, growing bars), theme toggle uses a circular View Transition from the button. Next: Home photos, icons, counting numbers (checkpoint p4), then withdraw bid, deadline countdown, notification bell, admin catalog UI, README screenshots (checkpoint p5).
   
 ## Current status
   * Everything works and is live (p3, CHECKPOINT B). All of Plan v2 is done.
