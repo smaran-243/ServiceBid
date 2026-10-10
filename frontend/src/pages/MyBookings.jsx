@@ -5,6 +5,7 @@ import StatusBadge from "../components/StatusBadge.jsx";
 import toast from "react-hot-toast";
 import StarRating from "../components/StarRating.jsx";
 import EmptyState from "../components/EmptyState.jsx";
+import BookingTimeline from "../components/BookingTimeline.jsx";
 
 function ReviewForm({ bookingId, onDone }) {
     const [rating, setRating] = useState(5);
@@ -108,6 +109,7 @@ function MyBookings() {
                         <p className="muted-text">
                             Provider: {b.providerName} | Agreed amount: {b.agreedAmount}
                         </p>
+                        <BookingTimeline status={b.status} />
                         {b.status === "COMPLETED" && !b.reviewed && (
                             <ReviewForm bookingId={b.id} onDone={() => markReviewed(b.id)} />
                         )}

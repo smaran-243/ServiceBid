@@ -1012,3 +1012,75 @@ img.avatar {
   color: #e0b866;
   border-color: #5a4724;
 }
+.timeline {
+  display: flex;
+  margin: 14px 0 6px;
+}
+
+.timeline-step {
+  flex: 1;
+  position: relative;
+  text-align: center;
+}
+
+.timeline-step::before {
+  content: "";
+  position: absolute;
+  top: 13px;
+  left: -50%;
+  width: 100%;
+  height: 3px;
+  background: var(--border);
+}
+
+.timeline-step:first-child::before {
+  display: none;
+}
+
+.timeline-step.done::before,
+.timeline-step.current::before {
+  background: var(--accent);
+}
+
+.timeline-dot {
+  position: relative;
+  z-index: 1;
+  width: 28px;
+  height: 28px;
+  margin: 0 auto 6px;
+  border-radius: 50%;
+  background: var(--card);
+  border: 2px solid var(--border);
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.timeline-step.done .timeline-dot,
+.timeline-step.current .timeline-dot {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.timeline-label {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.timeline-step.current .timeline-label {
+  color: var(--text);
+  font-weight: 700;
+}
+.badge {
+  display: inline-flex;
+  align-items: center;
+  line-height: 1.4;
+}
+
+.btn-row .badge {
+  align-self: center;
+}

@@ -4,6 +4,7 @@ import { apiFetch } from "../api/api.js";
 import StatusBadge from "../components/StatusBadge.jsx";
 import toast from "react-hot-toast";
 import EmptyState from "../components/EmptyState.jsx";
+import BookingTimeline from "../components/BookingTimeline.jsx";
 
 const NEXT_STEP = {
     BID_ACCEPTED: "CONFIRMED",
@@ -63,8 +64,9 @@ function ProviderBookings() {
                             <StatusBadge status={b.status} />
                         </div>
                         <p className="muted-text">
-                            Customer: {b.customerName} | Agreed amount: {b.agreedAmount}
+                            <>Customer: {b.customerName} | Agreed amount: {b.agreedAmount}</>
                         </p>
+                        <BookingTimeline status={b.status} />
                         <div className="btn-row">
                             {b.status === "IN_PROGRESS" && (
                                 <span className="muted-text">Waiting for the customer to confirm the job is done.</span>
