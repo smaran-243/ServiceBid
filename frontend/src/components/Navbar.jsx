@@ -6,22 +6,22 @@ import LogoutButton from "./LogoutButton.jsx";
 function Navbar() {
     const location = useLocation();
     const [roles, setRoles] = useState([]);
-    const [email, setEmail] = useState("");
+    const [name, setName] = useState("");
 
     useEffect(() => {
         if (!getToken()) {
             setRoles([]);
-            setEmail("");
+            setName("");
             return;
         }
         apiFetch("/api/me")
             .then((me) => {
                 setRoles(me.roles);
-                setEmail(me.email || "user");
+                setName(me.name || me.email || "user");
             })
             .catch(() => {
                 setRoles([]);
-                setEmail("");
+                setName("");
             });
     }, [location.pathname]);
 
@@ -64,7 +64,7 @@ function Navbar() {
                     <img
                         className="nav-avatar"
                         alt="Profile"
-                        src={"https://api.dicebear.com/9.x/avataaars/svg?seed=" + encodeURIComponent(email)}
+                        src={"https://api.dicebear.com/9.x/avataaars/svg?seed=" + encodeURIComponent(name)}
                     />
                 )}
                 {loggedIn && <LogoutButton />}
