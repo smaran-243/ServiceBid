@@ -11,6 +11,7 @@ import com.servicebid.backend.model.ServiceRequest;
 import com.servicebid.backend.model.User;
 import com.servicebid.backend.repository.BidRepository;
 import com.servicebid.backend.repository.BookingRepository;
+import com.servicebid.backend.repository.ReviewRepository;
 import com.servicebid.backend.repository.ServiceRequestRepository;
 import com.servicebid.backend.repository.UserRepository;
 import org.springframework.http.HttpStatus;
@@ -26,11 +27,14 @@ public class BookingService {
     private final BidRepository bidRepository;
     private final ServiceRequestRepository requestRepository;
     private final UserRepository userRepository;
+    private final ReviewRepository reviewRepository;
 
     public BookingService(BookingRepository bookingRepository,
                           BidRepository bidRepository,
                           ServiceRequestRepository requestRepository,
-                          UserRepository userRepository) {
+                          UserRepository userRepository,
+                          ReviewRepository reviewRepository) {
+        this.reviewRepository = reviewRepository;
         this.bookingRepository = bookingRepository;
         this.bidRepository = bidRepository;
         this.requestRepository = requestRepository;
@@ -182,6 +186,7 @@ public class BookingService {
                 b.getProvider().getName(),
                 b.getAgreedAmount(),
                 b.getStatus(),
-                b.getCreatedAt());
+                b.getCreatedAt(),
+                reviewRepository.existsByBookingId(b.getId()));
     }
 }

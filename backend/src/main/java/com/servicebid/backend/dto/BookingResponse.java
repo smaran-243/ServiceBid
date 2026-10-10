@@ -9,5 +9,5 @@ public record BookingResponse(Long id, Long requestId, Long bidId, String servic
                               Long customerId, String customerName,
                               Long providerId, String providerName,
                               BigDecimal agreedAmount, BookingStatus status,
-                              LocalDateTime createdAt) {
+                              LocalDateTime createdAt, boolean reviewed) {
 }

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { apiFetch } from "../api/api.js";
 import StatusBadge from "../components/StatusBadge.jsx";
 
-function ReviewForm({ bookingId }) {
+function ReviewForm({ bookingId, onDone }) {
     const [rating, setRating] = useState(5);
     const [comment, setComment] = useState("");
     const [message, setMessage] = useState("");
@@ -16,7 +16,7 @@ function ReviewForm({ bookingId }) {
                 method: "POST",
                 body: JSON.stringify({ rating: Number(rating), comment }),
             });
-            setMessage("Review submitted. Thank you!");
+            onDone();
         } catch (err) {
             setMessage("Could not submit review (maybe already reviewed).");
         }
@@ -67,6 +67,10 @@ function MyBookings() {
         }
     }
 
+    function markReviewed(bookingId) {
+        setBookings(bookings.map((b) => (b.id === bookingId ? { ...b, reviewed: true } : b)));
+    }
+
     return (
         <div>
             <p><Link to="/customer">Back to dashboard</Link></p>
@@ -92,7 +96,12 @@ function MyBookings() {
                         <p className="muted-text">
                             Provider: {b.providerName} | Agreed amount: {b.agreedAmount}
                         </p>
-                        {b.status === "COMPLETED" && <ReviewForm bookingId={b.id} />}
+                        {b.status === "COMPLETED" && !b.reviewed && (
+                            <ReviewForm bookingId={b.id} onDone={() => markReviewed(b.id)} />
+                        )}
+                        {b.status === "COMPLETED" && b.reviewed && (
+                            <p className="muted-text">Review submitted. Thank you!</p>
+                        )}
                         {(b.status === "BID_ACCEPTED" || b.status === "CONFIRMED") && (
                             <div className="btn-row">
                                 <button className="btn-danger" onClick={() => handleCancel(b.id)}>
