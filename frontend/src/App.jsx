@@ -15,7 +15,7 @@ import ProviderBookings from "./pages/ProviderBookings.jsx";
 import ProviderProfile from "./pages/ProviderProfile.jsx";
 import AdminDashboard from "./pages/AdminDashboard.jsx";
 import Navbar from "./components/Navbar.jsx";
-import toast from "react-hot-toast";
+import ProviderPublic from "./pages/ProviderPublic.jsx";
 import { Toaster } from "react-hot-toast";
 
 
@@ -106,6 +106,14 @@ function App() {
                     element={
                         <ProtectedRoute role="PROVIDER">
                             <ProviderProfile />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/providers/:providerId"
+                    element={
+                        <ProtectedRoute role="CUSTOMER">
+                            <ProviderPublic />
                         </ProtectedRoute>
                     }
                 />

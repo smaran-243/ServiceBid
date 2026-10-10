@@ -1136,3 +1136,20 @@ img.avatar {
     grid-template-columns: 90px 1fr 70px;
   }
 }
+.profile-head {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 8px;
+}
+
+.profile-face {
+  width: 72px;
+  height: 72px;
+}
+
+.review-stars {
+  color: var(--accent);
+  font-size: 18px;
+  letter-spacing: 2px;
+}

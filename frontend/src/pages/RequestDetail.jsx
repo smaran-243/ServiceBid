@@ -138,7 +138,9 @@ function RequestDetail() {
                                         src={"https://api.dicebear.com/9.x/avataaars/svg?seed=" + encodeURIComponent(b.providerName)}
                                     />
                                     <div>
-                                        <strong>{b.providerName}</strong>
+                                        <Link to={"/providers/" + b.providerId} className="card-link">
+                                            <strong>{b.providerName}</strong>
+                                        </Link>
                                         <div className="muted-text">
                                             {r && r.reviewCount > 0
                                                 ? "Rating " + r.averageRating + " (" + r.reviewCount + " reviews)"
