@@ -155,9 +155,14 @@
   * Go back to a tag: git checkout main, git reset --hard p2, git push --force.
   * MeController.java and Navbar.jsx are NOT changed yet.
   * Plan v2 (UI first): (1) /api/me name + navbar face, (2) fix review form on reviewed booking, (3) request cards like prototype 1, (4) home page category row + photos like prototype 2, (5) toasts, (6) dark mode, (7) star rating + empty states, CHECKPOINT A (merge, tag p2), (8) smart bid tags, (9) booking timeline, (10) provider stats cards + CSS bar chart, (11) provider public profile page, (12) invoice via print to PDF, (13) mobile check, README, live demo test, CHECKPOINT B (merge, tag p3). Optional: notification bell, bid deadline countdown, sidebar layout. Skipped: payments, chat, maps, image uploads.
+  * Day 11 steps done (branch work): (1) /api/me returns name, navbar avatar uses name, (2) review form hidden after review (BookingResponse has reviewed, BookingService uses ReviewRepository), (3) RequestCard component and request-grid cards on both dashboards, (4) Home.jsx moved out of App.jsx, category cards and hero photo, (5) react-hot-toast toasts on Login, Register, CreateRequest, PlaceBid, RequestDetail, ProviderBookings, MyBookings, (6) dark mode toggle in Navbar using data-theme and localStorage, (7) StarRating and EmptyState components.
+  * CHECKPOINT A done: merged into main, tagged p2.
+  * Known gap, fixing next: provider can mark COMPLETED alone. Plan: only the customer confirms completion.
   
 ## Current status
-  * Everything works and is live (p1). Now doing UI upgrade and extra features on branch work.
+  * Everything works and is live (p2, CHECKPOINT A). Steps 1-7 of Plan v2 are done. Now building on branch work.
+  * NEXT: (a) completion fix: provider can go BID_ACCEPTED -> CONFIRMED -> IN_PROGRESS only, the customer confirms "job done" (COMPLETED), which unlocks the review. (b) Step 8 smart bid tags, (9) booking timeline, (10) provider stats cards and CSS bar chart, (11) provider public profile page, (12) invoice via print to PDF, (13) mobile check, README, live demo test, CHECKPOINT B (tag p3).
+  * Optional if time is left: notification bell, bid deadline countdown, sidebar layout. Skipped on purpose: payments, chat, maps, image uploads.
 
 ## About me
 - Complete beginner in React and Spring Boot, some Java
