@@ -158,11 +158,12 @@
   * Day 11 steps done (branch work): (1) /api/me returns name, navbar avatar uses name, (2) review form hidden after review (BookingResponse has reviewed, BookingService uses ReviewRepository), (3) RequestCard component and request-grid cards on both dashboards, (4) Home.jsx moved out of App.jsx, category cards and hero photo, (5) react-hot-toast toasts on Login, Register, CreateRequest, PlaceBid, RequestDetail, ProviderBookings, MyBookings, (6) dark mode toggle in Navbar using data-theme and localStorage, (7) StarRating and EmptyState components.
   * CHECKPOINT A done: merged into main, tagged p2.
   * Known gap, fixing next: provider can mark COMPLETED alone. Plan: only the customer confirms completion.
+  * Steps 8-13 done (branch work): completion fix (provider can only go to IN_PROGRESS, customer confirms "job done" via POST /api/customer/bookings/{id}/complete, BookingService.completeAsCustomer, provider COMPLETED via PATCH returns 403), smart bid tags (RequestDetail, computed in the browser), BookingTimeline component, provider stats cards and CSS bar chart on ProviderDashboard, provider public profile page (ProviderPublic.jsx, route /providers/:providerId), invoice page (Invoice.jsx, route /customer/invoice/:bookingId, browser print to PDF), round dark mode toggle in Navbar, root README.md.
+  * CHECKPOINT B: merged into main, tagged p3.
   
 ## Current status
-  * Everything works and is live (p2, CHECKPOINT A). Steps 1-7 of Plan v2 are done. Now building on branch work.
-  * NEXT: (a) completion fix: provider can go BID_ACCEPTED -> CONFIRMED -> IN_PROGRESS only, the customer confirms "job done" (COMPLETED), which unlocks the review. (b) Step 8 smart bid tags, (9) booking timeline, (10) provider stats cards and CSS bar chart, (11) provider public profile page, (12) invoice via print to PDF, (13) mobile check, README, live demo test, CHECKPOINT B (tag p3).
-  * Optional if time is left: notification bell, bid deadline countdown, sidebar layout. Skipped on purpose: payments, chat, maps, image uploads.
+  * Everything works and is live (p3, CHECKPOINT B). All of Plan v2 is done.
+  * Remaining optional ideas: notification bell, bid deadline countdown, sidebar layout.
 
 ## About me
 - Complete beginner in React and Spring Boot, some Java
