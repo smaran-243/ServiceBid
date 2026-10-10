@@ -43,8 +43,38 @@ function Navbar() {
     const isAdmin = hasToken && roles.includes("ADMIN");
     const loggedIn = isCustomer || isProvider || isAdmin;
 
-    function toggleTheme() {
-        setTheme(theme === "dark" ? "light" : "dark");
+    function toggleTheme(e) {
+        const next = theme === "dark" ? "light" : "dark";
+        const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        if (!document.startViewTransition || reduced) {
+            setTheme(next);
+            return;
+        }
+        const x = e.clientX;
+        const y = e.clientY;
+        const radius = Math.hypot(
+            Math.max(x, window.innerWidth - x),
+            Math.max(y, window.innerHeight - y)
+        );
+        const transition = document.startViewTransition(() => {
+            document.documentElement.setAttribute("data-theme", next);
+            setTheme(next);
+        });
+        transition.ready.then(() => {
+            document.documentElement.animate(
+                {
+                    clipPath: [
+                        "circle(0px at " + x + "px " + y + "px)",
+                        "circle(" + radius + "px at " + x + "px " + y + "px)",
+                    ],
+                },
+                {
+                    duration: 650,
+                    easing: "ease-in-out",
+                    pseudoElement: "::view-transition-new(root)",
+                }
+            );
+        });
     }
 
     return (
