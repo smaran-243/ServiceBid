@@ -29,8 +29,8 @@ The backend runs on a free Render instance that sleeps when idle. The first requ
 ## Features
 
 **Customer**
-- Home page with categories, trending services and how it works
-- Browse 19 services in 9 categories, with search
+- Home page with a live savings simulator, rotating bids ticker, trending services, verified provider spotlight, customer reviews and an FAQ
+- Browse 19 services in 9 categories, with search, category chips, sorting, saved favourites (heart) and a recently viewed strip
 - Post a request with description, budget, date, location and an optional bid deadline (live countdown)
 - Compare bids side by side, with smart tags (Lowest price, Top rated, Best value)
 - Accept a bid, which creates a booking
@@ -58,6 +58,8 @@ The backend runs on a free Render instance that sleeps when idle. The first requ
 - JWT login with roles (Customer, Provider, Admin)
 - Dark mode with a circular transition, toast messages, empty states, loading skeletons
 - Animations: count-up numbers, scroll reveal, hover effects
+- New brand identity: custom logo, favicon, floating navbar, footer
+- 404 page and back-to-top button
 - Responsive layout for mobile
 
 ## Architecture
@@ -87,7 +89,7 @@ flowchart LR
 
 ## Tech stack
 
-- Frontend: React, Vite, React Router, plain CSS, react-hot-toast
+- Frontend: React, Vite, React Router, plain CSS, react-hot-toast, Google Fonts (Outfit and DM Sans)
 - Backend: Java 21, Spring Boot, Spring Security, Spring Data JPA, JWT (jjwt)
 - Database: PostgreSQL on Neon
 - Hosting (all free tiers): Vercel (frontend), Render with Docker (backend), Neon (database)
