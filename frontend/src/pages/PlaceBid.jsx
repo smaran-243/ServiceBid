@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { apiFetch } from "../api/api.js";
 import toast from "react-hot-toast";
+import Countdown from "../components/Countdown.jsx";
 
 function PlaceBid() {
     const { requestId } = useParams();
@@ -33,7 +34,7 @@ function PlaceBid() {
             toast.success("Bid submitted.");
             navigate("/provider");
         } catch (err) {
-            toast.error("Could not submit bid (maybe you already bid, or amount is invalid).");
+            toast.error("Could not submit bid (already bid, bidding closed, or invalid amount).");
         }
     }
 
@@ -53,6 +54,7 @@ function PlaceBid() {
                     <p className="muted-text">
                         Budget: {request.budget} | Location: {request.location}
                     </p>
+                    {request.bidDeadline && <p><Countdown deadline={request.bidDeadline} /></p>}
                 </div>
             )}
 

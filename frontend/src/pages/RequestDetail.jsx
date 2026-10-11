@@ -4,6 +4,7 @@ import { apiFetch } from "../api/api.js";
 import StatusBadge from "../components/StatusBadge.jsx";
 import toast from "react-hot-toast";
 import EmptyState from "../components/EmptyState.jsx";
+import Countdown from "../components/Countdown.jsx";
 
 function RequestDetail() {
     const { requestId } = useParams();
@@ -120,6 +121,9 @@ function RequestDetail() {
                     <p className="muted-text">
                         Budget: {request.budget} | Location: {request.location}
                     </p>
+                    {request.status === "OPEN" && request.bidDeadline && (
+                        <p><Countdown deadline={request.bidDeadline} /></p>
+                    )}
                     {request.status === "OPEN" && (
                         <div className="btn-row">
                             <button className="btn-danger" onClick={cancelRequest}>

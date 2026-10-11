@@ -21,6 +21,8 @@ import com.servicebid.backend.model.ProviderOffering;
 import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.util.List;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 @Service
 public class ServiceRequestService {
@@ -57,6 +59,9 @@ public class ServiceRequestService {
         if (req.budget() != null && req.budget().compareTo(BigDecimal.ZERO) <= 0) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Budget must be more than 0");
         }
+        if (req.bidDeadline() != null && !req.bidDeadline().isAfter(LocalDateTime.now(ZoneOffset.UTC))) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Bid deadline must be in the future");
+        }
 
         ServiceItem service = serviceItemRepository.findById(req.serviceId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Service does not exist"));
@@ -68,6 +73,7 @@ public class ServiceRequestService {
         request.setBudget(req.budget());
         request.setScheduledAt(req.scheduledAt());
         request.setLocation(req.location().trim());
+        request.setBidDeadline(req.bidDeadline());
 
         return toResponse(requestRepository.save(request));
     }
@@ -158,6 +164,7 @@ public class ServiceRequestService {
                 r.getScheduledAt(),
                 r.getLocation(),
                 r.getStatus(),
-                r.getCreatedAt());
+                r.getCreatedAt(),
+                r.getBidDeadline());
     }
 }

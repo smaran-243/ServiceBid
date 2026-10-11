@@ -10,6 +10,7 @@ function CreateRequest() {
     const [budget, setBudget] = useState("");
     const [scheduledAt, setScheduledAt] = useState("");
     const [location, setLocation] = useState("");
+    const [bidDeadline, setBidDeadline] = useState("");
     const [error, setError] = useState("");
 
     async function handleSubmit(e) {
@@ -24,6 +25,7 @@ function CreateRequest() {
                     budget: Number(budget),
                     scheduledAt,
                     location,
+                    bidDeadline: bidDeadline ? new Date(bidDeadline).toISOString().slice(0, 19) : null,
                 }),
             });
             toast.success("Request posted. Providers can now bid.");
@@ -70,6 +72,13 @@ function CreateRequest() {
                     placeholder="Your address or area"
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
+                />
+
+                <label className="form-label">Bid deadline (optional)</label>
+                <input
+                    type="datetime-local"
+                    value={bidDeadline}
+                    onChange={(e) => setBidDeadline(e.target.value)}
                 />
 
                 {error && <p style={{ color: "var(--danger)" }}>{error}</p>}

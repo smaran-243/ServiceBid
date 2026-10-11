@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import StatusBadge from "./StatusBadge.jsx";
+import Countdown from "./Countdown.jsx";
 
 function formatWhen(value) {
     if (!value) return "Not set";
@@ -17,6 +18,9 @@ function RequestCard({ request, showStatus, linkTo, linkText }) {
                 {showStatus && <StatusBadge status={r.status} />}
             </div>
             <h4 className="request-title">{r.description}</h4>
+            {r.status === "OPEN" && r.bidDeadline && (
+                <div><Countdown deadline={r.bidDeadline} /></div>
+            )}
             <div className="request-box">
                 <div className="request-person">
                     <img

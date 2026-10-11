@@ -28,6 +28,8 @@ public class ServiceRequest {
 
     private LocalDateTime scheduledAt;
 
+    private LocalDateTime bidDeadline;
+
     @Column(nullable = false)
     private String location;
 
@@ -58,6 +60,9 @@ public class ServiceRequest {
 
     public LocalDateTime getScheduledAt() { return scheduledAt; }
     public void setScheduledAt(LocalDateTime scheduledAt) { this.scheduledAt = scheduledAt; }
+    
+    public LocalDateTime getBidDeadline() { return bidDeadline; }
+    public void setBidDeadline(LocalDateTime bidDeadline) { this.bidDeadline = bidDeadline; }
 
     public String getLocation() { return location; }
     public void setLocation(String location) { this.location = location; }

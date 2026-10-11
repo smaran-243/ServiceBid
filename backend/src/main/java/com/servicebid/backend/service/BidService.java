@@ -16,6 +16,8 @@ import org.springframework.web.server.ResponseStatusException;
 import com.servicebid.backend.repository.ProviderOfferingRepository;
 import java.math.BigDecimal;
 import java.util.List;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 @Service
 public class BidService {
@@ -50,6 +52,10 @@ public class BidService {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Request is not open for bids");
         }
 
+        if (request.getBidDeadline() != null
+                && request.getBidDeadline().isBefore(LocalDateTime.now(ZoneOffset.UTC))) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Bidding has closed for this request");
+        }
         if (!offeringRepository.existsByProviderIdAndServiceId(provider.getId(), request.getService().getId())) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You do not offer this service");
         }
