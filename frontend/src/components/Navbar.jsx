@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { apiFetch, getToken } from "../api/api.js";
 import LogoutButton from "./LogoutButton.jsx";
+import NotificationBell from "./NotificationBell.jsx";
 
 function Navbar() {
     const location = useLocation();
@@ -114,6 +115,7 @@ function Navbar() {
                         src={"https://api.dicebear.com/9.x/avataaars/svg?seed=" + encodeURIComponent(name)}
                     />
                 )}
+                {(isCustomer || isProvider) && <NotificationBell />}
                 {loggedIn && <LogoutButton />}
                 <button
                     className="theme-toggle"
