@@ -20,29 +20,61 @@ The backend runs on a free Render instance that sleeps when idle. The first requ
 ## Features
 
 **Customer**
+- Home page with categories, trending services and how it works
 - Browse 19 services in 9 categories, with search
-- Post a request with description, budget, date and location
+- Post a request with description, budget, date, location and an optional bid deadline (live countdown)
 - Compare bids side by side, with smart tags (Lowest price, Top rated, Best value)
 - Accept a bid, which creates a booking
+- Cancel an open request (pending bids are rejected)
 - Track the booking with a progress timeline
 - Confirm the job is done, then leave a star review
 - Cancel a booking before work starts
 - View a provider's public profile and reviews
 - Invoice for completed bookings (print or save as PDF)
+- Notification bell: bids waiting, jobs to confirm
 
 **Provider**
 - Choose the services they offer, and write a bio
 - See only open requests that match their services
-- Place bids and manage bookings (Confirmed, In progress)
+- Place bids before the deadline, and withdraw a pending bid
+- Manage bookings (Confirmed, In progress)
 - Dashboard with completed jobs, total earned, average rating and an earnings chart
+- Notification bell: new matching requests, accepted bids
 
 **Admin**
 - Overview of all users, requests and bookings
+- Manage the catalog: add, rename and delete categories and services
 
 **General**
 - JWT login with roles (Customer, Provider, Admin)
-- Dark mode, toast messages, empty states, loading skeletons
+- Dark mode with a circular transition, toast messages, empty states, loading skeletons
+- Animations: count-up numbers, scroll reveal, hover effects
 - Responsive layout for mobile
+
+## Architecture
+
+```mermaid
+flowchart LR
+    B["Browser"] --> V["Vercel: React + Vite frontend"]
+    V -->|"REST + JWT"| R["Render: Spring Boot API in Docker"]
+    R -->|"Spring Data JPA"| N[("Neon PostgreSQL")]
+    V -->|"avatars"| D["DiceBear"]
+```
+
+**Backend layers:** controller (REST endpoints) -> service (rules and validation) -> repository (database) -> model (entities). A JWT filter in the security layer checks the token and the role on every request.
+
+**Booking flow**
+
+```mermaid
+flowchart LR
+    A["Request OPEN"] --> B["Providers bid"]
+    B --> C["Customer accepts a bid"]
+    C --> D["Booking BID_ACCEPTED"]
+    D --> E["CONFIRMED"]
+    E --> F["IN_PROGRESS"]
+    F --> G["Customer confirms: COMPLETED"]
+    G --> H["Customer review"]
+```
 
 ## Tech stack
 
@@ -67,9 +99,9 @@ It opens on http://localhost:5173.
 
 ## Future improvements
 
-- Online payments   
+- Online payments
 - In-app chat between customer and provider
 - Maps and distance to the job location
 - Image uploads for requests and provider profiles
-- Notifications and bid deadlines with a countdown
+- Real stored notifications with a "mark as read" option
 - Sidebar layout for dashboards
