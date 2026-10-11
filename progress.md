@@ -161,10 +161,13 @@
   * Steps 8-13 done (branch work): completion fix (provider can only go to IN_PROGRESS, customer confirms "job done" via POST /api/customer/bookings/{id}/complete, BookingService.completeAsCustomer, provider COMPLETED via PATCH returns 403), smart bid tags (RequestDetail, computed in the browser), BookingTimeline component, provider stats cards and CSS bar chart on ProviderDashboard, provider public profile page (ProviderPublic.jsx, route /providers/:providerId), invoice page (Invoice.jsx, route /customer/invoice/:bookingId, browser print to PDF), round dark mode toggle in Navbar, root README.md.
   * CHECKPOINT B: merged into main, tagged p3.
   * After p3 (branch work, not merged yet): motion layer CSS at the bottom of index.css (fadeUp, hero glow, pulsing timeline, growing bars), theme toggle uses a circular View Transition from the button. Next: Home photos, icons, counting numbers (checkpoint p4), then withdraw bid, deadline countdown, notification bell, admin catalog UI, README screenshots (checkpoint p5).
-  
+- Day 12 (branch work): Home page upgrade (Trending services photo cards, Why choose us band, CTA band; photos in frontend/public/images: plumbing.jpg, cleaning.jpg, electrical.jpg, ac-repair.jpg, hero.jpg), Icon component (drawn SVG icons, no package) used on category cards, stat cards and EmptyState (icon prop), CountUp component (stats count up) used on ProviderDashboard and AdminDashboard, Reveal component (sections slide in on scroll, IntersectionObserver) used on Home. New classes: .trend-grid, .trend-card, .trend-overlay, .why-band, .why-grid, .why-item, .cta-band, .stat-icon, .empty-icon, .reveal, .reveal-in.
+  * CHECKPOINT C: merged into main, tagged p4.
+  * Plan v3 remaining: (4) withdraw PENDING bid + customer cancels OPEN request, (5) bid deadline countdown (nullable column, no new enum values), (6) notification bell (ask before choosing design), (7) admin manages categories and services in UI, (8) README screenshots, architecture diagram, demo script, final live test, CHECKPOINT p5.
+
 ## Current status
-  * Everything works and is live (p3, CHECKPOINT B). All of Plan v2 is done.
-  * Remaining optional ideas: notification bell, bid deadline countdown, sidebar layout.
+  * Everything works and is live up to p4 (CHECKPOINT C). Plan v3 steps 1-3 done.
+  * Next: step 4 (withdraw bid, customer cancels OPEN request).
 
 ## About me
 - Complete beginner in React and Spring Boot, some Java
