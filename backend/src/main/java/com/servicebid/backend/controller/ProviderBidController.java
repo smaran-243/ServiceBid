@@ -32,4 +32,9 @@ public class ProviderBidController {
     public List<BidResponse> myBids(Authentication authentication) {
         return bidService.getMyBids(authentication.getName());
     }
+
+    @PostMapping("/bids/{bidId}/withdraw")
+    public BidResponse withdraw(Authentication authentication, @PathVariable Long bidId) {
+        return bidService.withdrawBid(authentication.getName(), bidId);
+    }
 }

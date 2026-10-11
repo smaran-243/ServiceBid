@@ -3,6 +3,7 @@ package com.servicebid.backend.service;
 import com.servicebid.backend.dto.BidCreate;
 import com.servicebid.backend.dto.BidResponse;
 import com.servicebid.backend.model.Bid;
+import com.servicebid.backend.model.BidStatus;
 import com.servicebid.backend.model.RequestStatus;
 import com.servicebid.backend.model.ServiceRequest;
 import com.servicebid.backend.model.User;
@@ -72,6 +73,21 @@ public class BidService {
         User provider = findUser(providerEmail);
         return bidRepository.findByProviderIdOrderByCreatedAtDesc(provider.getId())
                 .stream().map(this::toResponse).toList();
+    }
+    // Provider withdraws one of their own PENDING bids
+    public BidResponse withdrawBid(String providerEmail, Long bidId) {
+        User provider = findUser(providerEmail);
+        Bid bid = bidRepository.findById(bidId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Bid not found"));
+        if (!bid.getProvider().getId().equals(provider.getId())) {
+            // Hide other providers' bids: same answer as "not found"
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Bid not found");
+        }
+        if (bid.getStatus() != BidStatus.PENDING) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Only a pending bid can be withdrawn");
+        }
+        bid.setStatus(BidStatus.WITHDRAWN);
+        return toResponse(bidRepository.save(bid));
     }
     // Customer lists all bids on one of their own requests, cheapest first
     public List<BidResponse> getBidsForMyRequest(String customerEmail, Long requestId) {

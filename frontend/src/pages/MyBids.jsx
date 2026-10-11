@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { apiFetch } from "../api/api.js";
 import StatusBadge from "../components/StatusBadge.jsx";
 import EmptyState from "../components/EmptyState.jsx";
+import toast from "react-hot-toast";
 
 function MyBids() {
     const [bids, setBids] = useState([]);
@@ -15,6 +16,19 @@ function MyBids() {
             .catch(() => setError("Could not load bids"))
             .finally(() => setLoading(false));
     }, []);
+
+    async function withdraw(bidId) {
+        if (!window.confirm("Withdraw this bid? You cannot bid on this request again.")) return;
+        try {
+            await apiFetch("/api/provider/bids/" + bidId + "/withdraw", { method: "POST" });
+            setBids((prev) =>
+                prev.map((b) => (b.id === bidId ? { ...b, status: "WITHDRAWN" } : b))
+            );
+            toast.success("Bid withdrawn");
+        } catch {
+            toast.error("Could not withdraw bid");
+        }
+    }
 
     return (
         <div>
@@ -44,6 +58,13 @@ function MyBids() {
                             Amount: {b.amount} | Time: {b.estimatedTime}
                         </p>
                         {b.message && <p>{b.message}</p>}
+                        {b.status === "PENDING" && (
+                            <div className="btn-row">
+                                <button className="btn-danger" onClick={() => withdraw(b.id)}>
+                                    Withdraw bid
+                                </button>
+                            </div>
+                        )}
                     </div>
                 ))}
             </div>
