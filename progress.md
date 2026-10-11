@@ -165,9 +165,11 @@
   * CHECKPOINT C: merged into main, tagged p4.
   * Day 12-13 (branch work, after p4): withdraw PENDING bid (POST /api/provider/bids/{bidId}/withdraw, BidService.withdrawBid, "Withdraw bid" button in MyBids), customer cancels OPEN request (POST /api/customer/requests/{id}/cancel, pending bids become REJECTED, button in RequestDetail), bid deadline (nullable column bid_deadline on service_requests stored in UTC, 409 after deadline, Countdown component on RequestCard, RequestDetail, PlaceBid, optional field in CreateRequest), notification bell (GET /api/notifications, NotificationService computes "needs attention" items, nothing stored, NotificationBell component in Navbar for CUSTOMER and PROVIDER, refreshes every 30s), admin catalog UI (AdminCatalog.jsx at /admin/catalog, "Catalog" link in Navbar), root README updated (features, Mermaid architecture and booking flow diagrams, screenshots in docs/screenshots), DEMO.md demo script in project root.
   * CHECKPOINT D: merged into main, tagged p5. Plan v3 is complete.
+- Day 14 (branch work, after p5): full UI rebrand made with Antigravity in a copy folder and copied back (src, public, index.html). New fonts Outfit and DM Sans, new palette and logo (Logo.jsx), new favicon, 3-zone floating Navbar, bento Home page with savings simulator, bids ticker, FAQ and reviews, Browse services with category chips, sort, saved hearts and recently viewed, Ctrl+K style search, NotFound 404 route, BackToTop, Footer, SkeletonCard, BookingTimeline, Reveal. No backend change, no api.js change. Checked: build passes, all flows tested on localhost with Neon (19 services, bids, accept, booking, review, invoice, admin catalog).
+  * CHECKPOINT E: merged into main, tagged p6.
   
 ## Current status
-  * Everything works and is live up to p5 (CHECKPOINT D). All of Plan v3 is done.
+  * Everything works and is live up to p6 (CHECKPOINT E). New UI deployed.
   * Remaining optional ideas: real stored notifications, sidebar layout.
 
 ## About me

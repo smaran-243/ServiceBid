@@ -6,13 +6,16 @@ import toast from "react-hot-toast";
 import StarRating from "../components/StarRating.jsx";
 import EmptyState from "../components/EmptyState.jsx";
 import BookingTimeline from "../components/BookingTimeline.jsx";
+import Icon from "../components/Icon.jsx";
 
 function ReviewForm({ bookingId, onDone }) {
     const [rating, setRating] = useState(5);
     const [comment, setComment] = useState("");
+    const [submitting, setSubmitting] = useState(false);
 
     async function handleSubmit(e) {
         e.preventDefault();
+        setSubmitting(true);
         try {
             await apiFetch("/api/customer/bookings/" + bookingId + "/review", {
                 method: "POST",
@@ -22,18 +25,28 @@ function ReviewForm({ bookingId, onDone }) {
             onDone();
         } catch {
             toast.error("Could not submit review (maybe already reviewed).");
+        } finally {
+            setSubmitting(false);
         }
     }
 
     return (
         <form onSubmit={handleSubmit} className="review-form">
-            <StarRating value={Number(rating)} onChange={setRating} />
+            <div style={{ display: "flex", flexDirection: "column", gap: 4, width: "100%" }}>
+                <span style={{ fontSize: 13, fontWeight: 600, color: "var(--accent)" }}>
+                    Rate your experience:
+                </span>
+                <StarRating value={Number(rating)} onChange={setRating} />
+            </div>
             <input
-                placeholder="Write a comment"
+                placeholder="Share feedback on quality, punctuality, and service..."
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
+                aria-label="Review comment"
             />
-            <button type="submit">Leave review</button>
+            <button type="submit" disabled={submitting}>
+                {submitting ? "Submitting..." : "Submit Review"}
+            </button>
         </form>
     );
 }
@@ -42,10 +55,11 @@ function MyBookings() {
     const [bookings, setBookings] = useState([]);
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(true);
+    const [filterStatus, setFilterStatus] = useState("ALL");
 
     useEffect(() => {
         apiFetch("/api/customer/bookings")
-            .then((data) => setBookings(data))
+            .then((data) => setBookings(data || []))
             .catch(() => setError("Could not load bookings"))
             .finally(() => setLoading(false));
     }, []);
@@ -82,11 +96,66 @@ function MyBookings() {
         setBookings(bookings.map((b) => (b.id === bookingId ? { ...b, reviewed: true } : b)));
     }
 
+    const filtered = bookings.filter((b) => {
+        if (filterStatus === "ACTIVE") {
+            return b.status === "BID_ACCEPTED" || b.status === "CONFIRMED" || b.status === "IN_PROGRESS";
+        }
+        if (filterStatus === "COMPLETED") return b.status === "COMPLETED";
+        if (filterStatus === "CANCELLED") return b.status === "CANCELLED";
+        return true;
+    });
+
     return (
-        <div>
-            <p><Link to="/customer">Back to dashboard</Link></p>
-            <h2>My bookings</h2>
-            {error && <p>{error}</p>}
+        <div className="page-enter">
+            <p>
+                <Link to="/customer" className="card-link" style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
+                    &larr; Back to dashboard
+                </Link>
+            </p>
+
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", flexWrap: "wrap", gap: 12, marginBottom: 16 }}>
+                <div>
+                    <h2>My Bookings</h2>
+                    <p className="muted-text">Track your confirmed jobs, confirm completion, and view invoices.</p>
+                </div>
+            </div>
+
+            {/* Filter Tabs */}
+            <div className="filter-bar">
+                <div className="chip-group">
+                    <button
+                        type="button"
+                        className={"chip" + (filterStatus === "ALL" ? " active" : "")}
+                        onClick={() => setFilterStatus("ALL")}
+                    >
+                        All ({bookings.length})
+                    </button>
+                    <button
+                        type="button"
+                        className={"chip" + (filterStatus === "ACTIVE" ? " active" : "")}
+                        onClick={() => setFilterStatus("ACTIVE")}
+                    >
+                        Active Jobs
+                    </button>
+                    <button
+                        type="button"
+                        className={"chip" + (filterStatus === "COMPLETED" ? " active" : "")}
+                        onClick={() => setFilterStatus("COMPLETED")}
+                    >
+                        Completed
+                    </button>
+                    <button
+                        type="button"
+                        className={"chip" + (filterStatus === "CANCELLED" ? " active" : "")}
+                        onClick={() => setFilterStatus("CANCELLED")}
+                    >
+                        Cancelled
+                    </button>
+                </div>
+            </div>
+
+            {error && <p style={{ color: "var(--danger)" }}>{error}</p>}
+
             {loading && (
                 <div className="card-list">
                     {[1, 2, 3].map((n) => (
@@ -94,49 +163,75 @@ function MyBookings() {
                     ))}
                 </div>
             )}
-            {!loading && bookings.length === 0 && (
-                <EmptyState title="No bookings yet" text="Accept a bid on one of your requests to create one.">
+
+            {!loading && filtered.length === 0 && (
+                <EmptyState
+                    title={filterStatus === "ALL" ? "No bookings yet" : "No " + filterStatus.toLowerCase() + " bookings"}
+                    text={
+                        filterStatus === "ALL"
+                            ? "Accept an offer on one of your service requests to confirm a booking."
+                            : "There are no bookings matching this status filter."
+                    }
+                    icon="bookings"
+                >
                     <Link to="/customer" className="btn-link">Go to dashboard</Link>
                 </EmptyState>
             )}
+
             <div className="card-list">
-                {bookings.map((b) => (
-                    <div key={b.id} className="item-card">
+                {filtered.map((b) => (
+                    <div key={b.id} className="item-card" style={{ padding: 24 }}>
                         <div className="item-head">
-                            <strong>{b.serviceName}</strong>
-                            <StatusBadge status={b.status} />
+                            <div>
+                                <span className="badge" style={{ marginBottom: 6 }}>Booking #{b.id}</span>
+                                <h3 style={{ margin: "2px 0 6px", fontSize: 20 }}>{b.serviceName}</h3>
+                                <div className="muted-text" style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                                    <span>Provider: <strong>{b.providerName}</strong></span>
+                                </div>
+                            </div>
+                            <div style={{ textAlign: "right" }}>
+                                <StatusBadge status={b.status} />
+                                <div style={{ fontFamily: "var(--font-serif)", fontSize: 22, fontWeight: 700, color: "var(--accent)", marginTop: 6 }}>
+                                    ₹{Number(b.agreedAmount).toLocaleString("en-IN")}
+                                </div>
+                            </div>
                         </div>
-                        <p className="muted-text">
-                            Provider: {b.providerName} | Agreed amount: {b.agreedAmount}
-                        </p>
+
+                        {/* Interactive Timeline */}
                         <BookingTimeline status={b.status} />
+
+                        {/* Review Section */}
                         {b.status === "COMPLETED" && !b.reviewed && (
-                            <ReviewForm bookingId={b.id} onDone={() => markReviewed(b.id)} />
+                            <div style={{ marginTop: 14 }}>
+                                <ReviewForm bookingId={b.id} onDone={() => markReviewed(b.id)} />
+                            </div>
                         )}
                         {b.status === "COMPLETED" && b.reviewed && (
-                            <p className="muted-text">Review submitted. Thank you!</p>
+                            <div style={{ margin: "14px 0 6px", display: "inline-flex", alignItems: "center", gap: 6, color: "var(--success-text)", background: "var(--success-bg)", padding: "4px 12px", borderRadius: "var(--radius-full)", fontSize: 13, fontWeight: 600 }}>
+                                <Icon name="check" size={14} /> Review submitted. Thank you!
+                            </div>
                         )}
-                        {b.status === "COMPLETED" && (
-                            <div className="btn-row">
+
+                        {/* Action buttons */}
+                        <div className="btn-row" style={{ marginTop: 16 }}>
+                            {b.status === "COMPLETED" && (
                                 <Link to={"/customer/invoice/" + b.id} className="btn-link btn-light">
-                                    View invoice
+                                    <Icon name="fileText" size={16} /> View Official Invoice
                                 </Link>
-                            </div>
-                        )}
-                        {b.status === "IN_PROGRESS" && (
-                            <div className="btn-row">
+                            )}
+
+                            {b.status === "IN_PROGRESS" && (
                                 <button className="btn-link" onClick={() => handleComplete(b.id)}>
-                                    Confirm job done
+                                    <Icon name="check" size={16} /> Confirm Job Done
                                 </button>
-                            </div>
-                        )}
-                        {(b.status === "BID_ACCEPTED" || b.status === "CONFIRMED") && (
-                            <div className="btn-row">
+                            )}
+
+                            {(b.status === "BID_ACCEPTED" || b.status === "CONFIRMED") && (
                                 <button className="btn-danger" onClick={() => handleCancel(b.id)}>
-                                    Cancel booking
+                                    Cancel Booking
                                 </button>
-                            </div>
-                        )}
+                            )}
+                        </div>
                     </div>
                 ))}
             </div>

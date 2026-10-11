@@ -19,21 +19,24 @@ function ProviderDashboard() {
 
     useEffect(() => {
         apiFetch("/api/me")
-            .then((me) => setEmail(me.email))
-            .catch(() => setEmail("unknown"));
+            .then((me) => setEmail(me.email || me.name || "Provider"))
+            .catch(() => setEmail("Provider"));
     }, []);
+
     useEffect(() => {
         apiFetch("/api/provider/requests")
-            .then((data) => setRequests(data))
+            .then((data) => setRequests(data || []))
             .catch(() => setRequests([]))
             .finally(() => setLoading(false));
     }, []);
+
     useEffect(() => {
         apiFetch("/api/provider/bookings")
             .then((data) => {
-                setBookings(data);
-                if (data.length > 0) {
-                    apiFetch("/api/providers/" + data[0].providerId + "/rating")
+                const list = data || [];
+                setBookings(list);
+                if (list.length > 0) {
+                    apiFetch("/api/providers/" + list[0].providerId + "/rating")
                         .then((r) => setRating(r))
                         .catch(() => {});
                 }
@@ -42,6 +45,7 @@ function ProviderDashboard() {
     }, []);
 
     const completed = bookings.filter((b) => b.status === "COMPLETED");
+    const activeBookings = bookings.filter((b) => b.status === "BID_ACCEPTED" || b.status === "CONFIRMED" || b.status === "IN_PROGRESS");
     const totalEarned = completed.reduce((sum, b) => sum + Number(b.agreedAmount), 0);
 
     const perService = {};
@@ -52,29 +56,44 @@ function ProviderDashboard() {
     const maxTotal = chartRows.length > 0 ? Math.max(...chartRows.map((r) => r.total)) : 0;
 
     return (
-        <div>
-            <h2>Provider dashboard</h2>
-            <p className="muted-text">Logged in as {email}</p>
-            <div className="action-row">
-                <Link to="/provider/bids" className="btn-link">My bids</Link>
-                <Link to="/provider/bookings" className="btn-link btn-light">My bookings</Link>
-                <Link to="/provider/profile" className="btn-link btn-light">My profile</Link>
+        <div className="page-enter">
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 16, marginBottom: 20 }}>
+                <div>
+                    <h2>Provider Dashboard</h2>
+                    <p className="muted-text">Professional Account: {email}</p>
+                </div>
+                <div className="action-row" style={{ margin: 0 }}>
+                    <Link to="/provider/bids" className="btn-link">
+                        <Icon name="tag" size={16} /> My Bids
+                    </Link>
+                    <Link to="/provider/bookings" className="btn-link btn-light">
+                        <Icon name="bookings" size={16} /> Bookings ({activeBookings.length})
+                    </Link>
+                    <Link to="/provider/profile" className="btn-link btn-light">
+                        <Icon name="users" size={16} /> My Profile
+                    </Link>
+                </div>
             </div>
 
-            <h3 className="category-title">Your performance</h3>
+            {/* Performance Stat Cards */}
+            <h3 className="category-title">Performance & Earnings</h3>
             <div className="stat-grid">
                 <div className="stat-card">
                     <div className="stat-icon"><Icon name="check" /></div>
-                    <div className="stat-number"><CountUp value={completed.length} /></div>
-                    <div className="muted-text">Completed jobs</div>
+                    <div className="stat-number">
+                        <CountUp value={completed.length} />
+                    </div>
+                    <div className="muted-text">Completed Jobs</div>
                 </div>
+
                 <div className="stat-card">
                     <div className="stat-icon"><Icon name="money" /></div>
                     <div className="stat-number">
                         <CountUp value={totalEarned} format={(n) => money(Math.round(n))} />
                     </div>
-                    <div className="muted-text">Total earned</div>
+                    <div className="muted-text">Total Revenue Earned</div>
                 </div>
+
                 <div className="stat-card">
                     <div className="stat-icon"><Icon name="star" /></div>
                     <div className="stat-number">
@@ -86,22 +105,31 @@ function ProviderDashboard() {
                     </div>
                     <div className="muted-text">
                         {rating && rating.reviewCount > 0
-                            ? "Average rating (" + rating.reviewCount + " reviews)"
+                            ? "Average Rating (" + rating.reviewCount + " reviews)"
                             : "No reviews yet"}
                     </div>
                 </div>
+
+                <div className="stat-card">
+                    <div className="stat-icon"><Icon name="bookings" /></div>
+                    <div className="stat-number" style={{ color: "var(--info)" }}>
+                        <CountUp value={activeBookings.length} />
+                    </div>
+                    <div className="muted-text">Active In-Progress Jobs</div>
+                </div>
             </div>
 
+            {/* Earnings Breakdown Chart */}
             {chartRows.length > 0 && (
                 <div className="chart-card">
-                    <div className="chart-title">Earnings by service</div>
+                    <div className="chart-title">Revenue by Service Category</div>
                     {chartRows.map((row) => (
                         <div key={row.name} className="bar-row">
                             <div className="bar-label">{row.name}</div>
                             <div className="bar-track">
                                 <div
                                     className="bar-fill"
-                                    style={{ width: (row.total / maxTotal) * 100 + "%" }}
+                                    style={{ width: ((row.total / maxTotal) * 100) + "%" }}
                                 ></div>
                             </div>
                             <div className="bar-value">{money(row.total)}</div>
@@ -110,7 +138,16 @@ function ProviderDashboard() {
                 </div>
             )}
 
-            <h3 className="category-title">Open requests</h3>
+            {/* Open Requests Available to Bid On */}
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 28, marginBottom: 16 }}>
+                <h3 className="category-title" style={{ margin: 0 }}>
+                    Matching Open Requests ({requests.length})
+                </h3>
+                <Link to="/provider/profile" className="card-link" style={{ fontSize: 13 }}>
+                    Configure Offered Services &rarr;
+                </Link>
+            </div>
+
             {loading && (
                 <div className="card-list">
                     {[1, 2, 3].map((n) => (
@@ -118,11 +155,19 @@ function ProviderDashboard() {
                     ))}
                 </div>
             )}
+
             {!loading && requests.length === 0 && (
-                <EmptyState title="No open requests" text="Tick the services you offer in your profile to see matching requests.">
-                    <Link to="/provider/profile" className="btn-link">Open my profile</Link>
+                <EmptyState
+                    title="No open requests in your categories"
+                    text="Make sure you have selected all services you offer in your profile to receive matching customer requests."
+                    icon="requests"
+                >
+                    <Link to="/provider/profile" className="btn-link">
+                        Open My Service Profile
+                    </Link>
                 </EmptyState>
             )}
+
             <div className="request-grid">
                 {requests.map((r) => (
                     <RequestCard
@@ -130,7 +175,7 @@ function ProviderDashboard() {
                         request={r}
                         showStatus={false}
                         linkTo={"/provider/requests/" + r.id}
-                        linkText="Place a bid"
+                        linkText="Place a Competitive Bid"
                     />
                 ))}
             </div>

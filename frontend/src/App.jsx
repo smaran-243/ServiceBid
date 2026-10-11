@@ -15,11 +15,13 @@ import ProviderBookings from "./pages/ProviderBookings.jsx";
 import ProviderProfile from "./pages/ProviderProfile.jsx";
 import AdminDashboard from "./pages/AdminDashboard.jsx";
 import Navbar from "./components/Navbar.jsx";
+import Footer from "./components/Footer.jsx";
+import BackToTop from "./components/BackToTop.jsx";
+import NotFound from "./pages/NotFound.jsx";
 import ProviderPublic from "./pages/ProviderPublic.jsx";
 import Invoice from "./pages/Invoice.jsx";
 import AdminCatalog from "./pages/AdminCatalog.jsx";
 import { Toaster } from "react-hot-toast";
-
 
 function App() {
     return (
@@ -27,123 +29,130 @@ function App() {
             <Navbar />
             <Toaster position="top-right" />
 
-            <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/login" element={<Login />} />
-                <Route
-                    path="/customer"
-                    element={
-                        <ProtectedRoute role="CUSTOMER">
-                            <CustomerDashboard />
-                        </ProtectedRoute>
-                    }
-                />
-                <Route
-                    path="/provider"
-                    element={
-                        <ProtectedRoute role="PROVIDER">
-                            <ProviderDashboard />
-                        </ProtectedRoute>
-                    }
-                />
-                <Route
-                    path="/customer/services"
-                    element={
-                        <ProtectedRoute role="CUSTOMER">
-                            <BrowseServices />
-                        </ProtectedRoute>
-                    }
-                />
-                <Route
-                    path="/customer/request/:serviceId"
-                    element={
-                        <ProtectedRoute role="CUSTOMER">
-                            <CreateRequest />
-                        </ProtectedRoute>
-                    }
-                />
-                <Route
-                    path="/customer/requests/:requestId"
-                    element={
-                        <ProtectedRoute role="CUSTOMER">
-                            <RequestDetail />
-                        </ProtectedRoute>
-                    }
-                />
-                <Route
-                    path="/customer/bookings"
-                    element={
-                        <ProtectedRoute role="CUSTOMER">
-                            <MyBookings />
-                        </ProtectedRoute>
-                    }
-                />
-                <Route
-                    path="/provider/requests/:requestId"
-                    element={
-                        <ProtectedRoute role="PROVIDER">
-                            <PlaceBid />
-                        </ProtectedRoute>
-                    }
-                />
-                <Route
-                    path="/provider/bids"
-                    element={
-                        <ProtectedRoute role="PROVIDER">
-                            <MyBids />
-                        </ProtectedRoute>
-                    }
-                />
-                <Route
-                    path="/provider/bookings"
-                    element={
-                        <ProtectedRoute role="PROVIDER">
-                            <ProviderBookings />
-                        </ProtectedRoute>
-                    }
-                />
-                <Route
-                    path="/provider/profile"
-                    element={
-                        <ProtectedRoute role="PROVIDER">
-                            <ProviderProfile />
-                        </ProtectedRoute>
-                    }
-                />
-                <Route
-                    path="/providers/:providerId"
-                    element={
-                        <ProtectedRoute role="CUSTOMER">
-                            <ProviderPublic />
-                        </ProtectedRoute>
-                    }
-                />
-                <Route
-                    path="/customer/invoice/:bookingId"
-                    element={
-                        <ProtectedRoute role="CUSTOMER">
-                            <Invoice />
-                        </ProtectedRoute>
-                    }
-                />
-                <Route
-                    path="/admin"
-                    element={
-                        <ProtectedRoute role="ADMIN">
-                            <AdminDashboard />
-                        </ProtectedRoute>
-                    }
-                />
-                <Route
-                    path="/admin/catalog"
-                    element={
-                        <ProtectedRoute role="ADMIN">
-                            <AdminCatalog />
-                        </ProtectedRoute>
-                    }
-                />
-            </Routes>
+            <main className="main-content">
+                <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/register" element={<Register />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route
+                        path="/customer"
+                        element={
+                            <ProtectedRoute role="CUSTOMER">
+                                <CustomerDashboard />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/provider"
+                        element={
+                            <ProtectedRoute role="PROVIDER">
+                                <ProviderDashboard />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/customer/services"
+                        element={
+                            <ProtectedRoute role="CUSTOMER">
+                                <BrowseServices />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/customer/request/:serviceId"
+                        element={
+                            <ProtectedRoute role="CUSTOMER">
+                                <CreateRequest />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/customer/requests/:requestId"
+                        element={
+                            <ProtectedRoute role="CUSTOMER">
+                                <RequestDetail />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/customer/bookings"
+                        element={
+                            <ProtectedRoute role="CUSTOMER">
+                                <MyBookings />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/provider/requests/:requestId"
+                        element={
+                            <ProtectedRoute role="PROVIDER">
+                                <PlaceBid />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/provider/bids"
+                        element={
+                            <ProtectedRoute role="PROVIDER">
+                                <MyBids />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/provider/bookings"
+                        element={
+                            <ProtectedRoute role="PROVIDER">
+                                <ProviderBookings />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/provider/profile"
+                        element={
+                            <ProtectedRoute role="PROVIDER">
+                                <ProviderProfile />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/providers/:providerId"
+                        element={
+                            <ProtectedRoute role="CUSTOMER">
+                                <ProviderPublic />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/customer/invoice/:bookingId"
+                        element={
+                            <ProtectedRoute role="CUSTOMER">
+                                <Invoice />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/admin"
+                        element={
+                            <ProtectedRoute role="ADMIN">
+                                <AdminDashboard />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/admin/catalog"
+                        element={
+                            <ProtectedRoute role="ADMIN">
+                                <AdminCatalog />
+                            </ProtectedRoute>
+                        }
+                    />
+                    {/* 404 Catch-All Route */}
+                    <Route path="*" element={<NotFound />} />
+                </Routes>
+            </main>
+
+            <Footer />
+            <BackToTop />
         </div>
     );
 }

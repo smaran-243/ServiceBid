@@ -3,16 +3,13 @@ import { Navigate } from "react-router-dom";
 import { apiFetch, getToken, removeToken } from "../api/api.js";
 
 function ProtectedRoute({ role, children }) {
-    const [status, setStatus] = useState("loading");
+    const [status, setStatus] = useState(() => (getToken() ? "loading" : "denied"));
 
     useEffect(() => {
-        if (!getToken()) {
-            setStatus("denied");
-            return;
-        }
+        if (!getToken()) return;
         apiFetch("/api/me")
             .then((me) => {
-                if (me.roles.includes(role)) {
+                if (me.roles && me.roles.includes(role)) {
                     setStatus("allowed");
                 } else {
                     setStatus("denied");
@@ -24,7 +21,13 @@ function ProtectedRoute({ role, children }) {
             });
     }, [role]);
 
-    if (status === "loading") return <p>Loading...</p>;
+    if (status === "loading") {
+        return (
+            <div style={{ padding: "40px 20px", textAlign: "center" }}>
+                <div className="skeleton skeleton-row" style={{ maxWidth: 400, margin: "0 auto" }}></div>
+            </div>
+        );
+    }
     if (status === "denied") return <Navigate to="/login" replace />;
     return children;
 }

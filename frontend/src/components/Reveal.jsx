@@ -2,13 +2,11 @@ import { useState, useEffect, useRef } from "react";
 
 function Reveal({ children }) {
     const ref = useRef(null);
-    const [visible, setVisible] = useState(false);
+    const [visible, setVisible] = useState(() => typeof window !== "undefined" && !("IntersectionObserver" in window));
 
     useEffect(() => {
         const el = ref.current;
         if (!el || !("IntersectionObserver" in window)) {
-            // eslint-disable-next-line react-hooks/set-state-in-effect
-            setVisible(true);
             return;
         }
         const observer = new IntersectionObserver(
