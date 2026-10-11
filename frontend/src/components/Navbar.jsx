@@ -100,6 +100,7 @@ function Navbar() {
                 {isAdmin && (
                     <>
                         <Link to="/admin">Admin</Link>
+                        <Link to="/admin/catalog">Catalog</Link>
                     </>
                 )}
                 {!loggedIn && (

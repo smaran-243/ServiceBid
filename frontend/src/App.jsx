@@ -17,6 +17,7 @@ import AdminDashboard from "./pages/AdminDashboard.jsx";
 import Navbar from "./components/Navbar.jsx";
 import ProviderPublic from "./pages/ProviderPublic.jsx";
 import Invoice from "./pages/Invoice.jsx";
+import AdminCatalog from "./pages/AdminCatalog.jsx";
 import { Toaster } from "react-hot-toast";
 
 
@@ -131,6 +132,14 @@ function App() {
                     element={
                         <ProtectedRoute role="ADMIN">
                             <AdminDashboard />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/admin/catalog"
+                    element={
+                        <ProtectedRoute role="ADMIN">
+                            <AdminCatalog />
                         </ProtectedRoute>
                     }
                 />
