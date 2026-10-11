@@ -8,6 +8,15 @@ A service marketplace with competitive bidding. Customers post a request, provid
 
 The backend runs on a free Render instance that sleeps when idle. The first request after a pause can take about a minute.
 
+## Screenshots
+
+| | |
+|---|---|
+| ![Home](docs/screenshots/home.png) | ![Home dark mode](docs/screenshots/home-dark.png) |
+| ![Browse services](docs/screenshots/browse.png) | ![Compare bids](docs/screenshots/bids.png) |
+| ![Booking timeline](docs/screenshots/bookings.png) | ![Provider dashboard](docs/screenshots/provider.png) |
+| ![Notification bell](docs/screenshots/bell.png) | ![Admin](docs/screenshots/admin.png) |
+
 ## Demo accounts (password: secret123)
 
 | Role | Email |
