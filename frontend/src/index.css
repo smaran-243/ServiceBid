@@ -1449,3 +1449,135 @@ button:active:not(:disabled),
 .theme-toggle:hover svg {
   transform: rotate(25deg);
 }
+.trend-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.trend-grid > * {
+  animation: fadeUp 0.5s ease backwards;
+}
+
+.trend-grid > :nth-child(2) { animation-delay: 0.07s; }
+.trend-grid > :nth-child(3) { animation-delay: 0.14s; }
+.trend-grid > :nth-child(4) { animation-delay: 0.21s; }
+
+.trend-card {
+  position: relative;
+  display: block;
+  height: 280px;
+  border-radius: 14px;
+  overflow: hidden;
+  color: #fff;
+  background: #14263f;
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+
+.trend-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow);
+  text-decoration: none;
+}
+
+.trend-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s;
+}
+
+.trend-card:hover img {
+  transform: scale(1.08);
+}
+
+.trend-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 18px;
+  background: linear-gradient(180deg, transparent 35%, rgba(10, 20, 36, 0.9) 100%);
+}
+
+.trend-overlay h4 {
+  margin: 0 0 4px;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 21px;
+  color: #fff;
+}
+
+.trend-overlay p {
+  margin: 0 0 8px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.trend-more {
+  font-size: 13px;
+  font-weight: 700;
+  color: #e0b866;
+}
+
+.why-band {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 8px 28px 28px;
+  margin-bottom: 28px;
+}
+
+.why-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 22px;
+}
+
+.why-item {
+  border-left: 3px solid var(--accent);
+  padding-left: 14px;
+}
+
+.why-item h4 {
+  margin: 0 0 6px;
+  font-size: 17px;
+}
+
+.why-item p {
+  margin: 0;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.cta-band {
+  text-align: center;
+  padding: 52px 24px;
+  border-radius: 16px;
+  color: #fff;
+  background: linear-gradient(160deg, #14263f 0%, #1d3557 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.cta-band h2 {
+  font-size: clamp(26px, 4vw, 36px);
+  color: #fff;
+}
+
+.cta-band p {
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: 22px;
+}
+
+.cta-band .btn-outline {
+  background: transparent;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+.cta-band .btn-outline:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
