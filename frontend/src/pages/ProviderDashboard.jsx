@@ -3,6 +3,7 @@ import { apiFetch } from "../api/api.js";
 import { Link } from "react-router-dom";
 import RequestCard from "../components/RequestCard.jsx";
 import EmptyState from "../components/EmptyState.jsx";
+import Icon from "../components/Icon.jsx";
 
 function money(n) {
     return "\u20B9" + Number(n).toLocaleString("en-IN");
@@ -62,14 +63,17 @@ function ProviderDashboard() {
             <h3 className="category-title">Your performance</h3>
             <div className="stat-grid">
                 <div className="stat-card">
+                    <div className="stat-icon"><Icon name="check" /></div>
                     <div className="stat-number">{completed.length}</div>
                     <div className="muted-text">Completed jobs</div>
                 </div>
                 <div className="stat-card">
+                    <div className="stat-icon"><Icon name="money" /></div>
                     <div className="stat-number">{money(totalEarned)}</div>
                     <div className="muted-text">Total earned</div>
                 </div>
                 <div className="stat-card">
+                    <div className="stat-icon"><Icon name="star" /></div>
                     <div className="stat-number">
                         {rating && rating.reviewCount > 0
                             ? Number(rating.averageRating).toFixed(1)

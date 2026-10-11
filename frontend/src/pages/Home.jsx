@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import Icon from "../components/Icon.jsx";
 
 const categories = [
     "Cleaning",
@@ -50,7 +51,7 @@ function Home() {
             <div className="cat-grid">
                 {categories.map((c) => (
                     <Link key={c} to="/customer/services" className="cat-card">
-                        <div className="cat-icon">{c.charAt(0)}</div>
+                        <div className="cat-icon"><Icon name={c} /></div>
                         <span>{c}</span>
                     </Link>
                 ))}

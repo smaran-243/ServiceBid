@@ -1581,3 +1581,36 @@ button:active:not(:disabled),
   background: rgba(255, 255, 255, 0.1);
   color: #fff;
 }
+.cat-icon svg {
+  display: block;
+}
+
+.stat-card {
+  position: relative;
+}
+
+.stat-icon {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  color: var(--accent);
+}
+
+.empty-icon {
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 12px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  color: var(--accent);
+}
