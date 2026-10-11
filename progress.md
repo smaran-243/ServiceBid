@@ -163,11 +163,12 @@
   * After p3 (branch work, not merged yet): motion layer CSS at the bottom of index.css (fadeUp, hero glow, pulsing timeline, growing bars), theme toggle uses a circular View Transition from the button. Next: Home photos, icons, counting numbers (checkpoint p4), then withdraw bid, deadline countdown, notification bell, admin catalog UI, README screenshots (checkpoint p5).
 - Day 12 (branch work): Home page upgrade (Trending services photo cards, Why choose us band, CTA band; photos in frontend/public/images: plumbing.jpg, cleaning.jpg, electrical.jpg, ac-repair.jpg, hero.jpg), Icon component (drawn SVG icons, no package) used on category cards, stat cards and EmptyState (icon prop), CountUp component (stats count up) used on ProviderDashboard and AdminDashboard, Reveal component (sections slide in on scroll, IntersectionObserver) used on Home. New classes: .trend-grid, .trend-card, .trend-overlay, .why-band, .why-grid, .why-item, .cta-band, .stat-icon, .empty-icon, .reveal, .reveal-in.
   * CHECKPOINT C: merged into main, tagged p4.
-  * Plan v3 remaining: (4) withdraw PENDING bid + customer cancels OPEN request, (5) bid deadline countdown (nullable column, no new enum values), (6) notification bell (ask before choosing design), (7) admin manages categories and services in UI, (8) README screenshots, architecture diagram, demo script, final live test, CHECKPOINT p5.
-
+  * Day 12-13 (branch work, after p4): withdraw PENDING bid (POST /api/provider/bids/{bidId}/withdraw, BidService.withdrawBid, "Withdraw bid" button in MyBids), customer cancels OPEN request (POST /api/customer/requests/{id}/cancel, pending bids become REJECTED, button in RequestDetail), bid deadline (nullable column bid_deadline on service_requests stored in UTC, 409 after deadline, Countdown component on RequestCard, RequestDetail, PlaceBid, optional field in CreateRequest), notification bell (GET /api/notifications, NotificationService computes "needs attention" items, nothing stored, NotificationBell component in Navbar for CUSTOMER and PROVIDER, refreshes every 30s), admin catalog UI (AdminCatalog.jsx at /admin/catalog, "Catalog" link in Navbar), root README updated (features, Mermaid architecture and booking flow diagrams, screenshots in docs/screenshots), DEMO.md demo script in project root.
+  * CHECKPOINT D: merged into main, tagged p5. Plan v3 is complete.
+  
 ## Current status
-  * Everything works and is live up to p4 (CHECKPOINT C). Plan v3 steps 1-3 done.
-  * Next: step 4 (withdraw bid, customer cancels OPEN request).
+  * Everything works and is live up to p5 (CHECKPOINT D). All of Plan v3 is done.
+  * Remaining optional ideas: real stored notifications, sidebar layout.
 
 ## About me
 - Complete beginner in React and Spring Boot, some Java
