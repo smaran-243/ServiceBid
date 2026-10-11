@@ -91,6 +91,18 @@ function RequestDetail() {
             toast.error("Could not accept bid");
         }
     }
+    async function cancelRequest() {
+        if (!window.confirm("Cancel this request? All pending bids will be rejected.")) return;
+        try {
+            await apiFetch("/api/customer/requests/" + requestId + "/cancel", {
+                method: "POST",
+            });
+            toast.success("Request cancelled");
+            setTimeout(() => window.location.reload(), 800);
+        } catch {
+            toast.error("Could not cancel request");
+        }
+    }
 
     return (
         <div>
@@ -108,6 +120,13 @@ function RequestDetail() {
                     <p className="muted-text">
                         Budget: {request.budget} | Location: {request.location}
                     </p>
+                    {request.status === "OPEN" && (
+                        <div className="btn-row">
+                            <button className="btn-danger" onClick={cancelRequest}>
+                                Cancel request
+                            </button>
+                        </div>
+                    )}
                 </div>
             )}
 

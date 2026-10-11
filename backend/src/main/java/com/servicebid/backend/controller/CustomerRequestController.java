@@ -36,4 +36,9 @@ public class CustomerRequestController {
     public ServiceRequestResponse myRequest(Authentication authentication, @PathVariable Long id) {
         return requestService.getMyRequestById(authentication.getName(), id);
     }
+
+    @PostMapping("/{id}/cancel")
+    public ServiceRequestResponse cancel(Authentication authentication, @PathVariable Long id) {
+        return requestService.cancelMyRequest(authentication.getName(), id);
+    }
 }

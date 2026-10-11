@@ -6,6 +6,9 @@ import com.servicebid.backend.dto.ServiceRequestResponse;
 import com.servicebid.backend.model.ServiceItem;
 import com.servicebid.backend.model.ServiceRequest;
 import com.servicebid.backend.model.User;
+import com.servicebid.backend.model.Bid;
+import com.servicebid.backend.model.BidStatus;
+import com.servicebid.backend.repository.BidRepository;
 import com.servicebid.backend.repository.ServiceItemRepository;
 import com.servicebid.backend.repository.ServiceRequestRepository;
 import com.servicebid.backend.repository.UserRepository;
@@ -15,7 +18,7 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.data.domain.Sort;
 import com.servicebid.backend.repository.ProviderOfferingRepository;
 import com.servicebid.backend.model.ProviderOffering;
-
+import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -26,15 +29,18 @@ public class ServiceRequestService {
     private final ServiceItemRepository serviceItemRepository;
     private final UserRepository userRepository;
     private final ProviderOfferingRepository offeringRepository;
+    private final BidRepository bidRepository;
 
     public ServiceRequestService(ServiceRequestRepository requestRepository,
                                  ServiceItemRepository serviceItemRepository,
                                  UserRepository userRepository,
-                                 ProviderOfferingRepository offeringRepository) {
+                                 ProviderOfferingRepository offeringRepository,
+                                 BidRepository bidRepository) {
         this.requestRepository = requestRepository;
         this.serviceItemRepository = serviceItemRepository;
         this.userRepository = userRepository;
         this.offeringRepository = offeringRepository;
+        this.bidRepository = bidRepository;
     }
 
     // Customer creates a request
@@ -83,6 +89,28 @@ public class ServiceRequestService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Request not found");
         }
         return toResponse(request);
+    }
+
+    // Customer cancels one of their own OPEN requests
+    @Transactional
+    public ServiceRequestResponse cancelMyRequest(String customerEmail, Long id) {
+        User customer = findUser(customerEmail);
+        ServiceRequest request = requestRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Request not found"));
+        if (!request.getCustomer().getId().equals(customer.getId())) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Request not found");
+        }
+        if (request.getStatus() != RequestStatus.OPEN) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Only an open request can be cancelled");
+        }
+        request.setStatus(RequestStatus.CANCELLED);
+        for (Bid bid : bidRepository.findByRequestIdOrderByAmountAsc(id)) {
+            if (bid.getStatus() == BidStatus.PENDING) {
+                bid.setStatus(BidStatus.REJECTED);
+                bidRepository.save(bid);
+            }
+        }
+        return toResponse(requestRepository.save(request));
     }
     // Provider lists all OPEN requests
     // Provider lists OPEN requests, only for services the provider offers
