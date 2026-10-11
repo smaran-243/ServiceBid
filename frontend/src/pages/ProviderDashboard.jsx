@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import RequestCard from "../components/RequestCard.jsx";
 import EmptyState from "../components/EmptyState.jsx";
 import Icon from "../components/Icon.jsx";
+import CountUp from "../components/CountUp.jsx";
 
 function money(n) {
     return "\u20B9" + Number(n).toLocaleString("en-IN");
@@ -64,20 +65,24 @@ function ProviderDashboard() {
             <div className="stat-grid">
                 <div className="stat-card">
                     <div className="stat-icon"><Icon name="check" /></div>
-                    <div className="stat-number">{completed.length}</div>
+                    <div className="stat-number"><CountUp value={completed.length} /></div>
                     <div className="muted-text">Completed jobs</div>
                 </div>
                 <div className="stat-card">
                     <div className="stat-icon"><Icon name="money" /></div>
-                    <div className="stat-number">{money(totalEarned)}</div>
+                    <div className="stat-number">
+                        <CountUp value={totalEarned} format={(n) => money(Math.round(n))} />
+                    </div>
                     <div className="muted-text">Total earned</div>
                 </div>
                 <div className="stat-card">
                     <div className="stat-icon"><Icon name="star" /></div>
                     <div className="stat-number">
-                        {rating && rating.reviewCount > 0
-                            ? Number(rating.averageRating).toFixed(1)
-                            : "-"}
+                        {rating && rating.reviewCount > 0 ? (
+                            <CountUp value={Number(rating.averageRating)} format={(n) => n.toFixed(1)} />
+                        ) : (
+                            "-"
+                        )}
                     </div>
                     <div className="muted-text">
                         {rating && rating.reviewCount > 0

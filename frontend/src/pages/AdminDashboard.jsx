@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { apiFetch } from "../api/api.js";
 import StatusBadge from "../components/StatusBadge.jsx";
 import Icon from "../components/Icon.jsx";
+import CountUp from "../components/CountUp.jsx";
 
 function formatDate(value) {
     return value ? new Date(value).toLocaleString() : "";
@@ -46,17 +47,17 @@ function AdminDashboard() {
                     <div className="stat-grid">
                         <div className="stat-card">
                             <div className="stat-icon"><Icon name="users" /></div>
-                            <div className="stat-number">{users.length}</div>
+                            <div className="stat-number"><CountUp value={users.length} /></div>
                             <div className="muted-text">Users</div>
                         </div>
                         <div className="stat-card">
                             <div className="stat-icon"><Icon name="requests" /></div>
-                            <div className="stat-number">{requests.length}</div>
+                            <div className="stat-number"><CountUp value={requests.length} /></div>
                             <div className="muted-text">Requests</div>
                         </div>
                         <div className="stat-card">
                             <div className="stat-icon"><Icon name="bookings" /></div>
-                            <div className="stat-number">{bookings.length}</div>
+                            <div className="stat-number"><CountUp value={bookings.length} /></div>
                             <div className="muted-text">Bookings</div>
                         </div>
                     </div>
