@@ -21,11 +21,13 @@ import NotFound from "./pages/NotFound.jsx";
 import ProviderPublic from "./pages/ProviderPublic.jsx";
 import Invoice from "./pages/Invoice.jsx";
 import AdminCatalog from "./pages/AdminCatalog.jsx";
+import ScrollToTop from "./components/ScrollToTop.jsx";
 import { Toaster } from "react-hot-toast";
 
 function App() {
     return (
         <div>
+            <ScrollToTop />
             <Navbar />
             <Toaster position="top-right" />
 

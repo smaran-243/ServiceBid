@@ -139,7 +139,7 @@ function ProviderDashboard() {
             )}
 
             {/* Open Requests Available to Bid On */}
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 28, marginBottom: 16 }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 10, marginTop: 28, marginBottom: 16 }}>
                 <h3 className="category-title" style={{ margin: 0 }}>
                     Matching Open Requests ({requests.length})
                 </h3>

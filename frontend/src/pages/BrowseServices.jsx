@@ -199,8 +199,8 @@ function BrowseServices() {
                     ))}
                 </div>
 
-                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                    <span className="muted-text" style={{ fontSize: 13, fontWeight: 600 }}>Sort:</span>
+                <div className="sort-wrap">
+                    <span className="sort-label">Sort :</span>
                     <select
                         className="sort-select"
                         value={sortBy}

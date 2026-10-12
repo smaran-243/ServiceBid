@@ -68,7 +68,7 @@ function PlaceBid() {
                         </div>
                         <div style={{ textAlign: "right" }}>
                             <span className="request-label">Client Budget</span>
-                            <div style={{ fontFamily: "var(--font-serif)", fontSize: 22, fontWeight: 700, color: "var(--accent)" }}>
+                            <div style={{ fontFamily: "var(--font-heading)", fontSize: 22, fontWeight: 700, color: "var(--accent)" }}>
                                 ₹{Number(request.budget).toLocaleString("en-IN")}
                             </div>
                         </div>

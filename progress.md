@@ -167,10 +167,12 @@
   * CHECKPOINT D: merged into main, tagged p5. Plan v3 is complete.
 - Day 14 (branch work, after p5): full UI rebrand made with Antigravity in a copy folder and copied back (src, public, index.html). New fonts Outfit and DM Sans, new palette and logo (Logo.jsx), new favicon, 3-zone floating Navbar, bento Home page with savings simulator, bids ticker, FAQ and reviews, Browse services with category chips, sort, saved hearts and recently viewed, Ctrl+K style search, NotFound 404 route, BackToTop, Footer, SkeletonCard, BookingTimeline, Reveal. No backend change, no api.js change. Checked: build passes, all flows tested on localhost with Neon (19 services, bids, accept, booking, review, invoice, admin catalog).
   * CHECKPOINT E: merged into main, tagged p6.
+- Day 15 (branch work, after p6): mobile responsiveness fixes made with Antigravity in a copy folder and copied back (index.css media queries for 768px, 480px and 340px, tables scroll inside .table-wrap, Invoice table wrapped, mobile menu fixed so the bell and theme toggle show once in the top bar and the drawer bottom only has Logout, bell dropdown fits the screen, Sort label stays on one line in BrowseServices), ScrollToTop component (new page opens at the top, used in App.jsx). No backend change, no api.js change. Checked: API diff clean, build passes, tested on phone view and desktop.
+  * CHECKPOINT F: merged into main, tagged p7.
   
 ## Current status
-  * Everything works and is live up to p6 (CHECKPOINT E). New UI deployed.
-  * Remaining optional ideas: real stored notifications, sidebar layout.
+  * Everything works and is live up to p7 (CHECKPOINT F). Mobile layout fixed.
+  * Next: major project development (see NEW_CHAT_PROMPT.md and "What is ServiceBid.md").
 
 ## About me
 - Complete beginner in React and Spring Boot, some Java

@@ -135,7 +135,7 @@ function MyBids() {
                             </div>
                             <div style={{ textAlign: "right" }}>
                                 <StatusBadge status={b.status} />
-                                <div style={{ fontFamily: "var(--font-serif)", fontSize: 24, fontWeight: 700, color: "var(--accent)", marginTop: 6 }}>
+                                <div style={{ fontFamily: "var(--font-heading)", fontSize: 24, fontWeight: 700, color: "var(--accent)", marginTop: 6 }}>
                                     ₹{Number(b.amount).toLocaleString("en-IN")}
                                 </div>
                             </div>

@@ -191,7 +191,7 @@ function MyBookings() {
                             </div>
                             <div style={{ textAlign: "right" }}>
                                 <StatusBadge status={b.status} />
-                                <div style={{ fontFamily: "var(--font-serif)", fontSize: 22, fontWeight: 700, color: "var(--accent)", marginTop: 6 }}>
+                                <div style={{ fontFamily: "var(--font-heading)", fontSize: 22, fontWeight: 700, color: "var(--accent)", marginTop: 6 }}>
                                     ₹{Number(b.agreedAmount).toLocaleString("en-IN")}
                                 </div>
                             </div>

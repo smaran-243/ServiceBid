@@ -80,29 +80,31 @@ function Invoice() {
                     </div>
                 </div>
 
-                <table className="invoice-table">
-                    <thead>
-                        <tr>
-                            <th>Service Description</th>
-                            <th>Status</th>
-                            <th className="invoice-num">Agreed Amount</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <strong>{booking.serviceName}</strong>
-                                <div className="muted-text" style={{ fontSize: 12 }}>Completed via ServiceBid bidding</div>
-                            </td>
-                            <td>
-                                <span className="badge badge-COMPLETED">Completed</span>
-                            </td>
-                            <td className="invoice-num" style={{ fontWeight: 700, fontSize: 16 }}>
-                                {money(booking.agreedAmount)}
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div className="table-wrap">
+                    <table className="invoice-table">
+                        <thead>
+                            <tr>
+                                <th>Service Description</th>
+                                <th>Status</th>
+                                <th className="invoice-num">Agreed Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <strong>{booking.serviceName}</strong>
+                                    <div className="muted-text" style={{ fontSize: 12 }}>Completed via ServiceBid bidding</div>
+                                </td>
+                                <td>
+                                    <span className="badge badge-COMPLETED">Completed</span>
+                                </td>
+                                <td className="invoice-num" style={{ fontWeight: 700, fontSize: 16 }}>
+                                    {money(booking.agreedAmount)}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
                 <div className="invoice-total">
                     <span style={{ color: "var(--muted)" }}>Grand Total:</span>

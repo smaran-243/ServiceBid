@@ -137,7 +137,7 @@ function ProviderProfile() {
                         const allChecked = catServices.every((s) => selectedIds.includes(s.id));
                         return (
                             <div key={cat} style={{ marginBottom: 20, background: "var(--bg-subtle)", padding: "14px 18px", borderRadius: "var(--radius-md)" }}>
-                                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
+                                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 8, marginBottom: 8 }}>
                                     <span style={{ fontWeight: 700, fontSize: 14, color: "var(--text)" }}>
                                         {cat}
                                     </span>
